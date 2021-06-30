@@ -1,25 +1,13 @@
 import React from 'react'
 import NavBar from '../components/NavBar'
 import Piano from '../components/Piano'
-import ProgLoop from '../components/ProgLoop'
+import ProgLoop from '../components/Looper/ProgLoop'
 import {
 	Grid
 } from "@material-ui/core"
+import LoopBox from '../components/Looper/LoopBox'
 
-const loopTemp = [
-	{
-		name: "Verse",
-		chords: ["Am, C, B, F"]
-	},
-	{
-		name: "Verse",
-		chords: ["Am, C, B, F"]
-	},
-	{
-		name: "Verse",
-		chords: ["Am, C, B, F"]
-	}
-]
+
 
 const Home = () => {
 	return (
@@ -27,6 +15,7 @@ const Home = () => {
 	
 			<NavBar />
 			<Piano />
+			<LoopBox />
 		
 		</div>
 	)
