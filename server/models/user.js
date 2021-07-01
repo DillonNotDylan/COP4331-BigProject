@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
 		required: true, 
 	},
 	projects:  {
-		type: [ObjectId],
+		type: [mongoose.Types._ObjectId],
 		default: []
 	},
 	dateCreated: {

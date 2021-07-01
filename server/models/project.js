@@ -8,9 +8,11 @@ const projectSchema = mongoose.Schema({
 	},
 	key: { 
 		type: String, 
+		default: "",
 	},
 	mode: { 
 		type: String, 
+		default: "",
 	},
 	loops: { 
 		type: [{
