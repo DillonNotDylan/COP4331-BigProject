@@ -79,13 +79,13 @@ export const deleteProject = async (req, res) => {
 	try {
 
 		const { id } = req.params;
-		const { projectId } = req.body;
+		const { pid } = req.body;
 		
-		if (!mongoose.Types.ObjectId.isValid(projectId)) return res.status(404).send(`Project id: ${projectId} is not valid.`);
-		await Project.findByIdAndRemove(projectId);
+		if (!mongoose.Types.ObjectId.isValid(pid)) return res.status(404).send(`Project id: ${pid} is not valid.`);
+		await Project.findByIdAndRemove(pid);
 
 		const user = await UserModal.findById(id);
-		const index = user.projects.indexOf(mongoose.Types.ObjectId(projectId));
+		const index = user.projects.indexOf(mongoose.Types.ObjectId(pid));
 
 		if (index > -1) user.projects.splice(index, 1);
 		await UserModal.findByIdAndUpdate(id, user, { new: true });
