@@ -10,7 +10,11 @@ const userSchema = mongoose.Schema({
 		type: String, 
 		required: true, 
 	},
-	projects:  {
+	verified: {
+		type: Boolean,
+		default : false,
+	},
+	projects: {
 		type: [mongoose.Types._ObjectId],
 		default: []
 	},
@@ -20,6 +24,7 @@ const userSchema = mongoose.Schema({
 	},
 	lastLogin: {
 		type: Date,
+		default: new Date(),
 	},
 });
 

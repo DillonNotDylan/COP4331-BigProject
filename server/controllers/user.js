@@ -16,6 +16,7 @@ export const signin = async (req, res) => {
 		const isPasswordCorrect = await bcrypt.compare(password, oldUser.password);
 		if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
 
+		await UserModal.findByIdAndUpdate(oldUser._id, { lastLogin: new Date().toISOString() }, { new: true });
 		res.status(200).json({ id: oldUser._id, email: oldUser.email });
 
     } catch (error) {

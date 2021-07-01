@@ -24,9 +24,9 @@ export const getProject = async (req, res) => {
 
 	try {
 
-		const { projectId } = req.body;
-		const project = await Project.findById(projectId);
-		
+		const { pid } = req.body;
+		const project = await Project.findById(pid);
+
 		res.status(200).json(project);
 	
 	} catch (error) {
@@ -47,8 +47,8 @@ export const createProject = async (req, res) => {
 		
 		const user = await UserModal.findById(id);
 		user.projects.push(newProject._id);
-		
 		await UserModal.findByIdAndUpdate(id, user, { new: true });
+
 		res.status(201).json(newProject);
 
 	} catch (error) {
@@ -59,12 +59,43 @@ export const createProject = async (req, res) => {
 
 export const updateProject = async (req, res) => {
 
-	res.json({ message: "updateProject call successful" });
+	try {
+
+		const project = req.body;
+		
+		if (!mongoose.Types.ObjectId.isValid(project.pid)) return res.status(404).send(`Project id: ${project.pid} is not valid.`);
+		await Project.findByIdAndUpdate(project.pid, { ...project, lastUpdate: new Date().toISOString() }, { new: true });
+
+		res.json({ message: "Project updated successfully." });
+
+	} catch (error) {
+
+		res.json({ message: error.message });
+	}
 }
 
 export const deleteProject = async (req, res) => {
 
-	res.json({ message: "deleteProject call successful" });
+	try {
+
+		const { id } = req.params;
+		const { projectId } = req.body;
+		
+		if (!mongoose.Types.ObjectId.isValid(projectId)) return res.status(404).send(`Project id: ${projectId} is not valid.`);
+		await Project.findByIdAndRemove(projectId);
+
+		const user = await UserModal.findById(id);
+		const index = user.projects.indexOf(mongoose.Types.ObjectId(projectId));
+
+		if (index > -1) user.projects.splice(index, 1);
+		await UserModal.findByIdAndUpdate(id, user, { new: true });
+
+		res.json({ message: "Project deleted successfully." });
+
+	} catch (error) {
+
+		res.json({ message: error.message });
+	}
 }
 
 export default router;

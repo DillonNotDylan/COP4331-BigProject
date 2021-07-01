@@ -21,7 +21,7 @@ router.post("/signup", signup);
 router.get('/:id', getProjects);
 router.get('/', getProject);
 router.post('/:id', createProject);
-router.patch('/:id', updateProject);
+router.patch('/', updateProject);
 router.delete('/:id', deleteProject);
 
 export default router;
