@@ -1,8 +1,8 @@
-import express from 'express';
-import mongoose from 'mongoose';
+import express from "express";
+import mongoose from "mongoose";
 
-import UserModal from '../models/user.js';
-import Project from '../models/project.js';
+import UserModal from "../models/user.js";
+import Project from "../models/project.js";
 
 const router = express.Router();
 
@@ -13,6 +13,42 @@ export const getProjects = async (req, res) => {
 		const { id } = req.params;
 		const user = await UserModal.findById(id);
 		res.status(200).json({ projects: user.projects });
+
+	} catch (error) {
+	
+		res.status(404).json({ message: error.message });
+	}
+}
+
+export const searchProjects = async (req, res) => { 
+
+	try {
+		
+		const { id } = req.params;
+		const criteria = req.body;
+		
+		const user = await UserModal.findById(id);
+		const projects = new Array();
+
+		for (let i = 0; i < user.projects.length; i++)
+		{
+			const project = await Project.findById(user.projects[i]);
+
+			for (let x in criteria)
+			{
+				var addToList = true;
+				let criterianRegex = new RegExp(criteria[x], "gi");
+				if (!criterianRegex.test(project[x]))
+				{
+					addToList = false;
+					break;
+				}
+			}
+
+			if (addToList) projects.push(project._id);
+		}
+		
+		res.status(200).json({ projects: projects });
 
 	} catch (error) {
 	
