@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
 		type: Boolean,
 		default : false,
 	},
-	projects: {
+	progressions: {
 		type: [mongoose.Types._ObjectId],
 		default: []
 	},

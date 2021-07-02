@@ -7,25 +7,25 @@ import {
 } from "../controllers/user.js";
 
 import { 
-    getProjects,
-    searchProjects, 
-    getProject, 
-    createProject, 
-    updateProject, 
-    deleteProject 
-} from "../controllers/projects.js";
+    getProgressions,
+    searchProgressions, 
+    getProgression, 
+    createProgression, 
+    updateProgression, 
+    deleteProgression 
+} from "../controllers/progressions.js";
 
 const router = express.Router();
 
 router.post("/signin", signin);
 router.post("/signup", signup);
-router.delete("/:id", deleteUser);
+router.delete("/:id/deleteUser", deleteUser);
 
-router.get("/:id", getProjects);
-router.get("/:id/search", searchProjects);
-router.get("/", getProject);
-router.post("/:id", createProject);
-router.patch("/", updateProject);
-router.delete("/:id", deleteProject);
+router.get("/:id", getProgressions);
+router.get("/:id/search", searchProgressions);
+router.get("/", getProgression);
+router.post("/:id", createProgression);
+router.patch("/", updateProgression);
+router.delete("/:id", deleteProgression);
 
 export default router;

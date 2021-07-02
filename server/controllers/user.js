@@ -1,17 +1,15 @@
 import bcrypt from "bcryptjs";
 
 import UserModal from "../models/user.js";
-import Project from "../models/project.js";
+import Progression from "../models/progression.js";
 
 export const signin = async (req, res) => {
 
 	try {
 
-		console.log(`signin attempted by: ${email}`);
-
 		const { email, password } = req.body;
 		const oldUser = await UserModal.findOne({ email });
-		
+
 		if (!oldUser) return res.status(404).json({ message: "User doesn't exist" });
 
 		const isPasswordCorrect = await bcrypt.compare(password, oldUser.password);
@@ -31,8 +29,6 @@ export const signup = async (req, res) => {
 
 	try {
 
-		console.log(`signup attempted by: ${email}`);
-		
 		const { email, password } = req.body;
 		const oldUser = await UserModal.findOne({ email });
 		
@@ -57,8 +53,8 @@ export const deleteUser = async (req, res) => {
 		const { id } = req.params;
 		const user = UserModal.findById(id);
 
-		for (let i = 0; i < user.projects.length; i++)
-			await Project.findByIdAndRemove(user.projects[i]);
+		for (let i = 0; i < user.progressions.length; i++)
+			await Progression.findByIdAndRemove(user.progressions[i]);
 
 		await UserModal.findByIdAndRemove(id);
 		res.json({ message: "User deleted successfully." });

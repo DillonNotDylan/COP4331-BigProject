@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const projectSchema = mongoose.Schema({
+const progressionSchema = mongoose.Schema({
 	title: { 
 		type: String, 
 		required: true,
@@ -33,4 +33,4 @@ const projectSchema = mongoose.Schema({
 	},
 });
 
-export default mongoose.model("Project", projectSchema);
+export default mongoose.model("Progression", progressionSchema);
