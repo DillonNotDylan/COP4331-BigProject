@@ -83,7 +83,8 @@ export const createProgression = async (req, res) => {
 		
 		const user = await UserModal.findById(id);
 		user.progressions.push(newProgression._id);
-		await UserModal.findByIdAndUpdate(id, user, { new: true });
+		await user.save();
+		// await UserModal.findByIdAndUpdate(id, user, { new: true });
 
 		res.status(201).json(newProgression);
 
@@ -130,7 +131,7 @@ export const deleteProgression = async (req, res) => {
 	
 	} catch (error) {
 	
-		res.json({ error: error.message });
+		res.json({ message: error.message });
 	}
 }
 
