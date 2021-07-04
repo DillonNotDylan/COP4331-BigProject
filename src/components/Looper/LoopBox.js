@@ -37,7 +37,7 @@ const loopTemp = [
 
 
 const LoopBox = () => {
-	const [currProj, setProj] = useState([])
+	const [currProj, setProj] = useState(loopTemp)
 	
 	// At the moment, this useEffect will undisirably reset changes to the website,
 	// In the future, we'll need this to set the stage for changes
@@ -49,6 +49,7 @@ const LoopBox = () => {
 	const addNewLoop = () => {
 		console.log("in here")
 		let temp = [...currProj]
+		// let temp = currProj
 		let len = temp.length
 		temp.push(
 			{
@@ -62,9 +63,18 @@ const LoopBox = () => {
 		setProj(temp)
 	}
 
-	
+	const deleteLoop = (index) => {
+		console.log("In delete loop")
+		let temp = [...currProj]
 
-	
+		if (index === -1)
+			return
+			
+		temp.splice(index, 1)
+		setProj(temp)
+	}
+
+
 	return (
 		<div>
 			<Card >
@@ -89,10 +99,12 @@ const LoopBox = () => {
 					
 						<Grid container direction="column">
 							{
-								currProj.map((loop) => {
+								// Th
+								// 0 1 2 3 4 etc
+								currProj.map((loop, index) => {
 									return (
 										<Grid item>
-											<ProgLoop loopData={loop}/>
+											<ProgLoop loopData={loop} id={index} deleteLoop={deleteLoop}/>
 										</Grid>
 									)
 								})

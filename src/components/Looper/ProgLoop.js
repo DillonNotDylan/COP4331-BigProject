@@ -9,26 +9,29 @@ import {
 import { DeleteOutlined } from '@material-ui/icons'
 import { Chordbox } from './Chordbox'
 
-const ProgLoop = (props) => {
+const ProgLoop = ({loopData, id, deleteLoop}) => {
+	// const [title, setTitle] = useState("")
 	return (
 		<div>
 			<Card>
 				<Card>
 					<CardHeader
 						action={
-							<IconButton>
+							<IconButton
+								onClick={() => deleteLoop(id)}
+							>
 								<DeleteOutlined />
 							</IconButton>
 						}
 						
-						subheader={props.loopData.name}
+						subheader={loopData.name}
 						
 					/>
 
 					<CardContent>
 						<Grid container>
 							{
-								props.loopData.chords.map(singleChord =>
+								loopData.chords.map(singleChord =>
 									{
 										return (
 											<Grid item>
