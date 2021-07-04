@@ -63,6 +63,8 @@ const LoopBox = () => {
 	}
 
 	
+
+	
 	return (
 		<div>
 			<Card >
@@ -85,7 +87,7 @@ const LoopBox = () => {
 						<Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button>
 						
 					
-						<Grid container>
+						<Grid container direction="column">
 							{
 								currProj.map((loop) => {
 									return (
