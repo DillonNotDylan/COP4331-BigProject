@@ -1,27 +1,30 @@
 import mongoose from "mongoose";
 
-const progressionSchema = mongoose.Schema({
-	title: { 
-		type: String, 
+const projectSchema = mongoose.Schema({
+	title: {
+		type: String,
 		required: true,
 		unique: true,
 	},
-	key: { 
-		type: String, 
+	key: {
+		type: String,
 		default: "",
 	},
-	mode: { 
-		type: String, 
+	mode: {
+		type: String,
 		default: "",
 	},
-	loops: { 
+	loops: {
 		type: [{
-			length: Number,
+			name: String,
 			placement: Number,
 			iterations: Number,
-			progress: String, 
-		}], 
-		default: [], 
+			progression: {
+				type: [String],
+				default: []
+			},
+		}],
+		default: [],
 	},
 	dateCreated: {
 		type: Date,
@@ -33,4 +36,4 @@ const progressionSchema = mongoose.Schema({
 	},
 });
 
-export default mongoose.model("Progression", progressionSchema);
+export default mongoose.model("Project", projectSchema);

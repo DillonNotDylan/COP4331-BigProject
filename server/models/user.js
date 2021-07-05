@@ -1,24 +1,24 @@
 import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
-	email: { 
-		type: String, 
-		unique: true, 
+	email: {
+		type: String,
+		unique: true,
 		required: true,
 	},
-	password: { 
-		type: String, 
-		required: true, 
+	password: {
+		type: String,
+		required: true,
 	},
 	verified: {
 		type: Boolean,
-		default : false,
+		default: false,
 	},
-	progressions: {
-		type: [mongoose.Types._ObjectId],
+	projects: {
+		type: [mongoose.Schema.Types.ObjectId],
 		default: []
 	},
-	dateCreated: {
+	registerDate: {
 		type: Date,
 		default: new Date(),
 	},

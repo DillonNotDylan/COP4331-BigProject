@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
 import UserModal from "../models/user.js";
-import Progression from "../models/progression.js";
+import Project from "../models/project.js";
 
 dotenv.config();
 
@@ -35,7 +35,7 @@ export const signin = async (req, res) => {
 	} catch (error) {
 
 		console.log(error);
-		return res.status(500).send({ message: "Something went wrong." });
+		return res.status(500).send({ message: error.message });
 	}
 };
 
@@ -65,12 +65,12 @@ export const signup = async (req, res) => {
 					<div style=text-align: center;><a href = '${url}'>Confirm your email.</a></div>`
 		});
 
-		res.status(201).send({ message: `Email verification link sent to '${email}'.` });
+		return res.status(201).send({ message: `Email verification link sent to '${email}'.` });
 
 	} catch (error) {
 
 		console.log(error);
-		return res.status(500).send({ message: "Something went wrong." });
+		return res.status(500).send({ message: error.message });
 	}
 };
 
@@ -93,7 +93,7 @@ export const changePassword = async (req, res) => {
 	} catch (error) {
 		
 		console.log(error);
-		return res.status(500).send({ message: "Something went wrong." });
+		return res.status(500).send({ message: error.message });
 	}
 }
 
@@ -117,7 +117,7 @@ export const verifyAccount = async (req, res) => {
 	} catch (error) {
 		
 		console.log(error);
-		return res.status(500).send({ message: "Something went wrong." });
+		return res.status(500).send({ message: error.message });
 	}
 }
 
@@ -140,17 +140,17 @@ export const resendVerificationEmail = async (req, res) => {
 		transporter.sendMail({
 			from: 'Chordeographer',
 			to: email,
-			subject: 'Verify your Chordeographer account.',
+			subject: 'Verify your email.',
 			html: 	`<div style=display: block; margin: auto; width: 50%><img src="https://i.imgur.com/9CSWeNf.gif" alt="ayyeee" /></div>
-					<div style=text-align: center;><a href = '${url}'>Confirm your email.</a></div>`
+					<div style=text-align: center;><a href = '${url}'>Verify your email.</a></div>`
 		});
 
-		res.status(201).send({ message: `Email verification link sent to '${email}'.` });
+		return res.status(201).send({ message: `Email verification link sent to '${email}'.` });
 
 	} catch (error) {
 
 		console.log(error);
-		return res.status(500).send({ message: "Something went wrong." });
+		return res.status(500).send({ message: error.message });
 	}
 }
 
@@ -161,10 +161,10 @@ export const shutdownAccount = async (req, res) => {
 		const { id } = req.params;
 		const user = await UserModal.findById(id);
 
-		if (!user) return res.status(400).send({ message: "User id not found in database." });
+		if (!user) return res.status(400).send({ message: "User id not found." });
 
-		for (let i = 0; i < user.progressions.length; i++)
-			await Progression.findByIdAndRemove(user.progressions[i]);
+		for (let i = 0; i < user.projects.length; i++)
+			await Project.findByIdAndRemove(user.projects[i]);
 
 		await UserModal.findByIdAndRemove(id);
 		return res.status(200).send({ message: "User deleted successfully." });
@@ -172,6 +172,6 @@ export const shutdownAccount = async (req, res) => {
 	} catch (error) {
 
 		console.log(error);
-		return res.status(500).send({ message: "Something went wrong." });
+		return res.status(500).send({ message: error.message });
 	}
 };
