@@ -100,13 +100,13 @@ const LoopBox = () => {
 					<Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button>
 					
 				
-					<Grid container direction="column">
+					<Grid container direction="column" style={{width: 500}}>
 						{
 							// Th
 							// 0 1 2 3 4 etc
 							currProj.map((loop, index) => {
 								return (
-									<Grid item>
+									<Grid item style={{justifyContent: 'center'}}>
 										<ProgLoop loopData={loop} id={index} deleteLoop={deleteLoop}/>
 									</Grid>
 								)

@@ -29,12 +29,12 @@ const ProgLoop = ({loopData, id, deleteLoop}) => {
 					/>
 
 					<CardContent>
-						<Grid container>
+						<Grid container style={{justifyContent: 'center'}}>
 							{
 								loopData.chords.map(singleChord =>
 									{
 										return (
-											<Grid item>
+											<Grid item style={{width: 100}}>
 												<Chordbox chord={singleChord}/>
 											</Grid>
 										)
