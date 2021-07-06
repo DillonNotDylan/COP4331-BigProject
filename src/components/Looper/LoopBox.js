@@ -16,6 +16,8 @@ import AddIcon from '@material-ui/icons/Add';
 
 import ProgLoop from './ProgLoop'
 
+import Login_SignUp from '../Login_SignUp'
+
 
 const loopTemp = [
 	{
@@ -93,27 +95,31 @@ const LoopBox = () => {
 						title="Project Name"
 						subheader="Created on March 5, 2000"
 					/>
-						<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
-						<Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button>
-						
+
+					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
+					<Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button>
 					
-						<Grid container direction="column">
-							{
-								// Th
-								// 0 1 2 3 4 etc
-								currProj.map((loop, index) => {
-									return (
-										<Grid item>
-											<ProgLoop loopData={loop} id={index} deleteLoop={deleteLoop}/>
-										</Grid>
-									)
-								})
-							}
-						</Grid>
+				
+					<Grid container direction="column">
+						{
+							// Th
+							// 0 1 2 3 4 etc
+							currProj.map((loop, index) => {
+								return (
+									<Grid item>
+										<ProgLoop loopData={loop} id={index} deleteLoop={deleteLoop}/>
+									</Grid>
+								)
+							})
+						}
+					</Grid>
 					
 					{/* <ProgLoop /> */}
+					
+					<Login_SignUp />
 				</CardContent>
 			</Card>
+
 		</div>
 	)
 }
