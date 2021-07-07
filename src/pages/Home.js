@@ -6,7 +6,7 @@ import {
 	Grid
 } from "@material-ui/core"
 import LoopBox from '../components/Looper/LoopBox'
-
+import ToolPage from'../components/Tools/ToolPage'
 
 
 const Home = () => {
@@ -14,6 +14,7 @@ const Home = () => {
 		<div>
 	
 			<NavBar />
+			<ToolPage />
 			<Piano />
 			<LoopBox />
 		
