@@ -14,8 +14,8 @@ const Home = () => {
 		<div>
 	
 			<NavBar />
-			<ToolPage />
 			<Piano />
+			<ToolPage />
 			<LoopBox />
 		
 		</div>

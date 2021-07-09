@@ -28,7 +28,7 @@ router.post("/resend-verification", resendVerificationEmail);
 router.delete("/:id/shutdown-account", shutdownAccount);
 
 router.get("/:id/get-projects", getProjects);
-router.get("/", getProject);
+router.post("/getProjectByID", getProject);
 router.get("/:id/search-projects", searchProjects);
 router.post("/:id/new-project", createProject);
 router.patch("/update-project", updateProject);

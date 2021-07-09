@@ -18,6 +18,7 @@ import ProgLoop from './ProgLoop'
 
 import Login_SignUp from '../Login_SignUp'
 
+import axios from 'axios'
 
 const loopTemp = [
 	{
@@ -76,9 +77,55 @@ const LoopBox = () => {
 		setProj(temp)
 	}
 
+	// 'user/${userID}/get-projects'
+	// 60e3a8a3b2bfc802215b2535
+	const getData = () => {
+		let userID = "60e3a8a3b2bfc802215b2535"
+		const res = axios.get(`http://localhost:5000/user/${userID}/get-projects`)		
+		.then(function (response) {
+			console.log(response.data);
+		})
+		.catch(function (error) {
+			console.log(error);
+		})  
+	}
+
+	
+	const getProjectById = async () => {
+		let userID = "60e3a8a3b2bfc802215b2535"
+
+		const res = await axios.post("http://localhost:5000/user/getProjectByID", 
+			{
+					pid: "60e3a990b2bfc802215b253e"
+
+				
+			}
+		)
+		
+		// console.log(res)
+		.then(function (response) {
+			console.log(response.data);
+		})
+		.catch(function (error) {
+			console.log(error);
+		})
+	}
 
 	return (
 		<div>
+
+			<Button
+				onClick={getData}
+			>
+				Get data
+			</Button>
+
+			<Button
+				onClick={getProjectById}
+			>
+				Get specific project
+			</Button>
+
 			<Card >
 				<CardContent>
 					<CardHeader
@@ -97,7 +144,7 @@ const LoopBox = () => {
 					/>
 
 					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
-					<Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button>
+					{/* <Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button> */}
 					
 				
 					<Grid container direction="column" style={{width: 500}}>
