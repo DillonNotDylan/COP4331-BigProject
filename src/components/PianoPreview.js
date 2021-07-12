@@ -38,34 +38,30 @@ const test = () => {
 
 const PianoPreview = () => {
 
-	const doThing = (num)=>
+	const doThing = (tempFunction)=>
 	{
 		const ac = new AudioContext();
 		let plyr = null;
 	
-		Soundfont.instrument(ac, 'acoustic_grand_piano', {loop: true,adsr: [0, 0, 1, 0]}, ).then(function (instrument) {
-			/*instrument.schedule( ac.currentTime,
-
-				// test()
-				[{ time: 0, note: "C4" }, { time: 0, note: "E4" }, { time: 0, note: "G4" }, 
-				{ time: .5, note: "A4" }, { time: .5, note: "E4" }, { time: .5, note: "C4" },
-				{ time: 1, note: "A4" }, { time: 1, note: "F4" }, { time: 1, note: "C4" }]
-			);*/
-			plyr=instrument;
+		Soundfont.instrument(ac, 'acoustic_grand_piano', {loop: false,adsr: [0, 0, 1, 0]}, ).then(function (instrument) {
+			instrument.schedule( ac.currentTime,
+					[{ time: 0, note: "C4" }, { time: 0, note: "E4" }, { time: 0, note: "G4" }, 
+					{ time: .5, note: "A4" }, { time: .5, note: "E4" }, { time: .5, note: "C4" },
+					{ time: 1, note: "A4" }, { time: 1, note: "F4" }, { time: 1, note: "C4" }]
+				)
+			
+			// plyr=instrument;
 		}
 		
 		).catch(function (err) {
 			console.log('err', err);
 		});
 
-		plyr.play(30);
-
-		
-		
+		// plyr.play(30);
 	
 	}
 
-	doThing("E4");
+	// doThing("E4");
 
 	return (
 		
