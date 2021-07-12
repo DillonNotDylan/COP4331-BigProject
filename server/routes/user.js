@@ -28,8 +28,8 @@ router.post("/resend-verification", resendVerificationEmail);
 router.delete("/:id/shutdown-account", shutdownAccount);
 
 router.get("/:id/get-projects", getProjects);
-router.post("/getProjectByID", getProject);
-router.get("/:id/search-projects", searchProjects);
+router.post("/get-project", getProject);
+router.post("/:id/search-projects", searchProjects);
 router.post("/:id/new-project", createProject);
 router.patch("/update-project", updateProject);
 router.delete("/:id/delete-project", deleteProject);
