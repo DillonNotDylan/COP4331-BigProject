@@ -4,5 +4,5 @@
   text-transform: capitalize;
   /* Disable text selection */
   user-select: none;
-  visibility: hidden;
+  /* visibility: hidden; */
 }
