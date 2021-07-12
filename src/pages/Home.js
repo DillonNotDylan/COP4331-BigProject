@@ -1,6 +1,6 @@
 import React from 'react'
 import NavBar from '../components/NavBar'
-import Piano from '../components/Piano'
+import PianoPreview from '../components/PianoPreview'
 import ProgLoop from '../components/Looper/ProgLoop'
 import {
 	Grid
@@ -14,7 +14,7 @@ const Home = () => {
 		<div>
 	
 			<NavBar />
-			<Piano />
+			<PianoPreview />
 			<ToolPage />
 			<LoopBox />
 		

@@ -1,0 +1,8 @@
+.ReactPiano__NoteLabel {
+  font-size: 12px;
+  text-align: center;
+  text-transform: capitalize;
+  /* Disable text selection */
+  user-select: none;
+  visibility: hidden;
+}
