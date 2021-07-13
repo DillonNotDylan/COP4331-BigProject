@@ -1,9 +1,9 @@
 import React from 'react'
 import {
 	Card,
-    FormControlLabel,
+	FormControlLabel,
 	makeStyles,
-    Checkbox,
+	Checkbox,
 	Typography,
 	Slider,
 } from '@material-ui/core'
@@ -13,7 +13,7 @@ const cardStyles = makeStyles({
 		alignContent: 'center',
 		marginTop: 4,
     	padding: '30px',
-        minWidth: '150px',
+    	minWidth: '150px',
 		display: 'flex',
 		width: 950
   	},
@@ -92,7 +92,7 @@ const ModeBox = () => {
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
 	const[currMode, setMode] = React.useState(''); // lists options of modes
-    const[modeState, modeSwitch] = React.useState(false); // enables option for mode
+	const[modeState, modeSwitch] = React.useState(false); // enables option for mode
     
 	const handleOption = (event, val) => {
 		let temp = marks[val].mode;
@@ -109,19 +109,19 @@ const ModeBox = () => {
 	return(
 		<div>
 			<Card className={cardClasses.root}>
-                <FormControlLabel
+        		<FormControlLabel
 					className={boxClasses.advanced}
-                    value="ModeCheck"
-                    control={
+                	value="ModeCheck"
+                	control={
 					<Checkbox
 						color="secondary"
 						onChange={handleCheck}
 						checked={modeState}
 					/>
 					}
-                    label="Mode"
-                    labelPlacement="start"
-                />
+                	label="Mode"
+                	labelPlacement="start"
+            	/>
 
 				{modeState &&
 					<section className={boxClasses.sectionBox}>
@@ -130,8 +130,8 @@ const ModeBox = () => {
 								value="Mode"
 								control={
 									<Typography 
-									variant="body1"
-									className={boxClasses.modeLabel}
+										variant="body1"
+										className={boxClasses.modeLabel}
 									>
 										{currMode}
 								</Typography>
