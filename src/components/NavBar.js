@@ -124,7 +124,7 @@ const NavBar = () => {
 	}
 
 	return (
-		<AppBar color="secondary" position="static">
+		<AppBar color="inherit" position="static">
 			<Toolbar>
 				<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
 					<MenuIcon />

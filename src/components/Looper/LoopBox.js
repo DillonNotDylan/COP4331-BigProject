@@ -80,8 +80,8 @@ const LoopBox = () => {
 	// 'user/${userID}/get-projects'
 	// 60e3a8a3b2bfc802215b2535
 	const getData = () => {
-		let userID = "60e3a8a3b2bfc802215b2535"
-		const res = axios.get(`http://localhost:5000/user/${userID}/get-projects`)		
+		let userID = "60ebdf0a171f280086b81f57"
+		const res = axios.get(`https://chordeographer.herokuapp.com/${userID}/get-projects`)
 		.then(function (response) {
 			console.log(response.data);
 		})
@@ -92,11 +92,11 @@ const LoopBox = () => {
 
 	
 	const getProjectById = async () => {
-		let userID = "60e3a8a3b2bfc802215b2535"
+		let userID = "60ebdf0a171f280086b81f57"
 
-		const res = await axios.post("http://localhost:5000/user/getProjectByID", 
+		const res = await axios.post("https://chordeographer.herokuapp.com/get-project",
 			{
-					pid: "60e3a990b2bfc802215b253e"
+				pid: "60ebdfaa171f280086b81f5f"
 
 				
 			}
