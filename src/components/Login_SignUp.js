@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import ModalDialog from './ModalDialog';
 
-const Login_SignUp = () => {
+const Login_SignUp = (props) => {
   // declare a new state variable for modal open
   const [open, setOpen] = useState(false);
 
@@ -17,8 +17,8 @@ const Login_SignUp = () => {
   };
 
   return (
-    <div className="Login-SignUp" style={{textAlign: 'center', paddingTop: 25}}>
-      <Button variant="contained" color="secondary" onClick={handleOpen}>Save Progression and Signup</Button>
+    <div className="Login-SignUp" style={{textAlign: 'center'}, props.style }>
+      <Button variant="contained" color="secondary" onClick={handleOpen}>{props.buttonText}</Button>
       <ModalDialog open={open} handleClose={handleClose} />
     </div>
   );

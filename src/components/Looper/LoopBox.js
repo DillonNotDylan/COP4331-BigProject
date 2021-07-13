@@ -163,7 +163,7 @@ const LoopBox = () => {
 					
 					{/* <ProgLoop /> */}
 					
-					<Login_SignUp />
+					<Login_SignUp style={{paddingTop:'25px', textAlign: 'center'}} buttonText="Save Progression and Sign Up"/>
 				</CardContent>
 			</Card>
 
