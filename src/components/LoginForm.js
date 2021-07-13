@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
-let registerLoginRoute = "http://localhost:5000/user/signup";
+let registerLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signup";
 
 const useStyles = makeStyles(theme => ({
   root: {
