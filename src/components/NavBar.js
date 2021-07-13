@@ -35,7 +35,7 @@ const NavBar = () => {
 	const [lin, setLin] = useState(false);
 	const [user, setUser] = useState("");
 	const [pass, setPass] = useState("");
-	const [respData, setResp] = useState(null);
+	const [errMsg, setErr] = useState("");
 
 	const submitLogin = () => {
 		console.log("User: " + user + "pass:" + pass);
@@ -52,13 +52,14 @@ const NavBar = () => {
 				if (response.data.hasOwnProperty('message'))
 				{
 					alert(response.data.message);
+					setErr(response.data.message);
 				}
 				else
 				{
-					console.log("success");
+					// make logged in, and use returned nickname to display
 					setLin(true);
-					setUser(response.data.nickname);	
-					
+					setUser(response.data.nickname);
+					setErr("");	
 				}
 			})
 			.catch(err => {
@@ -71,12 +72,15 @@ const NavBar = () => {
 
 	const doLogOut = () => {
 		console.log("loggingout");
+		setUser("");
+		setPass("");
 		setLin(false);
 	}
 
 
 	const formChange = (e) => {
 		// keep track??
+		setErr("");
 		e.persist()
 		// update form values upon typing  
 		if (e.target.placeholder == "Username")
@@ -92,7 +96,8 @@ const NavBar = () => {
 		const clickyStyle = { margin:'5px', textAlign:'center', justifyContent:'center' };
 		return (
 			<div style={{ maxHeight: '5vh', maxWidth: '50vw', display: 'flex', flexDirection: 'row'}}>
-
+				
+				<Typography style={{marginRight:'20px'}} >{errMsg}</Typography>
 				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} />
 				<TextField variant="outlined" size="small" placeholder="Password" onChange={formChange} style={clickyStyle} />
 				<Login_SignUp buttonText="Sign Up" style={clickyStyle} />
@@ -106,7 +111,7 @@ const NavBar = () => {
 	const isLoggedIn = () => {
 		return (
 			<>
-				<Typography variant="h6" style={{ color: 'yellow', marginRight:'10vw' }} >Welcome {user}</Typography>
+				<Typography variant="h6" style={{ color: 'blue', marginRight:'10vw' }} >Welcome {user}</Typography>
 				<Button onClick={doLogOut} >Log Out</Button>
 			</>
 		);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
@@ -31,6 +31,7 @@ const LoginForm = ({ handleClose }) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errMsg, setErr] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -44,18 +45,24 @@ const LoginForm = ({ handleClose }) => {
 	axios.post(registerLoginRoute, tempUser)
 	.then( response =>
 		{
-			if (response.data.error.length != 0)
+			if(response.data.hasOwnProperty('message'))
 			{
-				console.log(response.data);
-				alert("Error: this doesnt work");
+				if (response.data.message.length > 20)
+				{
+					handleClose();
+					return;
+				}
+				setErr(response.data.message);
 			}
-			console.log(response.data);
+			else
+			{
+				handleClose();
+			}
+			
 		}
 	)
 	.catch( err => console.log("somethings wrong mate"))
 
-
-    handleClose();
   };
 
   return (
@@ -65,14 +72,14 @@ const LoginForm = ({ handleClose }) => {
         variant="filled"
         required
         value={firstName}
-        onChange={e => setFirstName(e.target.value)}
+        onChange={e => setFirstName(e.target.value, setErr(""))}
       />
       <TextField
         label="Last Name"
         variant="filled"
         required
         value={lastName}
-        onChange={e => setLastName(e.target.value)}
+        onChange={e => setLastName(e.target.value, setErr(""))}
       />
       <TextField
         label="Email"
@@ -80,7 +87,7 @@ const LoginForm = ({ handleClose }) => {
         type="email"
         required
         value={email}
-        onChange={e => setEmail(e.target.value)}
+        onChange={e => setEmail(e.target.value, setErr(""))}
       />
       <TextField
         label="Password"
@@ -88,8 +95,9 @@ const LoginForm = ({ handleClose }) => {
         type="password"
         required
         value={password}
-        onChange={e => setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value, setErr(""))}
       />
+	  <Typography>{errMsg}</Typography>
       <div>
         <Button variant="contained" onClick={handleClose}>
           Cancel
