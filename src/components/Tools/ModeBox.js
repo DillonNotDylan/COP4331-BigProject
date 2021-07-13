@@ -1,103 +1,160 @@
 import React from 'react'
 import {
 	Card,
-	CardHeader,
-	CardContent,
-	FormControl,
-    FormControlLabel,
-	MenuItem,
-	InputLabel,
-	Select,
+	FormControlLabel,
 	makeStyles,
-    Checkbox
+	Checkbox,
+	Typography,
+	Slider,
 } from '@material-ui/core'
-
-import SliderBox from './SliderBox';
 
 const cardStyles = makeStyles({
 	root: {
-		marginRight: '90%',
-    	padding: '25px',
-        minWidth: '150px',
-		width: 900,
-		display: 'flex'
-  	}
+		alignContent: 'center',
+		marginTop: 4,
+    	padding: '30px',
+    	minWidth: '150px',
+		display: 'flex',
+		width: 950
+  	},
+	
+	child: {
+		height: 45,
+		width: 200,
+		display: 'auto',
+		marginLeft: 45,
+		marginRight: 100,
+	}
+	
 });
 
 const boxStyles = makeStyles({
-	formControl: {
-		alignItems: 'flex',
+	sectionBox: {
 		display: 'flex',
-		width: 250,
-	},
-
-	forCheckbox: {
-		paddingRight: 50
+		height: 1
 	},
 
 	advanced: {
-		alignItems: 'flex',
-		display: 'flex',
-		width: 200
+		width: 50,
+		height: 40,
+		marginLeft: 50,
+		marginRight: 60
+	},
+
+	modeLabel: {
+		height: 1,
+		marginLeft: 25
+	},
+
+	slide: {
+		display: 'center',
+		marginLeft: 10,
+		width: 400
+
 	}
 });
+
+const marks = [
+    {
+        value: 0,
+        label: 'Sad',
+        mode: 'Locrian'
+    },
+    {
+        value: 1,
+        mode: 'Phrygian'
+    },
+    {
+        value: 2,
+        mode: 'Aeolian'
+    },
+    {
+        value: 3,
+        mode: 'Dorian'
+    },
+    {
+        value: 4,
+        mode: 'Myxolydian'
+    },
+    {
+        value: 5,
+        mode: 'Ionian'
+    },
+    {
+        value: 6,
+        label: 'Happy',
+        mode: 'Lydian'
+    }
+]
 
 const ModeBox = () => {
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
 	const[currMode, setMode] = React.useState(''); // lists options of modes
-    const[modeState, modeSwitch] = React.useState(false); // enables option for mode
+	const[modeState, modeSwitch] = React.useState(false); // enables option for mode
     
-	const handleOption = (event) => {
-		setMode(event.target.value);
+	const handleOption = (event, val) => {
+		let temp = marks[val].mode;
+		setMode(temp);
 	};
 
     const handleCheck = () => {
         modeSwitch(!modeState);
+
+		if (!modeState)
+			setMode('');
     }
 
 	return(
 		<div>
 			<Card className={cardClasses.root}>
-                <FormControlLabel
-					className={boxClasses.forCheckbox}
-                    value="Mode"
-                    control={
+        		<FormControlLabel
+					className={boxClasses.advanced}
+                	value="ModeCheck"
+                	control={
 					<Checkbox
 						color="secondary"
 						onChange={handleCheck}
 						checked={modeState}
 					/>
-				}
-                    label="Mode"
-                    labelPlacement="start"
-                />
+					}
+                	label="Mode"
+                	labelPlacement="start"
+            	/>
 
-				<FormControl
-					variant="outlined" 
-					className={boxClasses.formControl}
-					disabled={!modeState}
-				>
+				{modeState &&
+					<section className={boxClasses.sectionBox}>
+						<Card className={cardClasses.child}>
+							<FormControlLabel
+								value="Mode"
+								control={
+									<Typography 
+										variant="body1"
+										className={boxClasses.modeLabel}
+									>
+										{currMode}
+								</Typography>
+								}
+									
+							/>
+
+						</Card>
 					
-            		<InputLabel className={boxClasses.advanced} id="key-label">Mode</InputLabel>
-            		<Select 
-						className={boxClasses.advanced}
-                		value={currMode}
-						onChange={handleOption}
-						label="Mode"
-					>
-						<MenuItem value={6}>Lydian</MenuItem>
-						<MenuItem value={5}>Ionian</MenuItem>
-						<MenuItem value={4}>Mixolydian</MenuItem>
-						<MenuItem value={3}>Dorian</MenuItem>
-						<MenuItem value={2}>Aeolian</MenuItem>
-						<MenuItem value={1}>Phrygian</MenuItem>
-						<MenuItem value={0}>Locrian</MenuItem>
-					</Select>
-
-				</FormControl>
-			<SliderBox disableSlider={!modeState}/>
+						<Slider
+							className={boxClasses.slide}
+							color="secondary"
+							defaultValue={3}
+							min={0}
+							max={6}
+							aria-labelledby="discrete-slider-restrict"
+							step={null}
+							marks={marks}
+							track='false'
+							onChange={handleOption}
+						/>
+					</ section>
+				}
 
 			</Card>
 
