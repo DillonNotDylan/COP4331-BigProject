@@ -16,7 +16,7 @@ import Login_SignUp from './Login_SignUp';
 
 
 /*let signInLoginRoute = "https://chordeographer.herokuapp.com/user/signin";*/
-let signInLoginRoute = "http://localhost:5000/user/signin";
+let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -46,9 +46,9 @@ const NavBar = () => {
 			password: pass,
 		};
 
-		axios.post(signInLoginRoute, data)
-			.then(response => {
-				// if it has response message
+		axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
+        .then(function (response) {
+            // if it has response message
 				if (response.data.hasOwnProperty('message'))
 				{
 					alert(response.data.message);
@@ -61,12 +61,11 @@ const NavBar = () => {
 					setUser(response.data.nickname);
 					setErr("");	
 				}
-			})
-			.catch(err => {
-				console.log("An Error Occurred");
-			}
-			);
-
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+		
 		//create cookie
 	}
 
