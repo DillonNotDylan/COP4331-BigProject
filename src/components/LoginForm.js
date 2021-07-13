@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
+
+let registerLoginRoute = "http://localhost:5000/user/signup";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,7 +34,27 @@ const LoginForm = ({ handleClose }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(firstName, lastName, email, password);
+	const tempUser =
+	{
+		nickname: firstName,
+		email: email,
+		password: password,
+	}
+
+	axios.post(registerLoginRoute, tempUser)
+	.then( response =>
+		{
+			if (response.data.error.length != 0)
+			{
+				console.log(response.data);
+				alert("Error: this doesnt work");
+			}
+			console.log(response.data);
+		}
+	)
+	.catch( err => console.log("somethings wrong mate"))
+
+
     handleClose();
   };
 
