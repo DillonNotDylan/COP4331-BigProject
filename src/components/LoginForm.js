@@ -28,7 +28,6 @@ const LoginForm = ({ handleClose }) => {
   const classes = useStyles();
   // create state variables for each input
   const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErr] = useState("");
@@ -68,18 +67,11 @@ const LoginForm = ({ handleClose }) => {
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
       <TextField
-        label="First Name"
+        label="Nickname"
         variant="filled"
         required
         value={firstName}
         onChange={e => setFirstName(e.target.value, setErr(""))}
-      />
-      <TextField
-        label="Last Name"
-        variant="filled"
-        required
-        value={lastName}
-        onChange={e => setLastName(e.target.value, setErr(""))}
       />
       <TextField
         label="Email"
