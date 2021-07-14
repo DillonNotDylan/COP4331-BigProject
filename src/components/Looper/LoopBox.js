@@ -82,7 +82,7 @@ const LoopBox = () => {
 	// 60e3a8a3b2bfc802215b2535
 	const getData = () => {
 		let userID = "60ebdf0a171f280086b81f57"
-		const res = axios.get(`https://chordeographer.herokuapp.com/${userID}/get-projects`)
+		const res = axios.get(`https://chordeo-grapher.herokuapp.com/${userID}/get-projects`)
 		.then(function (response) {
 			console.log(response.data);
 		})
@@ -95,11 +95,9 @@ const LoopBox = () => {
 	const getProjectById = async () => {
 		let userID = "60ebdf0a171f280086b81f57"
 
-		const res = await axios.post("https://chordeographer.herokuapp.com/get-project",
+		const res = await axios.post("https://chordeo-grapher.herokuapp.com/get-project",
 			{
 				pid: "60ebdfaa171f280086b81f5f"
-
-				
 			}
 		)
 		
@@ -126,6 +124,8 @@ const LoopBox = () => {
 			>
 				Get specific project
 			</Button>
+			
+			<ProjSelector />
 
 			<Card >
 				<CardContent>
@@ -146,8 +146,6 @@ const LoopBox = () => {
 
 					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
 					{/* <Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button> */}
-					
-					<ProjSelector />
 				
 					<Grid container direction="column" style={{width: 500}}>
 						{
