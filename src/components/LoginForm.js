@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
-let registerLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signup";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,12 +41,12 @@ const LoginForm = ({ handleClose }) => {
 		password: password,
 	}
 
-	axios.post(registerLoginRoute, tempUser)
+	axios.post("https://chordeo-grapher.herokuapp.com/user/signup", tempUser)
 	.then( response =>
 		{
 			if(response.data.hasOwnProperty('message'))
 			{
-				if (response.data.message.length > 20)
+				if (response.data.message.length == 43)
 				{
 					handleClose();
 					return;
