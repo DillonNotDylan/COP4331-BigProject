@@ -12,10 +12,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import axios from 'axios';
 import { RestoreOutlined } from '@material-ui/icons';
 import Login_SignUp from './Login_SignUp';
-//import cookie from "react-cookie";
+import Cookie from "./Cookie"
 
-
-/*let signInLoginRoute = "https://chordeographer.herokuapp.com/user/signin";*/
 let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
 	const classes = useStyles();
-	const [lin, setLin] = useState(false);
+	const [lin, setLin] = useState(Cookie.getCookie("userSession") != null);
 	const [user, setUser] = useState("");
 	const [pass, setPass] = useState("");
 	const [errMsg, setErr] = useState("");
@@ -46,20 +44,24 @@ const NavBar = () => {
 			password: pass,
 		};
 
-		axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
+		var b =axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
         .then(function (response) {
             // if it has response message
 				if (response.data.hasOwnProperty('message'))
 				{
-					alert(response.data.message);
 					setErr(response.data.message);
 				}
 				else
 				{
 					// make logged in, and use returned nickname to display
+					var cInfo = {
+						nickname: response.data.nickname,
+						id: response.data.id,
+					}
+					Cookie.setJCookie("userSession",cInfo, 60);
 					setLin(true);
-					setUser(response.data.nickname);
-					setErr("");	
+					setErr("");
+					
 				}
         })
         .catch(function (error) {
@@ -73,6 +75,7 @@ const NavBar = () => {
 		console.log("loggingout");
 		setUser("");
 		setPass("");
+		Cookie.delCookie("userSession");
 		setLin(false);
 	}
 
@@ -108,9 +111,14 @@ const NavBar = () => {
 	}
 
 	const isLoggedIn = () => {
+		let nName = Cookie.cToJson(Cookie.getCookie("userSession"));
+		if (nName == null)
+			nName = "user";
+		else
+			nName = nName.nickname;
 		return (
 			<>
-				<Typography variant="h6" style={{ color: 'blue', marginRight:'10vw' }} >Welcome {user}</Typography>
+				<Typography variant="h6" style={{ color: 'blue', marginRight:'10vw' }} >Welcome {nName}</Typography>
 				<Button onClick={doLogOut} >Log Out</Button>
 			</>
 		);
@@ -125,8 +133,7 @@ const NavBar = () => {
 				<Typography variant="h6" className={classes.title}>
 					Chordeography
 				</Typography>
-
-				{lin ? isLoggedIn() : notLoggedIn()}
+				{lin? isLoggedIn() : notLoggedIn()}
 
 			</Toolbar>
 		</AppBar>
