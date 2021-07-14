@@ -9,16 +9,17 @@ import {
 	Grid,
 	IconButton,
 
-} from '@material-ui/core'
-// import MoreVertIcon from '@material-ui/icons'
+} from '@material-ui/core';
+// import MoreVertIcon from '@material-ui/icons';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import AddIcon from '@material-ui/icons/Add';
 
-import ProgLoop from './ProgLoop'
+import ProgLoop from './ProgLoop';
+import ProjSelector from './ProjSelector';
 
-import Login_SignUp from '../Login_SignUp'
+import Login_SignUp from '../Login_SignUp';
 
-import axios from 'axios'
+import axios from 'axios';
 
 const loopTemp = [
 	{
@@ -146,6 +147,7 @@ const LoopBox = () => {
 					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
 					{/* <Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button> */}
 					
+					<ProjSelector />
 				
 					<Grid container direction="column" style={{width: 500}}>
 						{
