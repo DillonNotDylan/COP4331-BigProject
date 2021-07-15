@@ -15,8 +15,8 @@ import Login_SignUp from './Login_SignUp';
 //import cookie from "react-cookie";
 
 
-let signInLoginRoute = "http://localhost:5000/user/signin";
-let registerLoginRoute = "http://localhost:5000/user/signup";
+/*let signInLoginRoute = "https://chordeographer.herokuapp.com/user/signin";*/
+let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -35,7 +35,7 @@ const NavBar = () => {
 	const [lin, setLin] = useState(false);
 	const [user, setUser] = useState("");
 	const [pass, setPass] = useState("");
-	const [respData, setResp] = useState(null);
+	const [errMsg, setErr] = useState("");
 
 	const submitLogin = () => {
 		console.log("User: " + user + "pass:" + pass);
@@ -46,51 +46,40 @@ const NavBar = () => {
 			password: pass,
 		};
 
-		axios.post(signInLoginRoute, data)
-			.then(response => {
-				if (response.data.message.length > 0) {
-					console.log(response.data.message);
+		axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
+        .then(function (response) {
+            // if it has response message
+				if (response.data.hasOwnProperty('message'))
+				{
 					alert(response.data.message);
+					setErr(response.data.message);
 				}
 				else
-					console.log(response.data);
-			}
-			)
-			.catch(err => {
-				console.log("An Error Occurred");
-			}
-			);
-
+				{
+					// make logged in, and use returned nickname to display
+					setLin(true);
+					setUser(response.data.nickname);
+					setErr("");	
+				}
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+		
 		//create cookie
-
-
-		setLin(true);
 	}
 
 	const doLogOut = () => {
 		console.log("loggingout");
+		setUser("");
+		setPass("");
 		setLin(false);
 	}
 
-	const doRegister = () => {
-		const tempUser =
-		{
-			email: "angel0615@knights.ucf.edu",
-			password: "leedle",
-		}
-
-		axios.post(registerLoginRoute, tempUser)
-			.then(response => {
-				console.log(response.data);
-			}
-			)
-			.catch(err => console.log("somethings wrong mate"))
-
-
-	}
 
 	const formChange = (e) => {
 		// keep track??
+		setErr("");
 		e.persist()
 		// update form values upon typing  
 		if (e.target.placeholder == "Username")
@@ -100,15 +89,19 @@ const NavBar = () => {
 
 	}
 
+
 	const notLoggedIn = () => {
+
+		const clickyStyle = { margin:'5px', textAlign:'center', justifyContent:'center' };
 		return (
-			<div style={{ maxHeight: '5vh', maxWidth: '30vw', diplay: 'absolute', right: '2vw' }}>
+			<div style={{ maxHeight: '5vh', maxWidth: '50vw', display: 'flex', flexDirection: 'row'}}>
+				
+				<Typography style={{marginRight:'20px'}} >{errMsg}</Typography>
+				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} />
+				<TextField variant="outlined" size="small" placeholder="Password" onChange={formChange} style={clickyStyle} />
+				<Login_SignUp buttonText="Sign Up" style={clickyStyle} />
 
-				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={{ borderColor: "yellow" }} />
-				<TextField variant="outlined" size="small" placeholder="Password" onChange={formChange} color="white" />
-				<Login_SignUp buttonText="Sign Up" style={{ margin: '0px', padding: '0px' }} />
-
-				<Button color="inherit" variant="contained" onClick={submitLogin} >Login</Button>
+				<Button color="inherit" variant="contained" onClick={submitLogin} style={clickyStyle, {paddingTop:'2%', paddingBottom:'2%'}}>Login</Button>
 
 			</div>
 		);
@@ -117,14 +110,14 @@ const NavBar = () => {
 	const isLoggedIn = () => {
 		return (
 			<>
-				<Typography variant="h6" style={{ color: 'yellow' }} >Welcome {user}</Typography>
+				<Typography variant="h6" style={{ color: 'blue', marginRight:'10vw' }} >Welcome {user}</Typography>
 				<Button onClick={doLogOut} >Log Out</Button>
 			</>
 		);
 	}
 
 	return (
-		<AppBar color="secondary" position="static">
+		<AppBar color="inherit" position="static">
 			<Toolbar>
 				<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
 					<MenuIcon />
