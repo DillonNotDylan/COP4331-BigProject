@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
-let registerLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signup";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,7 +27,6 @@ const LoginForm = ({ handleClose }) => {
   const classes = useStyles();
   // create state variables for each input
   const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErr] = useState("");
@@ -42,12 +40,12 @@ const LoginForm = ({ handleClose }) => {
 		password: password,
 	}
 
-	axios.post(registerLoginRoute, tempUser)
+	axios.post("https://chordeo-grapher.herokuapp.com/user/signup", tempUser)
 	.then( response =>
 		{
 			if(response.data.hasOwnProperty('message'))
 			{
-				if (response.data.message.length > 20)
+				if (response.data.message.length == 43)
 				{
 					handleClose();
 					return;
@@ -68,18 +66,11 @@ const LoginForm = ({ handleClose }) => {
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
       <TextField
-        label="First Name"
+        label="Nickname"
         variant="filled"
         required
         value={firstName}
         onChange={e => setFirstName(e.target.value, setErr(""))}
-      />
-      <TextField
-        label="Last Name"
-        variant="filled"
-        required
-        value={lastName}
-        onChange={e => setLastName(e.target.value, setErr(""))}
       />
       <TextField
         label="Email"
