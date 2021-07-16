@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 import DeleteOutlined from '@material-ui/icons/DeleteOutline'
 import AddIcon from '@material-ui/icons/Add';
-import { Chordbox } from './Chordbox'
+import Chordbox from './Chordbox'
 
 const ProgLoop = ({loopData, id, deleteLoop}) => {
 	// const [title, setTitle] = useState("")
@@ -41,11 +41,16 @@ const ProgLoop = ({loopData, id, deleteLoop}) => {
 					<CardContent>
 						<Grid container style={{justifyContent: 'center'}}>
 							{
-								loopData.chords.map(singleChord =>
+								
+								loopData.chords.map((singleChord, position) =>
 									{
 										return (
 											<Grid item style={{width: 100}}>
-												<Chordbox chord={singleChord}/>
+												<Chordbox 
+													chord={singleChord}
+													position={position}
+													loop={loopData}
+												/>
 											</Grid>
 										)
 									}
