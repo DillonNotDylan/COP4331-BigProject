@@ -1,7 +1,6 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import {
 	Card,
-	CardHeader,
 	CardContent,
     makeStyles,
     Grid
@@ -25,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ToolPage = () => {
     const classes = useStyles();
+    const [currOption, setOption] = useState(true);
    
     return(
         <div>  
@@ -33,10 +33,10 @@ const ToolPage = () => {
                 <CardContent>
                     <Grid container>
                         <Grid item xs sm={3}>
-                            <KeyBox />
+                            <KeyBox currOption={!currOption}/>
                         </Grid> 
                         <Grid item xs>
-                            <ModeBox />
+                            <ModeBox setOption={setOption}/>
                         </Grid>
                     </Grid>
                 </CardContent>
