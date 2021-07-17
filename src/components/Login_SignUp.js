@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import ModalDialog from './ModalDialog';
 
-const Login_SignUp = () => {
+const Login_SignUp = (props) => {
   // declare a new state variable for modal open
   const [open, setOpen] = useState(false);
 

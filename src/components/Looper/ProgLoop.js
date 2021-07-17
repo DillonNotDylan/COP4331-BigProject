@@ -4,10 +4,12 @@ import {
 	Card,
 	CardContent,
 	IconButton,
-	Grid
+	Grid,
+	ButtonGroup
 } from '@material-ui/core'
-import { DeleteOutlined } from '@material-ui/icons'
-import { Chordbox } from './Chordbox'
+import DeleteOutlined from '@material-ui/icons/DeleteOutline'
+import AddIcon from '@material-ui/icons/Add';
+import Chordbox from './Chordbox'
 
 const ProgLoop = ({loopData, id, deleteLoop}) => {
 	// const [title, setTitle] = useState("")
@@ -17,11 +19,19 @@ const ProgLoop = ({loopData, id, deleteLoop}) => {
 				<Card>
 					<CardHeader
 						action={
-							<IconButton
-								onClick={() => deleteLoop(id)}
-							>
-								<DeleteOutlined />
-							</IconButton>
+							<ButtonGroup>
+								<IconButton
+									onClick={() => console.log("I've been clicked!")}
+								>
+									<AddIcon />
+								</IconButton>
+								<IconButton
+									onClick={() => deleteLoop(id)}
+								>
+									<DeleteOutlined />
+								</IconButton>
+
+							</ButtonGroup>
 						}
 						
 						subheader={loopData.name}
@@ -31,11 +41,16 @@ const ProgLoop = ({loopData, id, deleteLoop}) => {
 					<CardContent>
 						<Grid container style={{justifyContent: 'center'}}>
 							{
-								loopData.chords.map(singleChord =>
+								
+								loopData.chords.map((singleChord, position) =>
 									{
 										return (
 											<Grid item style={{width: 100}}>
-												<Chordbox chord={singleChord}/>
+												<Chordbox 
+													chord={singleChord}
+													position={position}
+													loop={loopData}
+												/>
 											</Grid>
 										)
 									}

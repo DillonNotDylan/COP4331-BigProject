@@ -13,11 +13,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import axios from 'axios';
 import { RestoreOutlined } from '@material-ui/icons';
 import Login_SignUp from './Login_SignUp';
-//import cookie from "react-cookie";
+import Cookie from "./Cookie"
 
-
-let signInLoginRoute = "http://localhost:5000/user/signin";
-let registerLoginRoute = "http://localhost:5000/user/signup";
+let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -45,10 +43,10 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
 	const classes = useStyles();
-	const [lin, setLin] = useState(false);
+	const [lin, setLin] = useState(Cookie.getCookie("userSession") != null);
 	const [user, setUser] = useState("");
 	const [pass, setPass] = useState("");
-	const [respData, setResp] = useState(null);
+	const [errMsg, setErr] = useState("");
 
 	const submitLogin = () => {
 		console.log("User: " + user + "pass:" + pass);
@@ -59,51 +57,45 @@ const NavBar = () => {
 			password: pass,
 		};
 
-		axios.post(signInLoginRoute, data)
-			.then(response => {
-				if (response.data.message.length > 0) {
-					console.log(response.data.message);
-					alert(response.data.message);
+		var b =axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
+        .then(function (response) {
+            // if it has response message
+				if (response.data.hasOwnProperty('message'))
+				{
+					setErr(response.data.message);
 				}
 				else
-					console.log(response.data);
-			}
-			)
-			.catch(err => {
-				console.log("An Error Occurred");
-			}
-			);
-
+				{
+					// make logged in, and use returned nickname to display
+					var cInfo = {
+						nickname: response.data.nickname,
+						id: response.data.id,
+					}
+					Cookie.setJCookie("userSession",cInfo, 60);
+					setLin(true);
+					setErr("");
+					
+				}
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+		
 		//create cookie
-
-
-		setLin(true);
 	}
 
 	const doLogOut = () => {
 		console.log("loggingout");
+		setUser("");
+		setPass("");
+		Cookie.delCookie("userSession");
 		setLin(false);
 	}
 
-	const doRegister = () => {
-		const tempUser =
-		{
-			email: "angel0615@knights.ucf.edu",
-			password: "leedle",
-		}
-
-		axios.post(registerLoginRoute, tempUser)
-			.then(response => {
-				console.log(response.data);
-			}
-			)
-			.catch(err => console.log("somethings wrong mate"))
-
-
-	}
 
 	const formChange = (e) => {
 		// keep track??
+		setErr("");
 		e.persist()
 		// update form values upon typing  
 		if (e.target.placeholder == "Username")
@@ -112,6 +104,7 @@ const NavBar = () => {
 			setPass(e.target.value);
 
 	}
+
 
 	const notLoggedIn = () => {
 		return (
@@ -158,6 +151,11 @@ const NavBar = () => {
 	}
 
 	const isLoggedIn = () => {
+		let nName = Cookie.cToJson(Cookie.getCookie("userSession"));
+		if (nName == null)
+			nName = "user";
+		else
+			nName = nName.nickname;
 		return (
 			<section className={classes.logged}>
 				<Grid container spacing={10}>
@@ -183,8 +181,7 @@ const NavBar = () => {
 				<Typography variant="h6" className={classes.title}>
 					Chordeography
 				</Typography>
-
-				{lin ? isLoggedIn() : notLoggedIn()}
+				{lin? isLoggedIn() : notLoggedIn()}
 
 			</Toolbar>
 		</AppBar>
