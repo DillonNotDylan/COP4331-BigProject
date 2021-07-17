@@ -109,7 +109,7 @@ const marks = [
 	}
 ]
 
-export default function ModeBox ({setOption}){
+export default function ModeBox ({setOption , grabMode}){
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
@@ -119,6 +119,7 @@ export default function ModeBox ({setOption}){
 	const handleOption = (event, val) => {
 		let temp = marks[val].mode;
 		setMode(temp);
+		grabMode(marks[val].value);
 	};
 
 	const handleCheck = () => {
@@ -129,6 +130,9 @@ export default function ModeBox ({setOption}){
 		
 		setOption(modeState);
 	}
+	function valuetext(value) {
+		return (`${value + 1}`);
+	  }
 
 	return(
 		<div className={boxClasses.divBox}>
@@ -148,7 +152,7 @@ export default function ModeBox ({setOption}){
 								}		
 							/>
 						</Card>
-						
+
 						<Slider
 							className={boxClasses.slide}
 							color="secondary"
@@ -158,6 +162,8 @@ export default function ModeBox ({setOption}){
 							aria-labelledby="discrete-slider-restrict"
 							step={null}
 							marks={marks}
+							valueLabelDisplay="on"
+							getAriaValueText={valuetext}
 							track='false'
 							onChange={handleOption}
 						/>

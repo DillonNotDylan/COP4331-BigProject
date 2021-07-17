@@ -43,19 +43,23 @@ const cardStyles = makeStyles({
 
 });
 
-export default function KeyBox({currOption}) {
+export default function KeyBox({currOption, grabKey, grabMode}) {
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
 	const[currKey, setKey] = React.useState('');
-	const[currQuality, setQuality] = React.useState(false);
+	const[status, switchStatus] = React.useState(false);
 
 	const handleChange = (event) => {
 		setKey(event.target.value);
+		grabKey(currKey);
 	};
 
-	const handleQuality = () =>{
-		setQuality(!currQuality);
+	const handleStatus = () =>{
+		switchStatus(!status)
+		if (status) grabMode(5);
+		else grabMode(1);
+		
 	}
 
 	return(

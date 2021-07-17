@@ -39,7 +39,7 @@ const loopTemp = [
 ]
 
 
-const LoopBox = () => {
+const LoopBox = ({useKey, useMode}) => {
 	const [currProj, setProj] = useState(loopTemp)
 	
 	// At the moment, this useEffect will undisirably reset changes to the website,
@@ -145,7 +145,8 @@ const LoopBox = () => {
 
 					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
 					{/* <Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button> */}
-					
+					<Button 
+						onClick={function(){console.log(useKey);console.log(useMode)}}>Test</Button>
 				
 					<Grid container direction="column" style={{width: 500}}>
 						{
