@@ -4,9 +4,9 @@ import ToolPage from '../Tools/ToolPage'
 
 export default function ControlPanel() {
 
-    const [useKey, grabKey] = React.useState();
+    const [useKey, grabKey] = React.useState(1);
     // const [useQuality, grabQuality] = React.useState();
-    const [useMode, grabMode] = React.useState();
+    const [useMode, grabMode] = React.useState(5);
 
     return (
         <div>
