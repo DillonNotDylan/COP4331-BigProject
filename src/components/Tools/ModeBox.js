@@ -5,7 +5,7 @@ import {
 	makeStyles,
 	Checkbox,
 	Typography,
-	Slider,
+	Slider
 } from '@material-ui/core'
 
 const cardStyles = makeStyles({
@@ -87,7 +87,8 @@ const marks = [
     }
 ]
 
-const ModeBox = () => {
+
+export default function ModeBox ({setOption}){
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
@@ -104,6 +105,8 @@ const ModeBox = () => {
 
 		if (!modeState)
 			setMode('');
+		
+		setOption(modeState);
     }
 
 	return(
@@ -113,11 +116,11 @@ const ModeBox = () => {
 					className={boxClasses.advanced}
                 	value="ModeCheck"
                 	control={
-					<Checkbox
-						color="secondary"
-						onChange={handleCheck}
-						checked={modeState}
-					/>
+						<Checkbox
+							color="secondary"
+							onChange={handleCheck}
+							checked={modeState}
+						/>
 					}
                 	label="Mode"
                 	labelPlacement="start"
@@ -134,11 +137,9 @@ const ModeBox = () => {
 										className={boxClasses.modeLabel}
 									>
 										{currMode}
-								</Typography>
-								}
-									
+									</Typography>
+								}		
 							/>
-
 						</Card>
 					
 						<Slider
@@ -155,11 +156,8 @@ const ModeBox = () => {
 						/>
 					</ section>
 				}
-
 			</Card>
-
 		</div>
 	)
 }
 
-export default ModeBox

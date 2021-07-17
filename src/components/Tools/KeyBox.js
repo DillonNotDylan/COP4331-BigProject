@@ -1,42 +1,64 @@
 import React from 'react'
 import {
 	Card,
-	CardHeader,
-	CardContent,
 	FormControl,
+	Typography,
 	MenuItem,
 	InputLabel,
 	Select,
-	makeStyles
+	Switch,
+	makeStyles,
+	Grid
 } from '@material-ui/core'
 
 const boxStyles = makeStyles({
 	formControl: {
-		alignItems: 'flex',
 		display: 'flex',
+	},
+	quality: {
+		width: 50
 	}
 });
 
 const cardStyles = makeStyles({
 	root: {
-		marginRight: '90%',
-    	padding: '25px',
-		minWidth: '150px'
-  	}
+		width: 50,
+		padding: '25px',
+		minWidth: '150px',
+  	},
+
+	quality: {
+		alignContent: 'flex',
+		padding: '25px',
+		marginLeft: 25,
+		display:"flex",
+		width: 160
+	},
+
+	divBox: {
+		flexDirection: "row",
+		display: "flex",
+	}
+
 });
 
-const KeyBox = () => {
+export default function KeyBox({currOption}) {
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
 	const[currKey, setKey] = React.useState('');
+	const[currQuality, setQuality] = React.useState(false);
     
 	const handleChange = (event) => {
 		setKey(event.target.value);
 	};
 
+	const handleQuality = () =>{
+		setQuality(!currQuality);
+	}
+
 	return(
-		<div>
+		<div className={cardClasses.divBox}>
 			<Card className={cardClasses.root}>
 				<FormControl variant="outlined" className={boxClasses.formControl}>
 					<InputLabel className={boxClasses.formControl} id="key-label">Key</InputLabel>
@@ -61,8 +83,36 @@ const KeyBox = () => {
 				</FormControl>
 				
 			</Card>
+
+			<Card className={cardClasses.quality}>
+                <Grid
+					component="label"
+					container
+					alignItems="center"
+					spacing={1}
+				>
+					<Grid item>
+						<Typography variant="body1">
+							Major
+						</Typography>
+					</Grid>
+                    <Grid item>
+						<Switch
+                            disabled={currOption}
+							onClick={handleQuality}
+                            color="default"
+                            inputProps={{ 'aria-label': 'checkbox with default color' }}
+                        />
+					</Grid>
+					<Grid item>
+						<Typography variant="body1">
+							Minor
+						</Typography>
+					</Grid>
+				</Grid>
+
+                
+            </Card>
 		</div>
 	)
 }
-
-export default KeyBox
