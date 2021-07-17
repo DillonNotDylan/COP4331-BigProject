@@ -17,7 +17,7 @@ const Login_SignUp = () => {
   };
 
   return (
-    <div className="Login-SignUp" style={{textAlign: 'center', paddingTop: 25}}>
+    <div className="Login-SignUp" style={{marginLeft: 100}}>
       <Button variant="contained" color="secondary" onClick={handleOpen}>Save Progression and Signup</Button>
       <ModalDialog open={open} handleClose={handleClose} />
     </div>

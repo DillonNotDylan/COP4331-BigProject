@@ -12,10 +12,10 @@ import ModeBox from './ModeBox'
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'center',
-        flexWrap: 'wrap',
+        flexWrap: 'nowrap',
         '& >': {
             margin: theme.spacing(1),
-            width: theme.spacing(250),
+            width: theme.spacing(100),
         },
 
     },
@@ -32,10 +32,10 @@ const ToolPage = () => {
             <Card className={classes.root}>
                 <CardContent>
                     <Grid container>
-                        <Grid item xs sm={3}>
+                        <Grid item xs>
                             <KeyBox currOption={!currOption}/>
                         </Grid> 
-                        <Grid item xs>
+                        <Grid item xs sm>
                             <ModeBox setOption={setOption}/>
                         </Grid>
                     </Grid>

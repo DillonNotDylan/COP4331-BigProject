@@ -25,14 +25,15 @@ const cardStyles = makeStyles({
 		width: 50,
 		padding: '25px',
 		minWidth: '150px',
-  	},
+	},
 
 	quality: {
 		alignContent: 'flex',
 		padding: '25px',
-		marginLeft: 25,
+		marginLeft: 15,
 		display:"flex",
-		width: 160
+		width: 170,
+		minwidth: 160 
 	},
 
 	divBox: {
@@ -48,7 +49,7 @@ export default function KeyBox({currOption}) {
 	const cardClasses = cardStyles();
 	const[currKey, setKey] = React.useState('');
 	const[currQuality, setQuality] = React.useState(false);
-    
+
 	const handleChange = (event) => {
 		setKey(event.target.value);
 	};
@@ -81,11 +82,11 @@ export default function KeyBox({currOption}) {
 						<MenuItem value={12}>B</MenuItem>
 					</Select>
 				</FormControl>
-				
+
 			</Card>
 
 			<Card className={cardClasses.quality}>
-                <Grid
+				<Grid
 					component="label"
 					container
 					alignItems="center"
@@ -96,13 +97,13 @@ export default function KeyBox({currOption}) {
 							Major
 						</Typography>
 					</Grid>
-                    <Grid item>
+					<Grid item>
 						<Switch
-                            disabled={currOption}
+							disabled={currOption}
 							onClick={handleQuality}
-                            color="default"
-                            inputProps={{ 'aria-label': 'checkbox with default color' }}
-                        />
+							color="default"
+							inputProps={{ 'aria-label': 'checkbox with default color' }}
+						/>
 					</Grid>
 					<Grid item>
 						<Typography variant="body1">
@@ -110,9 +111,7 @@ export default function KeyBox({currOption}) {
 						</Typography>
 					</Grid>
 				</Grid>
-
-                
-            </Card>
+			</Card>
 		</div>
 	)
 }

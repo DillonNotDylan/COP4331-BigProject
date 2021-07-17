@@ -6,6 +6,7 @@ import {
 	IconButton,
 	Typography,
 	TextField,
+	Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu';
@@ -20,14 +21,26 @@ let registerLoginRoute = "http://localhost:5000/user/signup";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		flexGrow: 1,
+		display: 'center',
+
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
 	},
 	title: {
-		flexGrow: 1,
+		// flexGrow: 1,
+		// marginRight: 100,
+		// display: 'flex'
 	},
+	notLogged: {
+		flexDirection:'row',
+		justifyContent:'flex-end',
+
+		display: 'flex' 
+	},
+	logged: {
+		marginLeft: '75%'
+	}
 }));
 
 const NavBar = () => {
@@ -102,29 +115,67 @@ const NavBar = () => {
 
 	const notLoggedIn = () => {
 		return (
-			<div style={{ maxHeight: '5vh', maxWidth: '30vw', diplay: 'absolute', right: '2vw' }}>
+			<section className={classes.notLogged}>
+				<Grid
+					container
+					direction="row"
+					alignItems="center"
+					spacing={1}
+				>
+					<Grid item md={6}>
+						<TextField
+							variant="outlined"
+							size="small"
+							placeholder="Username"
+							onChange={formChange} 
+						/>
 
-				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={{ borderColor: "yellow" }} />
-				<TextField variant="outlined" size="small" placeholder="Password" onChange={formChange} color="white" />
-				<Login_SignUp buttonText="Sign Up" style={{ margin: '0px', padding: '0px' }} />
+						<TextField
+							variant="outlined"
+							size="small"
+							placeholder="Password"
+							onChange={formChange}
+						/>	
+					</Grid>
 
-				<Button color="inherit" variant="contained" onClick={submitLogin} >Login</Button>
+					<Grid item md={2}>
+						<Button 
+							color="default" 
+							variant="contained" 
+							onClick={submitLogin} 
+						>Login</Button>
 
-			</div>
+					</Grid>
+
+					<Grid item md>
+						<Login_SignUp  buttonText="Sign Up"/>
+					</Grid>
+				
+				</Grid>
+
+			</section>
 		);
 	}
 
 	const isLoggedIn = () => {
 		return (
-			<>
-				<Typography variant="h6" style={{ color: 'yellow' }} >Welcome {user}</Typography>
-				<Button onClick={doLogOut} >Log Out</Button>
-			</>
+			<section className={classes.logged}>
+				<Grid container spacing={10}>
+					<Grid item xs={6}>
+						<Typography variant="h6" style={{ color: 'yellow' }} >Welcome {user}</Typography>
+					</Grid>
+
+					<Grid item xs={6}>
+						<Button onClick={doLogOut} >Log Out</Button>
+					</Grid>
+				</Grid>
+			</ section>
 		);
 	}
 
 	return (
-		<AppBar color="secondary" position="static">
+
+		<AppBar color="secondary" position="static" className={classes.root}>
 			<Toolbar>
 				<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
 					<MenuIcon />
