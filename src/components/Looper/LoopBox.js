@@ -39,7 +39,7 @@ const loopTemp = [
 ]
 
 
-const LoopBox = () => {
+const LoopBox = ({useMode, useKey}) => {
 	const [currProj, setProj] = useState(loopTemp)
 	
 	// At the moment, this useEffect will undisirably reset changes to the website,
@@ -124,6 +124,17 @@ const LoopBox = () => {
 				onClick={getProjectById}
 			>
 				Get specific project
+			</Button>
+
+			<Button
+				onClick={() => 
+					{
+						console.log(useMode)
+						console.log(useKey)
+					}
+				}
+			>
+				Test Key and Mode
 			</Button>
 
 			<Card >

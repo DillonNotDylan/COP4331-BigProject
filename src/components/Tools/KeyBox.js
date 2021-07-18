@@ -43,19 +43,23 @@ const cardStyles = makeStyles({
 
 });
 
-export default function KeyBox({currOption}) {
+export default function KeyBox({currOption, grabKey, grabMode}) {
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
-	const[currKey, setKey] = React.useState('');
-	const[currQuality, setQuality] = React.useState(false);
+	const[currKey, setKey] = React.useState(1);
+	const[status, switchStatus] = React.useState(currOption);
 
 	const handleChange = (event) => {
 		setKey(event.target.value);
+		grabKey(event.target.value);
 	};
 
-	const handleQuality = () =>{
-		setQuality(!currQuality);
+	const handleStatus = () =>{
+		switchStatus(!status)
+		if (status) grabMode(5);
+		else grabMode(1);
+		
 	}
 
 	return(
@@ -100,7 +104,7 @@ export default function KeyBox({currOption}) {
 					<Grid item>
 						<Switch
 							disabled={currOption}
-							onClick={handleQuality}
+							onClick={status}
 							color="default"
 							inputProps={{ 'aria-label': 'checkbox with default color' }}
 						/>

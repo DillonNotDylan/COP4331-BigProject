@@ -5,8 +5,8 @@ import ProgLoop from '../components/Looper/ProgLoop'
 import {
 	Grid
 } from "@material-ui/core"
-import LoopBox from '../components/Looper/LoopBox'
-import ToolPage from'../components/Tools/ToolPage'
+import ControlPanel from '../components/ToolControl/ControlPanel'
+
 
 
 const Home = () => {
@@ -15,8 +15,7 @@ const Home = () => {
 	
 			<NavBar />
 			{/* <PianoPreview /> */}
-			<ToolPage />
-			<LoopBox />
+			<ControlPanel />
 		
 		</div>
 	)

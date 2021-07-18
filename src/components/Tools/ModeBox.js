@@ -109,7 +109,7 @@ const marks = [
 	}
 ]
 
-export default function ModeBox ({setOption}){
+export default function ModeBox ({setOption , grabMode, currOption}){
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
@@ -119,16 +119,27 @@ export default function ModeBox ({setOption}){
 	const handleOption = (event, val) => {
 		let temp = marks[val].mode;
 		setMode(temp);
+		grabMode(marks[val].value);
 	};
 
 	const handleCheck = () => {
+		setToSwitchVal();
+
 		modeSwitch(!modeState);
 
-		if (!modeState)
-			setMode('');
 		
 		setOption(modeState);
 	}
+
+	const setToSwitchVal = () => {
+		(currOption) ? (grabMode(5) && setMode('Ionian')) : (grabMode(2) && setMode('Minor'))
+		console.log("here");
+	
+	}
+
+	function valuetext(value) {
+		return (`${value + 1}`);
+	  }
 
 	return(
 		<div className={boxClasses.divBox}>
@@ -148,16 +159,18 @@ export default function ModeBox ({setOption}){
 								}		
 							/>
 						</Card>
-						
+
 						<Slider
 							className={boxClasses.slide}
 							color="secondary"
-							defaultValue={3}
+							defaultValue={5}
 							min={0}
 							max={6}
 							aria-labelledby="discrete-slider-restrict"
 							step={null}
 							marks={marks}
+							valueLabelDisplay="on"
+							getAriaValueText={valuetext}
 							track='false'
 							onChange={handleOption}
 						/>
