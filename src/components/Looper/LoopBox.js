@@ -126,7 +126,7 @@ const LoopBox = () => {
 				Get specific project
 			</Button>
 
-			<Card >
+			<Card style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 				<CardContent>
 					<CardHeader
 						avatar={
