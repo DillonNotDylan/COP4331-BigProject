@@ -82,20 +82,20 @@ const LoopBox = () => {
 	// 60e3a8a3b2bfc802215b2535
 	const getData = () => {
 		let userID = "60ebdf0a171f280086b81f57"
-		const res = axios.get(`https://chordeo-grapher.herokuapp.com/${userID}/get-projects`)
+		axios.get(`https://chordeo-grapher.herokuapp.com/user/${userID}/get-projects`)
 		.then(function (response) {
 			console.log(response.data);
 		})
 		.catch(function (error) {
-			console.log(error);
-		})  
+			console.log(error.data);
+		})
 	}
 
 	
-	const getProjectById = async () => {
+	const getProjectById = () => {
 		let userID = "60ebdf0a171f280086b81f57"
 
-		const res = await axios.post("https://chordeo-grapher.herokuapp.com/get-project",
+		axios.post("https://chordeo-grapher.herokuapp.com/user/get-project",
 			{
 				pid: "60ebdfaa171f280086b81f5f"
 			}
@@ -113,17 +113,9 @@ const LoopBox = () => {
 	return (
 		<div>
 
-			<Button
-				onClick={getData}
-			>
-				Get data
-			</Button>
+			<Button onClick={getData}>Get data</Button>
 
-			<Button
-				onClick={getProjectById}
-			>
-				Get specific project
-			</Button>
+			<Button onClick={getProjectById}>Get specific project</Button>
 			
 			<ProjSelector />
 

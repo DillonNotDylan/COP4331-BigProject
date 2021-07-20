@@ -55,8 +55,6 @@ const ProjSelector = (props) => {
 			console.log(response.data);
 
 			setProject(response.data);
-			console.log("after");
-			// console.log(project);
 		})
 		.catch(function (error) {
 			console.log("error in api call in project selector to get a specific project");
