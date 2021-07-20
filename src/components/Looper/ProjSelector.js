@@ -1,66 +1,88 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-import {
-	InputLabel,
-	MenuItem,
-	FormHelperText,
-	FormControl,
-	Select
-} from '@material-ui/core';
-
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const useStyles = makeStyles((theme) => ({
-	formControl: {
-		margin: theme.spacing(1),
-		minWidth: 300,
-	},
-	selectEmpty: {
-		marginTop: theme.spacing(2),
-	},
-}));
+const ProjSelector = (props) => {
 
-const ProjSelector = () => {
-	
-	const classes = useStyles();
-	const [age, setAge] = React.useState('');
+	const [projects, setProjects] = useState([]);
+	const [project, setProject] = useState({});
 
-	const handleChange = (event) => {
-		setAge(event.target.value);
-	};
-	
-	const getProjects = () => {
+	useEffect(() => {
+
 		let userID = "60ebdf0a171f280086b81f57";
-		const res = axios.get(`https://chordeo-grapher.herokuapp.com/${userID}/get-projects`)
+		axios.get(`https://chordeo-grapher.herokuapp.com/user/${userID}/get-projects`)
 		.then(function (response) {
-			console.log(response.data);
+			// console.log("api call in project selector");
+			// console.log(response.data.projects);
+		
+			response.data.projects.sort(function(a, b) {
+				var titleA = a.title.toUpperCase();
+				var titleB = b.title.toUpperCase();
+				if (titleA < titleB) {
+					return -1;
+				}
+				if (titleA > titleB) {
+					return 1;
+				}
+			
+				return 0;
+			});
+
+			setProjects(response.data.projects);
 		})
 		.catch(function (error) {
+			console.log("Error in api call in project selector.");
+			console.log(error);
+		})
+
+	}, []) // dependency list
+
+	const handleChange = (event, newValue) => {
+		
+		console.log("handle change in project selector");
+		console.log(newValue);
+		
+		axios.post("https://chordeo-grapher.herokuapp.com/user/get-project",
+			{
+				pid: newValue.pid,
+			}
+		)
+		.then(function (response) {
+			console.log("api call to get a specific project in project selector");
+			console.log(response.data);
+
+			setProject(response.data);
+			console.log("after");
+			// console.log(project);
+		})
+		.catch(function (error) {
+			console.log("error in api call in project selector to get a specific project");
 			console.log(error);
 		})
 	};
 
 	return (
-		<div>
-			<FormControl variant="outlined" className={classes.formControl}>
-				<InputLabel id="demo-simple-select-outlined-label">Project</InputLabel>
-				<Select
-					labelId="project-select-outlined-label"
-					id="project-select"
-					value={age}
-					onChange={handleChange}
+		<Autocomplete
+			freeSolo
+			id="free-solo-2"
+			style={{ width: 500 }}
+			disableClearable
+			options={projects}
+			getOptionLabel={(option) => option.title}
+			onChange={handleChange}
+			renderInput={(params) => (
+				<TextField
+					{...params}
 					label="Project"
-				>
-					<MenuItem value="">
-						<em>None</em>
-					</MenuItem>
-					<MenuItem value={10}>Ten</MenuItem>
-					<MenuItem value={20}>Twenty</MenuItem>
-					<MenuItem value={30}>Thirty</MenuItem>
-				</Select>
-			</FormControl>
-		</div>
+					margin="normal"
+					variant="outlined"
+					InputProps={{ ...params.InputProps, type: 'search' }}
+				/>
+			)}
+		/>
 	)
 };
 
