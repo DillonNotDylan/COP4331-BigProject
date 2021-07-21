@@ -59,11 +59,11 @@ export const signup = async (req, res) => {
 			process.env.VERIFICATION_SECRET,
 			{ expiresIn: "12h" }
 		);
-		const url = `https://chordeo-grapher.herokuapp.com/user/verify-account/${verificationToken}`;
+		const url = `https://chordeographer.herokuapp.com/user/verify-account/${verificationToken}`;
 
 		transporter.sendMail({
 			to: email,
-			subject: 'Verify your Chordeographer account.',
+			subject: 'Chordeographer: Verify your email.',
 			html: 	`<div><img src="https://i.imgur.com/9CSWeNf.gif" alt="imgur gif here" /></div>
 					<div><a href = '${url}'>Verify your email.</a></div>`
 		});
@@ -107,21 +107,20 @@ export const resetPass = async (req, res) => {
 		const { email } = req.body;
 		const oldUser = await UserModal.findOne({ email });
 		
-		if (oldUser) return res.send({ message: "User already exists." });
+		if (!oldUser) return res.send({ message: "User doesn't exist." });
 		
 		const verificationToken = await jwt.sign(
 			{ id: result._id },
 			process.env.VERIFICATION_SECRET,
-			{ expiresIn: "12h" }
+			{ expiresIn: "15m" }
 		);
 		
-		const url = `https://chordeo-grapher.herokuapp.com/user/verify-account/${verificationToken}`;
+		const url = `https://chordeographer.herokuapp.com/user/reset-password/${verificationToken}`;
 
 		transporter.sendMail({
 			to: email,
-			subject: 'Verify your Chordeographer account.',
-			html: 	`<div style=display: block; margin: auto; width: 50%;><img src="https://i.imgur.com/9CSWeNf.gif" alt="ayyeee" /></div>
-					<div style=text-align: center;><a href = '${url}'>Confirm your email.</a></div>`
+			subject: 'Chordeographer: Reset your password.',
+			html: 	`<div><a href = '${url}'>Reset your password.</a></div>`
 		});
 
 		return res.send({ message: `Email verification link sent to '${email}'.` });
