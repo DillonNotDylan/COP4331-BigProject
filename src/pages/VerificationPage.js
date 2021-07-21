@@ -1,11 +1,12 @@
 import React from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const VerificationPage = () => {
 	
 	const { token } = useParams();
+	const [message, setMessage] = useState("");
 
 	useEffect(() => {
 
@@ -13,6 +14,7 @@ const VerificationPage = () => {
 		.then(function (response) {
 			console.log("api call in project selector");
 			console.log(response.data);
+			setMessage(response.data.message);
 		})
 		.catch(function (error) {
 			console.log("error in api call in account verification page");
@@ -25,6 +27,7 @@ const VerificationPage = () => {
 		<div>
 			<h1>Verification Page</h1>
 			<h1>{token}</h1>
+			<h1>{message}</h1>
 		</div>
 	)
 }
