@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
+	nickname: {
+		type: String,
+		default: "",
+	},
 	email: {
 		type: String,
 		unique: true,

@@ -12,7 +12,7 @@ export const getProjects = async (req, res) => {
 		
 		const { id } = req.params;		
 		const user = await UserModal.findById(id);
-		if (!user) return res.status(400).send({ message: "Invalid user id." });
+		if (!user) return res.send({ message: "Invalid user id." });
 
 		const projectsInfo = new Array();
 
@@ -23,12 +23,29 @@ export const getProjects = async (req, res) => {
 			projectsInfo.push({ pid: project._id, title: project.title });
 		}
 
-		return res.status(200).json({ projects: projectsInfo });
+		return res.json({ projects: projectsInfo });
 
 	} catch (error) {
 		
 		console.log(error);
-		return res.status(404).json({ message: error.message });
+		return res.json({ message: error.message });
+	}
+}
+
+export const getProject = async (req, res) => { 
+
+	try {
+
+		const { pid } = req.body;
+		const project = await Project.findById(pid);
+		if (!project) return res.send({ message: "Invalid project id." });
+
+		return res.json(project);
+	
+	} catch (error) {
+		
+		console.log(error);
+		return res.json({ message: error.message });
 	}
 }
 
@@ -40,7 +57,7 @@ export const searchProjects = async (req, res) => {
 		const criteria = req.body;
 		
 		const user = await UserModal.findById(id);
-		if (!user) return res.status(400).send({ message: "Invalid user id." });
+		if (!user) return res.send({ message: "Invalid user id." });
 		const projects = new Array();
 
 		for (let i = 0; i < user.projects.length; i++)
@@ -62,29 +79,12 @@ export const searchProjects = async (req, res) => {
 			if (addToList) projects.push(project._id);
 		}
 		
-		return res.status(200).json({ projects: projects });
+		return res.json({ projects: projects });
 
 	} catch (error) {
 		
 		console.log(error);
-		return res.status(404).json({ message: error.message });
-	}
-}
-
-export const getProject = async (req, res) => { 
-
-	try {
-
-		const { pid } = req.body;
-		const project = await Project.findById(pid);
-		if (!project) return res.status(400).send({ message: "Invalid project id." });
-
-		return res.status(200).json(project);
-	
-	} catch (error) {
-		
-		console.log(error);
-		return res.status(404).json({ message: error.message });
+		return res.json({ message: error.message });
 	}
 }
 
@@ -96,7 +96,7 @@ export const createProject = async (req, res) => {
 		const project = req.body;
 		
 		const user = await UserModal.findById(id);
-		if (!user) return res.status(400).send({ message: "Invalid user id." });
+		if (!user) return res.send({ message: "Invalid user id." });
 
 		const newProject = new Project({ ...project });
 		await newProject.save();
@@ -104,12 +104,12 @@ export const createProject = async (req, res) => {
 		user.projects.push(newProject._id);
 		await user.save();
 		
-		return res.status(201).json(newProject);
+		return res.json(newProject);
 
 	} catch (error) {
 
 		console.log(error);
-		return res.status(409).json({ message: error.message });
+		return res.json({ message: error.message });
 	}
 }
 
@@ -119,7 +119,7 @@ export const updateProject = async (req, res) => {
 
 		const project = req.body;
 		
-		if (!mongoose.Types.ObjectId.isValid(project.pid)) return res.status(404).send(`Project id: ${project.pid} is not valid.`);
+		if (!mongoose.Types.ObjectId.isValid(project.pid)) return res.send(`Project id: ${project.pid} is not valid.`);
 		await Project.findByIdAndUpdate(project.pid, { ...project, lastUpdate: new Date().toISOString() }, { new: true });
 
 		return res.json({ message: "Project updated successfully." });
@@ -138,11 +138,11 @@ export const deleteProject = async (req, res) => {
 		const { id } = req.params;
 		const { pid } = req.body;
 
-		if (!mongoose.Types.ObjectId.isValid(pid)) return res.status(404).send(`Project id: ${pid} is not valid.`);
+		if (!mongoose.Types.ObjectId.isValid(pid)) return res.send(`Project id: ${pid} is not valid.`);
 		await Project.findByIdAndRemove(pid);
 
 		const user = await UserModal.findById(id);
-		if (!user) return res.status(400).send({ message: "Invalid user id." });
+		if (!user) return res.send({ message: "Invalid user id." });
 
 		const index = user.projects.indexOf(mongoose.Types.ObjectId(pid));
 		if (index > -1) user.projects.splice(index, 1);
