@@ -6,17 +6,17 @@ import {
 	IconButton,
 	Typography,
 	TextField,
+	Link,
+	Dialog,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu';
 import axios from 'axios';
-import { RestoreOutlined } from '@material-ui/icons';
+import { RestoreOutlined, SettingsInputAntenna } from '@material-ui/icons';
 import Login_SignUp from './Login_SignUp';
-//import cookie from "react-cookie";
+import Cookie from "./Cookie"
 
-
-/*let signInLoginRoute = "https://chordeographer.herokuapp.com/user/signin";*/
-let signInLoginRoute = "http://localhost:5000/user/signin";
+let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -32,11 +32,12 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
 	const classes = useStyles();
-	const [lin, setLin] = useState(false);
+	const [lin, setLin] = useState(Cookie.getCookie("userSession") != null);
+	const [passForg, setpassForg] = useState(false);
 	const [user, setUser] = useState("");
 	const [pass, setPass] = useState("");
 	const [errMsg, setErr] = useState("");
-
+	
 	const submitLogin = () => {
 		console.log("User: " + user + "pass:" + pass);
 
@@ -46,27 +47,30 @@ const NavBar = () => {
 			password: pass,
 		};
 
-		axios.post(signInLoginRoute, data)
-			.then(response => {
-				// if it has response message
+		var b = axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
+        .then(function (response) {
+            // if it has response message
 				if (response.data.hasOwnProperty('message'))
 				{
-					alert(response.data.message);
 					setErr(response.data.message);
 				}
 				else
 				{
 					// make logged in, and use returned nickname to display
+					var cInfo = {
+						nickname: response.data.nickname,
+						id: response.data.id,
+					}
+					Cookie.setJCookie("userSession",cInfo, 60);
 					setLin(true);
-					setUser(response.data.nickname);
-					setErr("");	
+					setErr("");
+					
 				}
-			})
-			.catch(err => {
-				console.log("An Error Occurred");
-			}
-			);
-
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+		
 		//create cookie
 	}
 
@@ -74,7 +78,13 @@ const NavBar = () => {
 		console.log("loggingout");
 		setUser("");
 		setPass("");
+		Cookie.delCookie("userSession");
 		setLin(false);
+	}
+
+	const togglePassReset = () =>
+	{
+		setpassForg(!passForg);
 	}
 
 
@@ -90,28 +100,72 @@ const NavBar = () => {
 
 	}
 
+	const sendPassReset = e =>
+	{
+		e.preventDefault();
+
+		axios.post("https://chordeo-grapher.herokuapp.com/user/signup", {email: user})
+		.then(response =>
+			{
+				// do stuff.
+				// if successful. close out or show that email link sent?
+
+			})
+		.catch(
+			err => console.log("problem sending psw reset = " + err)
+		)
+	}
+
+	const passReset = () =>
+	{
+		return (
+			<div>
+			<Link onClick={()=>togglePassReset()}>Forgot Password?</Link>
+			{
+				passForg?
+				<Dialog open={togglePassReset} onClose={togglePassReset}>
+					<div style={{display:'flex', flexDirection:'column',padding:'10vh', alignItems:'center', justifyContent:'center'}}>
+						<Typography style={{padding:'15px'}}>Forget Password?</Typography>
+						<TextField style={{padding:'30px', width:'20vw'}} placeholder="Enter email to reset password"/>
+						<button style={{padding:'5px'}} onClick={()=>setErr("")}>Reset Password via email</button>
+					</div>
+				</Dialog>
+				:
+				null
+			}
+			</div>
+		)
+	}
+
 
 	const notLoggedIn = () => {
 
 		const clickyStyle = { margin:'5px', textAlign:'center', justifyContent:'center' };
 		return (
 			<div style={{ maxHeight: '5vh', maxWidth: '50vw', display: 'flex', flexDirection: 'row'}}>
-				
-				<Typography style={{marginRight:'20px'}} >{errMsg}</Typography>
+				<Typography style={{marginRight:'20px'}} component={'div'} >
+				{
+					(errMsg.length == 19)? passReset():errMsg
+				}
+				</Typography>
 				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} />
 				<TextField variant="outlined" size="small" placeholder="Password" onChange={formChange} style={clickyStyle} />
+				
 				<Login_SignUp buttonText="Sign Up" style={clickyStyle} />
-
 				<Button color="inherit" variant="contained" onClick={submitLogin} style={clickyStyle, {paddingTop:'2%', paddingBottom:'2%'}}>Login</Button>
-
 			</div>
 		);
 	}
 
 	const isLoggedIn = () => {
+		let nName = Cookie.cToJson(Cookie.getCookie("userSession"));
+		if (nName == null)
+			nName = "user";
+		else
+			nName = nName.nickname;
 		return (
 			<>
-				<Typography variant="h6" style={{ color: 'blue', marginRight:'10vw' }} >Welcome {user}</Typography>
+				<Typography variant="h6" style={{ color: 'blue', marginRight:'10vw' }} >Welcome {nName}</Typography>
 				<Button onClick={doLogOut} >Log Out</Button>
 			</>
 		);
@@ -126,8 +180,7 @@ const NavBar = () => {
 				<Typography variant="h6" className={classes.title}>
 					Chordeography
 				</Typography>
-
-				{lin ? isLoggedIn() : notLoggedIn()}
+				{lin? isLoggedIn() : notLoggedIn()}
 
 			</Toolbar>
 		</AppBar>
