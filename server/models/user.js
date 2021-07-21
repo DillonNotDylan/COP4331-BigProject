@@ -10,10 +10,6 @@ const userSchema = mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	nickname: {
-		type: String,
-		default: "",
-	},
 	verified: {
 		type: Boolean,
 		default: false,
