@@ -22,8 +22,9 @@ const router = express.Router();
 
 router.post("/signin", signin);
 router.post("/signup", signup);
-router.patch("/reset-password", changePassword);
-router.get("/verify-account/:token", verifyAccount);
+router.post("/reset-password", resetPass);
+router.patch("/change-password", changePassword);
+router.get("/verify-account", verifyAccount);
 router.post("/resend-verification", resendVerificationEmail);
 router.delete("/:id/shutdown-account", shutdownAccount);
 

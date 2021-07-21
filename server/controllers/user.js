@@ -17,8 +17,6 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-var __dirname = path.resolve();
-
 export const signin = async (req, res) => {
 
 	try {
@@ -77,29 +75,6 @@ export const signup = async (req, res) => {
 	}
 };
 
-export const changePassword = async (req, res) => {
-
-	try {
-
-		const { email, password } = req.body;
-		if (!email) return res.send({ message: "Missing user email." });
-
-		const user = await UserModal.findOne({ email: email });
-		if (!user) return res.send({ message: "Email not registered." });
-
-		const hashedPassword = await bcrypt.hash(password, 12);
-		user.password = hashedPassword;
-		await user.save();
-
-		return res.send({ message: "Password successfully changed." });
-	
-	} catch (error) {
-		
-		console.log(error);
-		return res.send({ message: error.message });
-	}
-}
-
 export const resetPass = async (req, res) => {
 
 	try {
@@ -110,7 +85,7 @@ export const resetPass = async (req, res) => {
 		if (!oldUser) return res.send({ message: "User doesn't exist." });
 		
 		const verificationToken = await jwt.sign(
-			{ id: result._id },
+			{ id: oldUser._id },
 			process.env.VERIFICATION_SECRET,
 			{ expiresIn: "15m" }
 		);
@@ -123,10 +98,34 @@ export const resetPass = async (req, res) => {
 			html: 	`<div><a href = '${url}'>Reset your password.</a></div>`
 		});
 
-		return res.send({ message: `Email verification link sent to '${email}'.` });
+		return res.send({ message: `Reset password link sent to '${email}'.` });
 
 	} catch (error) {
 
+		console.log(error);
+		return res.send({ message: error.message });
+	}
+}
+
+export const changePassword = async (req, res) => {
+
+	try {
+		
+		const { token, password } = req.body;
+		
+		let payload = jwt.verify(token, process.env.VERIFICATION_SECRET);
+
+		const user = await UserModal.findById(payload.id);
+		if (!user) return res.send({ message: "Verification token invalid." });
+
+		const hashedPassword = await bcrypt.hash(password, 12);
+		user.password = hashedPassword;
+		await user.save();
+
+		return res.send({ message: "Password successfully changed." });
+	
+	} catch (error) {
+		
 		console.log(error);
 		return res.send({ message: error.message });
 	}
@@ -147,8 +146,8 @@ export const verifyAccount = async (req, res) => {
 		user.verified = true;
 		await user.save();
 
-		// return res.send({ message: "Account successfully verified." });
-		return res.sendFile(path.resolve("html/verification.html"));
+		return res.send({ message: "Email successfully verified." });
+		// return res.sendFile(path.resolve("html/verification.html"));
 	
 	} catch (error) {
 		
@@ -177,8 +176,8 @@ export const resendVerificationEmail = async (req, res) => {
 			from: 'Chordeographer',
 			to: email,
 			subject: 'Verify your email.',
-			html: 	`<div style=display: block; margin: auto; width: 50%><img src="https://i.imgur.com/9CSWeNf.gif" alt="ayyeee" /></div>
-					<div style=text-align: center;><a href = '${url}'>Verify your email.</a></div>`
+			html: 	`<div><img src="https://i.imgur.com/9CSWeNf.gif" alt="gif" /></div>
+					<div><a href = '${url}'>Verify your email.</a></div>`
 		});
 
 		return res.send({ message: `Email verification link sent to '${email}'.` });
