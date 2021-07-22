@@ -21,10 +21,10 @@ function App() {
 				<Route path="/" exact>
 					<Home />
 				</Route>
-				<Route path="/reset-password" exact>
+				<Route path="/user/reset-password/:token" exact>
 					<ResetPass />
 				</Route>
-				<Route path="/verify-account/:token" exact>
+				<Route path="/user/verify-email/:token" exact>
 					<VerificationPage />
 				</Route>
 			</Switch>
