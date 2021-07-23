@@ -24,7 +24,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ToolPage = ({grabKey, grabMode}) => {
     const classes = useStyles();
-    const [currOption, setOption] = useState(false);
+    const [currOption, setOption] = useState(true);
+    const[status, switchStatus] = React.useState(false);
+
     return(
         <div>  
             <br />
@@ -32,10 +34,10 @@ const ToolPage = ({grabKey, grabMode}) => {
                 <CardContent>
                     <Grid container>
                         <Grid item xs>
-                            <KeyBox currOption={!currOption} grabKey={grabKey} grabMode={grabMode}/>
+                            <KeyBox currOption={!currOption} grabKey={grabKey} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
                         </Grid> 
                         <Grid item xs sm>
-                            <ModeBox setOption={setOption} grabMode={grabMode} currOption={currOption}/>
+                            <ModeBox setOption={setOption} currOption={currOption} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
                         </Grid>
                     </Grid>
                 </CardContent>

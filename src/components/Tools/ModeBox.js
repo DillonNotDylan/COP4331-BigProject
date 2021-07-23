@@ -109,36 +109,41 @@ const marks = [
 	}
 ]
 
-export default function ModeBox ({setOption , grabMode, currOption}){
+export default function ModeBox ({setOption, currOption, grabMode, status, switchStatus}){
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
-	const[currMode, setMode] = React.useState(''); // lists options of modes
+	const[currMode, setMode] = React.useState('Ionian'); // lists options of modes
 	const[modeState, modeSwitch] = React.useState(false); // enables option for mode
 
 	const handleOption = (event, val) => {
+
 		let temp = marks[val].mode;
 		setMode(temp);
 		grabMode(marks[val].value);
 	};
 
 	const handleCheck = () => {
+		modeSwitch(!modeState);
+		setOption(modeState);
 		setToSwitchVal();
 
-		modeSwitch(!modeState);
-
-		
-		setOption(modeState);
 	}
 
 	const setToSwitchVal = () => {
-		(currOption) ? (grabMode(5) && setMode('Ionian')) : (grabMode(2) && setMode('Minor'))
-		console.log("here");
-	
+		if (!status) {
+			grabMode(5);
+			setMode(marks[5].mode);
+		}
+		else {
+			grabMode(2);
+			setMode(marks[2].mode);
+			switchStatus(status);
+		}	
 	}
 
-	function valuetext(value) {
-		return (`${value + 1}`);
+	function valueLabelFormat(value) {
+		return marks.findIndex((mark) => mark.value === value) + 1;
 	  }
 
 	return(
@@ -169,9 +174,10 @@ export default function ModeBox ({setOption , grabMode, currOption}){
 							aria-labelledby="discrete-slider-restrict"
 							step={null}
 							marks={marks}
-							valueLabelDisplay="on"
-							getAriaValueText={valuetext}
+							valueLabelDisplay="auto"
+							valueLabelFormat={valueLabelFormat}
 							track='false'
+							key={5}
 							onChange={handleOption}
 						/>
 					</ section>
