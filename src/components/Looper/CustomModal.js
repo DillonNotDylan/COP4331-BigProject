@@ -1,16 +1,15 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+import {Button, IconButton, Modal} from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import EditOutlined from '@material-ui/icons/EditOutlined';
+import ChordSelector from './ChordSelector';
 
 const useStyles = makeStyles((theme) => ({
-	modal: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
 	paper: {
+		position: 'absolute',
+		width: 400,
 		backgroundColor: theme.palette.background.paper,
 		border: '2px solid #000',
 		boxShadow: theme.shadows[5],
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function CustomModal() {
+export default function CustomModal(props) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 
@@ -30,30 +29,24 @@ export default function CustomModal() {
 		setOpen(false);
 	};
 
+
 	return (
 		<div>
-			<button type="button" onClick={handleOpen}>
-				react-transition-group
-			</button>
-			<Modal
-				aria-labelledby="transition-modal-title"
-				aria-describedby="transition-modal-description"
-				className={classes.modal}
-				open={open}
-				onClose={handleClose}
-				closeAfterTransition
-				BackdropComponent={Backdrop}
-				BackdropProps={{
-					timeout: 500,
-				}}
+			<IconButton
+				onClick={handleOpen}
 			>
-				<Fade in={open}>
-					<div className={classes.paper}>
-						<h2 id="transition-modal-title">Transition modal</h2>
-						<p id="transition-modal-description">react-transition-group animates me.</p>
-					</div>
-				</Fade>
-			</Modal>
+				<EditOutlined />
+			</IconButton>
+			<div>
+				<Modal
+					open={open}
+					onClose={handleClose}
+					aria-labelledby="simple-modal-title"
+					aria-describedby="simple-modal-description"
+				>
+					<ChordSelector loopData={props.loopData}/>
+				</Modal>
+			</div>
 		</div>
 	);
 }

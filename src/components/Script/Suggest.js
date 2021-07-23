@@ -1,4 +1,4 @@
-const outter_circle = ['C_maj', 'G_maj', 'D_maj', 'A_maj', 'E_maj', 'B_maj', 'F_sharp__maj', 'C_sharp_maj', 'G_sharp_maj', 'D_sharp_maj', 'A_sharp_maj', 'F_maj']
+const outter_circle = ['C_maj', 'G_maj', 'D_maj', 'A_maj', 'E_maj', 'B_maj', 'F_sharp_maj', 'C_sharp_maj', 'G_sharp_maj', 'D_sharp_maj', 'A_sharp_maj', 'F_maj']
 const inner_circle = ['A_min', 'E_min', 'B_min', 'F_sharp_min', 'C_sharp_min', 'G_sharp_min', 'E_flat_min', 'B_flat_min', 'F_min', 'C_min', 'G_min', 'D_min']
 
 const key_to_number = ['A', 'A_sharp', 'B', 'C', 'C_sharp', 'D', 'D_sharp', 'E', 'F', 'F_sharp', 'G', 'G_sharp']
@@ -680,6 +680,7 @@ const sortSuggestions = (key, chord, chord_position) => {
 
 // Log all chord suggestions to the console
 const displaySugestions = () => {
+	// inside displaySuggestions
 	for (let i = 0; i < suggestions.length; i++) {
 		console.log(suggestions[i]);
 	}
@@ -689,7 +690,8 @@ const displaySugestions = () => {
 const getAllSuggestions = (chord1, chord2, chord3, chord4, chord_position, key, mode) => {
 
 	let chord = "H";
-
+	suggestions = []
+	
 	if (chord_position == 1)
 		chord = chord1
 	else if (chord_position == 2)
@@ -704,6 +706,7 @@ const getAllSuggestions = (chord1, chord2, chord3, chord4, chord_position, key, 
 	commonProgressions(key, chord, chord_position);
 	sortSuggestions(key, chord, chord_position);
 	displaySugestions();
+	return suggestions
 }
 
 // const test = () => console.log("Testy testy")

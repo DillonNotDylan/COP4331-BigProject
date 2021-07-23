@@ -19,24 +19,34 @@ import ProgLoop from './ProgLoop'
 import Login_SignUp from '../Login_SignUp'
 
 import axios from 'axios'
+import CustomModal from './CustomModal';
+import ChordSelector from './ChordSelector';
 
 const loopTemp = [
 	{
 		placement: 0,
+		iterations: 3,
 		name: "Verse",
-		chords: ["Am", "C", "B", "F"]
+		progression: ["A_maj", "C_maj", "B_maj", "F_maj"]
 	},
 	{
 		placement: 1,
+		iterations: 3,
 		name: "Chorus",
-		chords: ["Gm", "C7", "Bm", "F#m"]
+		progression: ["G_min", "C_maj", "B_min", "F_sharp_min"]
 	},
 	{
 		placement: 2,
+		iterations: 3,
 		name: "Bridge",
-		chords: ["Am", "C", "Bb", "Fm"]
+		progression: ["A_min", "C_maj", "A_sharp", "F_minor"]
 	}
 ]
+
+// const loopTemp = [
+
+// ]
+
 
 
 const LoopBox = ({useMode, useKey}) => {
@@ -58,7 +68,7 @@ const LoopBox = ({useMode, useKey}) => {
 			{
 				placement: len,
 				name: "Another Loop",
-				chords: ["Am", "C", "Bb", "Fm"]
+				chords: ["A_min", "C_maj", "A_sharp", "F_min"]
 			}
 		)
 
@@ -157,6 +167,7 @@ const LoopBox = ({useMode, useKey}) => {
 					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
 					{/* <Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button> */}
 					
+					<CustomModal body={<ChordSelector progression={null}/>} />
 				
 					<Grid container direction="column" style={{width: 500}}>
 						{
