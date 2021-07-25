@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core'
 import React, { useState, useEffect, useRef } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-
+import AudioPlayer from './AudioPlayer';
 import ProgLoop from './ProgLoop'
 import Chordbox from './Chordbox';
 import getAllSuggestions from '../Script/Suggest'
@@ -118,6 +118,10 @@ const ChordSelector = ({loopData, setProj, key, mode}) => {
 					Testy
 				</Button>
 				<Grid container>
+					<Grid item>
+						<AudioPlayer progression={loopData.progression}/>
+					</Grid>
+
 					<Grid container style={{ justifyContent: 'center' }}>
 						{
 

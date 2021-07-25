@@ -41,15 +41,16 @@ export const dillonToDisplay = (chord) => {
 
 // }
 
-// Takes a note returned by Dillon's code, and turns it into something Tone.js accepts
-export const dillonNoteToTone = (note) => {
+// Takes a note returned by Dillon's code, and turns it into a form that matches
+// other mp3s
+export const dillonNoteToExt = (note) => {
 
 	// console.log("Inside dillonNoteToTone")
 	// console.log(note)
 	let res = note
 	if (note.includes("_sharp"))
 	{
-		res = res.replace("_sharp", "#")
+		res = res.replace("_sharp", "s")
 		// console.log("In if check")
 	}
 	if (note.includes("_maj"))
@@ -58,5 +59,5 @@ export const dillonNoteToTone = (note) => {
 		// console.log("In if check")
 	}
 
-	return res
+	return res.toLowerCase()
 }

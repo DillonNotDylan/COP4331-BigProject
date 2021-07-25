@@ -101,10 +101,10 @@ const LoopBox = ({useMode, useKey}) => {
 	}
 
 	
-	const getProjectById = async () => {
+	const getProjectById = () => {
 		let userID = "60ebdf0a171f280086b81f57"
 
-		const res = await axios.post("https://chordeo-grapher.herokuapp.com/get-project",
+		const res = axios.post("https://chordeo-grapher.herokuapp.com/get-project",
 			{
 				pid: "60ebdfaa171f280086b81f5f"
 
