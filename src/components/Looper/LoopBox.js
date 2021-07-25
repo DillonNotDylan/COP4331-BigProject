@@ -183,8 +183,8 @@ const LoopBox = ({useMode, useKey}) => {
 						// 		<MoreVertIcon />
 						// 	</IconButton>
 						// }
-						title="Project Name"
-						subheader="Created on March 5, 2000"
+						title={pProject.title}
+						subheader={"Created on " + pProject.dateMade}
 					/>
 
 					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
