@@ -8,11 +8,6 @@ import {
 import React, { useState, useEffect, useRef } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 
-
-import * as Tone from 'tone'
-import A4 from '../Sound/A4.mp3'
-import Ds4 from '../Sound/Ds4.mp3'
-
 import ProgLoop from './ProgLoop'
 import Chordbox from './Chordbox';
 import getAllSuggestions from '../Script/Suggest'
@@ -31,21 +26,21 @@ function getModalStyle() {
 	};
 }
 
-const sampler = new Tone.Sampler(
-	{
-		urls: {
-			"A1": "A1.mp3",
-			"A2": "A2.mp3",
-			"C4": "C4.mp3",
-			"D#4": "Ds4.mp3",
-			"A4": "A4.mp3",
+// const sampler = new Tone.Sampler(
+// 	{
+// 		urls: {
+// 			"A1": "A1.mp3",
+// 			"A2": "A2.mp3",
+// 			"C4": "C4.mp3",
+// 			"D#4": "Ds4.mp3",
+// 			"A4": "A4.mp3",
 
-		},
-		release: 1,
-		baseUrl: "https://tonejs.github.io/audio/salamander/",
-	}
+// 		},
+// 		release: 1,
+// 		baseUrl: "https://tonejs.github.io/audio/salamander/",
+// 	}
 
-).toDestination();
+// ).toDestination();
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -93,39 +88,19 @@ const ChordSelector = ({loopData, setProj, key, mode}) => {
 	
 		console.log("In handleListClick")
 		// console.log(event.target.value)
-		playChord(suggestions[index])
+		// playChord(suggestions[index])
 		// logNotes(suggestions[index])
 		console.log(index)
 		setSelected(index);
 	};
 
-	const playChord = (chord) => {
+	// const playChord = (chord) => {
 		
-		let rawNotes = getChordNotes(chord)
-		let convertNotes = rawNotes.map(note => dillonNoteToTone(note)+"4")
-		// let convertNotes = rawNotes.map(note => rawNotes+"4")
-		playChordHelper(convertNotes)
-		
-	}
-
-	const playChordHelper = (convertNotes) => {
-		const now = Tone.now()
-		console.log(convertNotes)
-		sampler.triggerAttack(convertNotes[0], now)
-		sampler.triggerAttack(convertNotes[1], now)
-		sampler.triggerAttack(convertNotes[2], now)
-		
-	}
-
-	const playSingle = () => {
-		console.log("In play single")
-		const now = Tone.now()
-		sampler.triggerAttack("D#4", now)
-		sampler.triggerAttack("F4", now)
-		sampler.triggerAttack("A4", now)
-	}
-
-
+	// 	let rawNotes = getChordNotes(chord)
+	// 	let convertNotes = rawNotes.map(note => dillonNoteToTone(note)+"4")
+	// 	// let convertNotes = rawNotes.map(note => rawNotes+"4")
+	// 	playChordHelper(convertNotes)
+		 
 
 
 	return (
@@ -137,9 +112,9 @@ const ChordSelector = ({loopData, setProj, key, mode}) => {
 			{/* Highlight the ones adjacent to it */}
 
 			{/* Render out Dillon's function return */}
-
+			
 			<div style={modalStyle} className={classes.paper}>
-				<Button onClick={playSingle}>
+				<Button onClick={null}>
 					Testy
 				</Button>
 				<Grid container>

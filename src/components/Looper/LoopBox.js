@@ -68,7 +68,7 @@ const LoopBox = ({useMode, useKey}) => {
 			{
 				placement: len,
 				name: "Another Loop",
-				chords: ["A_min", "C_maj", "A_sharp", "F_min"]
+				progression: ["A_min", "C_maj", "A_sharp", "F_min"]
 			}
 		)
 
@@ -91,7 +91,7 @@ const LoopBox = ({useMode, useKey}) => {
 	// 60e3a8a3b2bfc802215b2535
 	const getData = () => {
 		let userID = "60ebdf0a171f280086b81f57"
-		const res = axios.get(`https://chordeographer.herokuapp.com/${userID}/get-projects`)
+		const res = axios.get(`https://chordeo-grapher.herokuapp.com/${userID}/get-projects`)
 		.then(function (response) {
 			console.log(response.data);
 		})
@@ -104,7 +104,7 @@ const LoopBox = ({useMode, useKey}) => {
 	const getProjectById = async () => {
 		let userID = "60ebdf0a171f280086b81f57"
 
-		const res = await axios.post("https://chordeographer.herokuapp.com/get-project",
+		const res = await axios.post("https://chordeo-grapher.herokuapp.com/get-project",
 			{
 				pid: "60ebdfaa171f280086b81f5f"
 
