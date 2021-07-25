@@ -15,126 +15,134 @@ import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import AddIcon from '@material-ui/icons/Add';
 
 import ProgLoop from './ProgLoop'
-
+import Cookie from '../Cookie'
 import Login_SignUp from '../Login_SignUp'
 import ProjSelector from './ProjSelector';
 import axios from 'axios'
 import CustomModal from './CustomModal';
 import ChordSelector from './ChordSelector';
 
-const loopTemp = [
-	{
-		placement: 0,
-		iterations: 3,
-		name: "Verse",
-		progression: ["A_maj", "C_maj", "B_maj", "F_maj"]
-	},
-	{
-		placement: 1,
-		iterations: 3,
-		name: "Chorus",
-		progression: ["G_min", "C_maj", "B_min", "F_sharp_min"]
-	},
-	{
-		placement: 2,
-		iterations: 3,
-		name: "Bridge",
-		progression: ["A_min", "C_maj", "A_sharp", "F_minor"]
-	}
-]
-
-// const loopTemp = [
-
-// ]
-
-
 
 const LoopBox = ({useMode, useKey}) => {
-	const [currProj, setProj] = useState(loopTemp)
-	
-	// At the moment, this useEffect will undisirably reset changes to the website,
-	// In the future, we'll need this to set the stage for changes
-	// useEffect(() => {
-	// 	// In the final result, this data will come from an API call
-	// 	setProj(loopTemp)
-	// })
+	let loopTemp = [];
+	const inf = Cookie.cToJson(Cookie.getCookie("userSession"));
+	// contains user id as 'id', and nickname as 'nickname'
+
+	const [currProj, setProj] = useState([]);
+	const [pProject, setcProject] = useState({
+		pid: 0,
+		title: "Unsaved Project",
+		loops: [],
+		dateMade: "July 1, 1990"
+	});
+
+	const [workspaces, setWorkspaces] = useState([]);
+	const [isvisible, setvisible] = useState(false);
+	const toggle = () => { 
+		setvisible(!isvisible); 
+	};
+
+	useEffect(async () => {
+		// get previously used local data
+		const c = localStorage.getItem('curr');
+		if (c == null)
+			return;
+
+		// if valid, set previously used loops
+		setcProject(JSON.parse(c));
+		setProj(JSON.parse(c).loops);
+		return;
+			
+	}, []);	
+
+	const initLoop = async (firstPID) =>
+	{
+		try
+		{
+			if (inf != null)
+			{	// save data in a. wait for response to continue
+				const a = await axios.post("https://chordeo-grapher.herokuapp.com/user/get-project", {pid: firstPID})
+				let t = {
+					pid: firstPID,
+					title: a.data.title,
+					loops: a.data.loops,
+					dateMade: a.data.dateCreated
+				};
+				
+				// update loops and current info
+				setProj(a.data.loops);
+				setcProject(t);
+			}
+		}
+		catch (err)
+		{
+			console.log("warning, error" + err);
+		}
+	};
 
 	const addNewLoop = () => {
-		console.log("in here")
 		let temp = [...currProj]
-		// let temp = currProj
 		let len = temp.length
 		temp.push(
 			{
-				placement: len,
+				progression: ["Am", "C", "Bb", "Fm"],
 				name: "Another Loop",
-				progression: ["A_min", "C_maj", "A_sharp", "F_min"]
+				placement: len,
 			}
 		)
-
-		console.log(temp)
+		
+		let t = pProject;
+		t.loops = temp;
+		localStorage.setItem('curr', JSON.stringify(t));
 		setProj(temp)
 	}
 
 	const deleteLoop = (index) => {
-		console.log("In delete loop")
 		let temp = [...currProj]
 
 		if (index === -1)
 			return
 			
 		temp.splice(index, 1)
+
+		// save all data to localstorage
+		let t = pProject;
+		t.loops = temp;
+		localStorage.setItem('curr', JSON.stringify(t));
 		setProj(temp)
 	}
 
-	// 'user/${userID}/get-projects'
-	// 60e3a8a3b2bfc802215b2535
-	const getData = () => {
-		let userID = "60ebdf0a171f280086b81f57"
-		const res = axios.get(`https://chordeo-grapher.herokuapp.com/${userID}/get-projects`)
-		.then(function (response) {
-			console.log(response.data);
-		})
-		.catch(function (error) {
-			console.log(error);
-		})  
+	const save = (e) =>
+	{
+		e.preventDefault();
+
+		// copy over references of loops
+		let t = {
+			pid: pProject.pid,
+			title:pProject.title,
+			loops: currProj
+		}
+
+		// post change to server
+		axios.patch("https://chordeo-grapher.herokuapp.com/user/update-project", t)
+		.catch(function (err) {console.log(err)} )
 	}
 
-	
-	const getProjectById = async () => {
-		let userID = "60ebdf0a171f280086b81f57"
-
-		const res = await axios.post("https://chordeo-grapher.herokuapp.com/get-project",
-			{
-				pid: "60ebdfaa171f280086b81f5f"
-
-				
-			}
-		)
-		
-		// console.log(res)
-		.then(function (response) {
-			console.log(response.data);
-		})
-		.catch(function (error) {
-			console.log(error);
-		})
-	}
 
 	return (
 		<div>
 
-			<Button
-				onClick={getData}
-			>
+			{(inf != null)?
+				<Button onClick={null}>
 				Get data
-			</Button>
+				</Button> : null
+			}
 
-			<Button
-				onClick={getProjectById}
-			>
+			{ (inf != null)?
+				<Button onClick={toggle}>
 				Get specific project
-			</Button>
+				</Button> : null
+			}
 
 			<Button
 				onClick={() => 
@@ -165,7 +173,11 @@ const LoopBox = ({useMode, useKey}) => {
 					/>
 
 					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
-					{/* <Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button> */}
+					{
+						inf != null?
+						<Button variant="contained" color="secondary" onClick={save} style={{float:'right'}}> Save Data</Button>
+						: null
+					}
 					
 					<CustomModal body={<ChordSelector progression={null}/>} />
 				
@@ -184,8 +196,12 @@ const LoopBox = ({useMode, useKey}) => {
 					</Grid>
 					
 					{/* <ProgLoop /> */}
+					{	// show sign up button if cookie deems not logged in
+						inf == null?
+						<Login_SignUp style={{paddingTop:'25px', textAlign: 'center'}} buttonText="Save Progression and Sign Up"/>
+						:null
+					}
 					
-					<Login_SignUp style={{paddingTop:'25px', textAlign: 'center'}} buttonText="Save Progression and Sign Up"/>
 				</CardContent>
 			</Card>
 
