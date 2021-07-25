@@ -13,7 +13,10 @@ const ProjSelector = (props) => {
 	useEffect(() => {
 
 		let userID = "60ebdf0a171f280086b81f57";
-		axios.get(`https://chordeo-grapher.herokuapp.com/user/${userID}/get-projects`)
+		axios.post(`https://chordeo-grapher.herokuapp.com/user/get-projects`,
+		{
+			id: userID
+		})
 		.then(function (response) {
 			// console.log("api call in project selector");
 			// console.log(response.data.projects);
