@@ -17,7 +17,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ProgLoop from './ProgLoop'
 
 import Login_SignUp from '../Login_SignUp'
-
+import ProjSelector from './ProjSelector';
 import axios from 'axios'
 import CustomModal from './CustomModal';
 import ChordSelector from './ChordSelector';
@@ -146,7 +146,7 @@ const LoopBox = ({useMode, useKey}) => {
 			>
 				Test Key and Mode
 			</Button>
-
+			<ProjSelector />
 			<Card >
 				<CardContent>
 					<CardHeader
