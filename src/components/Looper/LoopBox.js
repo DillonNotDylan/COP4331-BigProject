@@ -149,7 +149,7 @@ const LoopBox = ({useMode, useKey}) => {
 			}
 
 			{ (inf != null)?
-				<Button onClick={toggle}>
+				<Button onClick={null}>
 				Get specific project
 				</Button> : null
 			}
