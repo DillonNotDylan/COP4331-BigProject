@@ -45,6 +45,7 @@ const LoopBox = ({useMode, useKey}) => {
 	useEffect(async () => {
 		// get previously used local data
 		const c = localStorage.getItem('curr');
+		console.log(c)
 		if (c == null)
 			return;
 
@@ -128,12 +129,21 @@ const LoopBox = ({useMode, useKey}) => {
 		.catch(function (err) {console.log(err)} )
 	}
 
+	
+	const loadProj = () =>
+	{
+		// get object from storage
+		let t = JSON.parse(localStorage.getItem('curr'));
+		
+		console.log(localStorage.getItem('newPID'));
+		initLoop(localStorage.getItem('newPID'));
+	}
 
 	return (
 		<div>
 
 			{(inf != null)?
-				<Button onClick={null}>
+				<Button onClick={loadProj}>
 				Get data
 				</Button> : null
 			}
@@ -154,7 +164,12 @@ const LoopBox = ({useMode, useKey}) => {
 			>
 				Test Key and Mode
 			</Button>
-			<ProjSelector />
+			{
+				(inf != null)?
+				<ProjSelector />
+				: null
+			}
+
 			<Card >
 				<CardContent>
 					<CardHeader
