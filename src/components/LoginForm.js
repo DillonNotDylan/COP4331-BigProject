@@ -45,7 +45,7 @@ const LoginForm = ({ handleClose }) => {
 		{
 			if(response.data.hasOwnProperty('message'))
 			{
-				if (response.data.message.length == 43)
+				if (response.data.message.length === 43)
 				{
 					handleClose();
 					return;

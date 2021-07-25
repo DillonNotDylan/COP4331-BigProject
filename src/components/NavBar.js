@@ -12,11 +12,9 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu';
 import axios from 'axios';
-import { RestoreOutlined, SettingsInputAntenna } from '@material-ui/icons';
 import Login_SignUp from './Login_SignUp';
 import Cookie from "./Cookie"
 
-let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -47,7 +45,7 @@ const NavBar = () => {
 			password: pass,
 		};
 
-		var b = axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
+		axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
         .then(function (response) {
             // if it has response message
 				if (response.data.hasOwnProperty('message'))
@@ -93,14 +91,14 @@ const NavBar = () => {
 		setErr("");
 		e.persist()
 		// update form values upon typing  
-		if (e.target.placeholder == "Username")
+		if (e.target.placeholder === "Username")
 			setUser(e.target.value);
 		else
 			setPass(e.target.value);
 
 	}
 
-	const sendPassReset = e =>
+	const sendPassReset = (e) =>
 	{
 		e.preventDefault();
 
@@ -145,7 +143,7 @@ const NavBar = () => {
 			<div style={{ maxHeight: '5vh', maxWidth: '50vw', display: 'flex', flexDirection: 'row'}}>
 				<Typography style={{marginRight:'20px'}} component={'div'} >
 				{
-					(errMsg.length == 19)? passReset():errMsg
+					(errMsg.length === 19)? passReset():errMsg
 				}
 				</Typography>
 				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} />

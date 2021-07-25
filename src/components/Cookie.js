@@ -4,7 +4,7 @@ export default class Cookie
 	static setCookie(name, value, expireDateinMin)
 	{
 		var expireTime;
-		if (expireDateinMin == 0)
+		if (expireDateinMin === 0)
 			expireTime = "";
 		else 
 		{
@@ -19,7 +19,7 @@ export default class Cookie
 	static setJCookie(name, value, expireDateinMin)
 	{
 		var expireTime;
-		if (expireDateinMin == 0)
+		if (expireDateinMin === 0)
 			expireTime = "";
 		else 
 		{
@@ -33,14 +33,13 @@ export default class Cookie
 
 	static getCookie(cookieName)
 	{
-		let name = cookieName+"=";
 		// split by each pair. turn to array
 		let cList = document.cookie.split(';');
 		var l;
 		for (let i = 0; i < cList.length; i++)
 		{
 			l = cList[i].indexOf(cookieName);
-			if ( l == 1 || l == 0)
+			if ( l === 1 || l === 0)
 				return cList[i];
 		}
 
@@ -64,12 +63,7 @@ export default class Cookie
 	}
 
 	static delCookie(name)
-	{
-		var expireTime;
-		var date = new Date();
-		date.setTime(date.getTime() - 1000);
-		expireTime = ";expire=" + date.toUTCString();
-			
+	{	
 		document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
 	}
 	
