@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
-import { Button } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
 
+import PauseOutlined from '@material-ui/icons/PauseCircleOutlineOutlined';
+import PlayOutlined from '@material-ui/icons/PlayCircleFilledWhiteOutlined';
 
 import { Howl } from 'howler';
 import getChordNotes from '../Script/ChordToNote';
@@ -11,10 +13,10 @@ import { dillonNoteToExt } from '../Script/Convert';
 
 const AudioPlayer = ({progression}) => {
 	const [isPlaying, setIsPlaying] = useState(false);
-	const [tempo, setTempo] = useState(120);
+	const [tempo, setTempo] = useState(80);
 	const [volNum, setVolNum] = useState(50);
 	const [counter, setCounter] = useState(0);
-	const [progNotes, setProgNotes] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+	const [progNotes, setProgNotes] = useState([false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false])
 	
 	//set BPM
 	let bpm = (60 * 1000 / 4) / tempo;
@@ -28,27 +30,29 @@ const AudioPlayer = ({progression}) => {
 		// play a chord on beats 0, 4, 8, 12
 		let beat = 0
 		let tempArr = [...progNotes]
+		// console.log(progression)
 		progression.map((chord) => {
 			// Take every chord in this progression, and turn it into
 			// an array of notes with Dillon's code
 			let rawNotes = getChordNotes(chord)
 			let noteList = rawNotes.map(note => dillonNoteToExt(note) + "4")
-			console.log(noteList)
-			teampArr[beat] = noteList;
+			tempArr[beat] = noteList;
 			beat = beat + 4;
 		})
 
 		setProgNotes(tempArr)
 	
-		if (isPlaying) {
+		// console.log(isPlaying)
+		if (isPlaying === true) {
 			const interval = setInterval(() => {
-				// loop();
+				loop();
 	
 				if (counter < 15)
 					setCounter((prevState) => ++prevState)
 				else
 					setCounter(0)
 			}, bpm)
+			return () => clearInterval(interval)
 		}
 		setCounter(0)
 	}, [progression, isPlaying, bpm, volNum, counter])
@@ -61,6 +65,9 @@ const AudioPlayer = ({progression}) => {
 	};
 	
 	const playSound = (source) => {
+
+		console.log("Playing sound")
+		// console.log(source)
 		var sound = new Howl({
 			src: [source],
 			html5: true,
@@ -74,11 +81,12 @@ const AudioPlayer = ({progression}) => {
 	// the main progression
 	const playSounds = (array) => {
 		for (let i = 0; i < array.length; i++) {
-			if (array[i] === null)
-				continue;
-				
-			playSound(array[i])
+			// if (array[i] === null)
+			// 	continue;
 			console.log(array[i])
+			// array[i].map(note => playSound(note))
+			playSound(array[i])
+			// console.log(array[i])
 		}
 	}
 		
@@ -86,19 +94,23 @@ const AudioPlayer = ({progression}) => {
 	const loop = () => {
 			// Array that holds the notes
 			// Loop through the notes in a triad
-		
-			let soundArr = progNotes.map(note => {
-				if (note !== 0)	{
-					return (
-						"./PianoSamples/" + note + ".mp3"
-					)
-				} else {
-					return null
-				}
-			})
+			// If the measure at the counter isn't false, there's a chord
+			// to play there
+
+			if (progNotes[counter]) {
+				let soundArr = progNotes[counter].map(note => {
+					
+					// console.log(notesInChord)
+					
+						return (
+							"./PianoSamples/" + note + ".mp3"
+						)	
+				})
+				// console.log(soundArr)
+				playSounds(soundArr)
+				
+			}
 			
-			console.log(soundArr)
-			// playSounds(soundArr)
 	}
 	
 	const togglePlay = () => {
@@ -108,9 +120,16 @@ const AudioPlayer = ({progression}) => {
 
 	return (
 		<div>
-			<Button onClick={togglePlay}>
+			{/* <Button onClick={togglePlay}>
 				Test Out Loop
-			</Button>
+			</Button> */}
+			<IconButton onClick={togglePlay}>
+				{
+					isPlaying ? <PauseOutlined/> :	<PlayOutlined />
+				}
+			</IconButton>
+			
+			
 		</div>
 	)
 

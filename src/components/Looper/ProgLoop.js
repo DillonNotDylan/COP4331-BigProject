@@ -16,6 +16,7 @@ import PlayOutlined from '@material-ui/icons/PlayCircleFilledWhiteOutlined';
 import Chordbox from './Chordbox'
 import CustomModal from './CustomModal';
 import Soundfont from 'soundfont-player';
+import AudioPlayer from './AudioPlayer';
 
 const ProgLoop = ({loopData, id, deleteLoop, previewFlag}) => {
 	// const [title, setTitle] = useState("")
@@ -49,9 +50,7 @@ const ProgLoop = ({loopData, id, deleteLoop, previewFlag}) => {
 					<CardHeader
 						action={
 							<ButtonGroup>
-								<IconButton>
-									<PlayOutlined />
-								</IconButton>
+								<AudioPlayer progression={loopData.progression}/>
 
 								{ !previewFlag && 
 								<CustomModal loopData={loopData}/>

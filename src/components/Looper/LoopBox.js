@@ -86,7 +86,17 @@ const LoopBox = ({useMode, useKey}) => {
 		let len = temp.length
 		temp.push(
 			{
-				progression: ["Am", "C", "Bb", "Fm"],
+				progression: ["A_maj", "C_maj", "A_sharp_maj", "F_minor"],
+				name: "Another Loop",
+				placement: len,
+			},
+			{
+				progression: ["A_min", "C_maj", "B_min", "F_major"],
+				name: "Another Loop",
+				placement: len,
+			},
+			{
+				progression: ["D_maj", "F_min", "G_maj", "A_maj"],
 				name: "Another Loop",
 				placement: len,
 			}
