@@ -3,6 +3,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import { makeStyles } from '@material-ui/core';
 
 
@@ -20,7 +21,7 @@ const SuggestList = ({suggestions, selectedIndex, handleListClick}) => {
 	return (
 		<div>
 			
-			<List component="nav" aria-label="secondary mailbox folder">
+			<List subheader={<ListSubheader>Suggestions</ListSubheader>} component="nav" aria-label="secondary mailbox folder">
 				{
 					suggestions.map((chord, index) => {
 						return (
