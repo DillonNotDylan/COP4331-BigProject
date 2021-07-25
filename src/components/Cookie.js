@@ -4,7 +4,11 @@ export default class Cookie
 	static setCookie(name, value, expireDateinMin)
 	{
 		var expireTime;
+<<<<<<< HEAD
 		if (expireDateinMin == 0)
+=======
+		if (expireDateinMin === 0)
+>>>>>>> 90f0badb51fdc919c34c3d79ce4cb4831f5d9167
 			expireTime = "";
 		else 
 		{
@@ -19,7 +23,11 @@ export default class Cookie
 	static setJCookie(name, value, expireDateinMin)
 	{
 		var expireTime;
+<<<<<<< HEAD
 		if (expireDateinMin == 0)
+=======
+		if (expireDateinMin === 0)
+>>>>>>> 90f0badb51fdc919c34c3d79ce4cb4831f5d9167
 			expireTime = "";
 		else 
 		{
@@ -33,14 +41,21 @@ export default class Cookie
 
 	static getCookie(cookieName)
 	{
+<<<<<<< HEAD
 		let name = cookieName+"=";
+=======
+>>>>>>> 90f0badb51fdc919c34c3d79ce4cb4831f5d9167
 		// split by each pair. turn to array
 		let cList = document.cookie.split(';');
 		var l;
 		for (let i = 0; i < cList.length; i++)
 		{
 			l = cList[i].indexOf(cookieName);
+<<<<<<< HEAD
 			if ( l == 1 || l == 0)
+=======
+			if ( l === 1 || l === 0)
+>>>>>>> 90f0badb51fdc919c34c3d79ce4cb4831f5d9167
 				return cList[i];
 		}
 
@@ -64,12 +79,16 @@ export default class Cookie
 	}
 
 	static delCookie(name)
+<<<<<<< HEAD
 	{
 		var expireTime;
 		var date = new Date();
 		date.setTime(date.getTime() - 1000);
 		expireTime = ";expire=" + date.toUTCString();
 			
+=======
+	{	
+>>>>>>> 90f0badb51fdc919c34c3d79ce4cb4831f5d9167
 		document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
 	}
 	

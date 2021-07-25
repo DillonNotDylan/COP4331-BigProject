@@ -12,11 +12,17 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu';
 import axios from 'axios';
+<<<<<<< HEAD
 import { RestoreOutlined, SettingsInputAntenna } from '@material-ui/icons';
 import Login_SignUp from './Login_SignUp';
 import Cookie from "./Cookie"
 
 let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
+=======
+import Login_SignUp from './Login_SignUp';
+import Cookie from "./Cookie"
+
+>>>>>>> 90f0badb51fdc919c34c3d79ce4cb4831f5d9167
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -47,7 +53,11 @@ const NavBar = () => {
 			password: pass,
 		};
 
+<<<<<<< HEAD
 		var b = axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
+=======
+		axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
+>>>>>>> 90f0badb51fdc919c34c3d79ce4cb4831f5d9167
         .then(function (response) {
             // if it has response message
 				if (response.data.hasOwnProperty('message'))
@@ -93,14 +103,18 @@ const NavBar = () => {
 		setErr("");
 		e.persist()
 		// update form values upon typing  
-		if (e.target.placeholder == "Username")
+		if (e.target.placeholder === "Username")
 			setUser(e.target.value);
 		else
 			setPass(e.target.value);
 
 	}
 
+<<<<<<< HEAD
 	const sendPassReset = e =>
+=======
+	const sendPassReset = (e) =>
+>>>>>>> 90f0badb51fdc919c34c3d79ce4cb4831f5d9167
 	{
 		e.preventDefault();
 
@@ -145,7 +159,11 @@ const NavBar = () => {
 			<div style={{ maxHeight: '5vh', maxWidth: '50vw', display: 'flex', flexDirection: 'row'}}>
 				<Typography style={{marginRight:'20px'}} component={'div'} >
 				{
+<<<<<<< HEAD
 					(errMsg.length == 19)? passReset():errMsg
+=======
+					(errMsg.length === 19)? passReset():errMsg
+>>>>>>> 90f0badb51fdc919c34c3d79ce4cb4831f5d9167
 				}
 				</Typography>
 				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} />

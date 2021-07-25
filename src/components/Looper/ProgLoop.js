@@ -31,7 +31,7 @@ const ProgLoop = ({loopData, id, deleteLoop}) => {
 					<CardContent>
 						<Grid container style={{justifyContent: 'center'}}>
 							{
-								loopData.chords.map(singleChord =>
+								loopData.progression.map(singleChord =>
 									{
 										return (
 											<Grid item style={{width: 100}}>
