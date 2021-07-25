@@ -20,20 +20,20 @@ let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: 'center',
-
+		borderRadius: 5
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
 	},
 	title: {
-		// flexGrow: 1,
+		flexGrow: 1,
 		// marginRight: 100,
 		// display: 'flex'
 	},
 	notLogged: {
 		flexDirection:'row',
 		justifyContent:'flex-end',
-
+		
 		display: 'flex' 
 	},
 	logged: {
@@ -114,8 +114,14 @@ const NavBar = () => {
 					direction="row"
 					alignItems="center"
 					spacing={1}
+					style={
+						{display: "flex",
+						 flexWrap: "noWrap",
+						 minWidth: 150
+						}
+					}
 				>
-					<Grid item md={6}>
+					<Grid item>
 						<TextField
 							variant="outlined"
 							size="small"
@@ -131,7 +137,7 @@ const NavBar = () => {
 						/>	
 					</Grid>
 
-					<Grid item md={2}>
+					<Grid item>
 						<Button 
 							color="default" 
 							variant="contained" 
@@ -140,7 +146,7 @@ const NavBar = () => {
 
 					</Grid>
 
-					<Grid item md>
+					<Grid item>
 						<Login_SignUp  buttonText="Sign Up"/>
 					</Grid>
 				

@@ -8,7 +8,9 @@ import {
 	CardHeader,
 	Grid,
 	IconButton,
-
+	AppBar,
+	Toolbar,
+	TextField
 } from '@material-ui/core'
 // import MoreVertIcon from '@material-ui/icons'
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
@@ -40,7 +42,8 @@ const loopTemp = [
 
 
 const LoopBox = ({useKey, useMode}) => {
-	const [currProj, setProj] = useState(loopTemp)
+	const [currProj, setProj] = useState(loopTemp);
+	const [projName, setName] = useState("");
 	
 	// At the moment, this useEffect will undisirably reset changes to the website,
 	// In the future, we'll need this to set the stage for changes
@@ -111,6 +114,12 @@ const LoopBox = ({useKey, useMode}) => {
 		})
 	}
 
+	const projectName = (e) => {
+		e.persist();
+		setName(e.target.value);
+		console.log(projName);
+	}
+
 	return (
 		<div>
 
@@ -128,25 +137,53 @@ const LoopBox = ({useKey, useMode}) => {
 
 			<Card >
 				<CardContent>
-					<CardHeader
-						avatar={
-							<Avatar aria-label="recipe">
-								A
-							</Avatar>
-						}
-						// action={
-						// 	<IconButton aria-label="settings">
-						// 		<MoreVertIcon />
-						// 	</IconButton>
-						// }
-						title="Project Name"
-						subheader="Created on March 5, 2000"
-					/>
+					<AppBar position="static" color="secondary" style={{borderRadius: 5}}>
+						<Toolbar>
+							<CardHeader
+								avatar={
+									<Avatar aria-label="recipe">
+										A
+									</Avatar>
+								}
+								// action={
+								// 	<IconButton aria-label="settings">
+								// 		<MoreVertIcon />
+								// 	</IconButton>
+								// }
+								title={
+									<TextField 
+										placeholder="Project Name"
+										onChange={projectName}
+									/>
+								}
+							/>
 
-					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
-					{/* <Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button> */}
-					<Button 
-						onClick={function(){console.log(useKey);console.log(useMode)}}>Test</Button>
+							<section style={{marginLeft: 50}}>
+								<Button
+									variant="contained"
+									color="secondary"
+									onClick={addNewLoop}>
+									<MusicNoteIcon />
+									New Loop
+								</Button>
+
+								{/* Perhaps has future purpose */}
+								{/* <Button
+									style={
+										{marginLeft: 20}
+									}
+									variant="contained"
+									color="secondary">
+									Play
+								</Button> */}
+
+							</section>
+
+							{/* <Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button> */}
+						</Toolbar>
+					</AppBar>
+					
+					<br />
 				
 					<Grid container direction="column" style={{width: 500}}>
 						{
