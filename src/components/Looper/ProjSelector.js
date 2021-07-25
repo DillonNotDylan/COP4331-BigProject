@@ -4,15 +4,20 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookie from '../Cookie'
 
 const ProjSelector = (props) => {
 
 	const [projects, setProjects] = useState([]);
 	const [project, setProject] = useState({});
 
+	//get User cookie info
+	const inf = Cookie.cToJson(Cookie.getCookie("userSession"));
+
 	useEffect(() => {
 
-		let userID = "60ebdf0a171f280086b81f57";
+
+		let userID = inf.id;
 		axios.post(`https://chordeo-grapher.herokuapp.com/user/get-projects`,
 		{
 			id: userID
@@ -47,6 +52,7 @@ const ProjSelector = (props) => {
 		
 		console.log("handle change in project selector");
 		console.log(newValue);
+		localStorage.setItem('newPID', newValue.pid);
 		
 		axios.post("https://chordeo-grapher.herokuapp.com/user/get-project",
 			{
