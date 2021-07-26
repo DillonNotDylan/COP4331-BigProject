@@ -12,32 +12,31 @@ import ModeBox from './ModeBox'
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'center',
-        flexWrap: 'nowrap',
+        flexWrap: 'wrap',
         '& >': {
             margin: theme.spacing(1),
-            width: theme.spacing(100),
+            width: theme.spacing(250),
         },
 
     },
 }));
 
 
-const ToolPage = ({grabKey, grabMode}) => {
+const ToolPage = () => {
     const classes = useStyles();
     const [currOption, setOption] = useState(true);
-    const[status, switchStatus] = React.useState(false);
-
+   
     return(
         <div>  
             <br />
             <Card className={classes.root}>
                 <CardContent>
                     <Grid container>
-                        <Grid item xs>
-                            <KeyBox currOption={!currOption} grabKey={grabKey} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
+                        <Grid item xs sm={3}>
+                            <KeyBox currOption={!currOption}/>
                         </Grid> 
-                        <Grid item xs sm>
-                            <ModeBox setOption={setOption} currOption={currOption} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
+                        <Grid item xs>
+                            <ModeBox setOption={setOption}/>
                         </Grid>
                     </Grid>
                 </CardContent>

@@ -25,15 +25,14 @@ const cardStyles = makeStyles({
 		width: 50,
 		padding: '25px',
 		minWidth: '150px',
-	},
+  	},
 
 	quality: {
 		alignContent: 'flex',
 		padding: '25px',
-		marginLeft: 15,
+		marginLeft: 25,
 		display:"flex",
-		width: 170,
-		minwidth: 160 
+		width: 160
 	},
 
 	divBox: {
@@ -43,21 +42,19 @@ const cardStyles = makeStyles({
 
 });
 
-export default function KeyBox({currOption, grabKey, grabMode, status, switchStatus}) {
+export default function KeyBox({currOption}) {
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
-	const[currKey, setKey] = React.useState(1);
-
+	const[currKey, setKey] = React.useState('');
+	const[currQuality, setQuality] = React.useState(false);
+    
 	const handleChange = (event) => {
 		setKey(event.target.value);
-		grabKey(event.target.value);
 	};
 
-	const handleStatus = () =>{
-		switchStatus(!status);
-		(status) ? grabMode(5) : grabMode(2);
-		return status;
+	const handleQuality = () =>{
+		setQuality(!currQuality);
 	}
 
 	return(
@@ -84,11 +81,11 @@ export default function KeyBox({currOption, grabKey, grabMode, status, switchSta
 						<MenuItem value={12}>B</MenuItem>
 					</Select>
 				</FormControl>
-
+				
 			</Card>
 
 			<Card className={cardClasses.quality}>
-				<Grid
+                <Grid
 					component="label"
 					container
 					alignItems="center"
@@ -99,13 +96,13 @@ export default function KeyBox({currOption, grabKey, grabMode, status, switchSta
 							Major
 						</Typography>
 					</Grid>
-					<Grid item>
+                    <Grid item>
 						<Switch
-							disabled={currOption}
-							onClick={handleStatus}
-							color="default"
-							inputProps={{ 'aria-label': 'checkbox with default color' }}
-						/>
+                            disabled={currOption}
+							onClick={handleQuality}
+                            color="default"
+                            inputProps={{ 'aria-label': 'checkbox with default color' }}
+                        />
 					</Grid>
 					<Grid item>
 						<Typography variant="body1">
@@ -113,7 +110,9 @@ export default function KeyBox({currOption, grabKey, grabMode, status, switchSta
 						</Typography>
 					</Grid>
 				</Grid>
-			</Card>
+
+                
+            </Card>
 		</div>
 	)
 }

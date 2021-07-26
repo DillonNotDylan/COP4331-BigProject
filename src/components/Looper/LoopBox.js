@@ -25,17 +25,17 @@ import axios from 'axios'
 const loopTemp = [
 	{
 		placement: 0,
-		name: "Verse",
+		name: <TextField placeholder="Verse, Chorus, Bridge" />,
 		chords: ["Am", "C", "B", "F"]
 	},
 	{
 		placement: 1,
-		name: "Chorus",
+		name: <TextField placeholder="Verse, Chorus, Bridge" />,
 		chords: ["Gm", "C7", "Bm", "F#m"]
 	},
 	{
 		placement: 2,
-		name: "Bridge",
+		name: <TextField placeholder="Verse, Chorus, Bridge" />,
 		chords: ["Am", "C", "Bb", "Fm"]
 	}
 ]
@@ -60,7 +60,7 @@ const LoopBox = ({useKey, useMode}) => {
 		temp.push(
 			{
 				placement: len,
-				name: "Another Loop",
+				name: <TextField placeholder="Verse, Chorus, Bridge" />,
 				chords: ["Am", "C", "Bb", "Fm"]
 			}
 		)
