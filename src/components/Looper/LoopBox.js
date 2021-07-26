@@ -10,10 +10,8 @@ import {
 	IconButton,
 
 } from '@material-ui/core'
-// import MoreVertIcon from '@material-ui/icons'
-import MusicNoteIcon from '@material-ui/icons/MusicNote';
-import AddIcon from '@material-ui/icons/Add';
 
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import ProgLoop from './ProgLoop'
 import Cookie from '../Cookie'
 import Login_SignUp from '../Login_SignUp'
@@ -37,11 +35,7 @@ const LoopBox = ({useMode, useKey}) => {
 	});
 
 	const [workspaces, setWorkspaces] = useState([]);
-	const [isvisible, setvisible] = useState(false);
-	const toggle = () => { 
-		setvisible(!isvisible); 
-	};
-
+	
 	useEffect(async () => {
 		// get previously used local data
 		const c = localStorage.getItem('curr');
@@ -149,7 +143,7 @@ const LoopBox = ({useMode, useKey}) => {
 			}
 
 			{ (inf != null)?
-				<Button onClick={toggle}>
+				<Button onClick={null}>
 				Get specific project
 				</Button> : null
 			}

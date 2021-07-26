@@ -58,8 +58,8 @@ const ResetPass = () => {
 			setErr("BRUH, THESE PASSWORDS DO NOT MATCH!!!");
 			return;
 		}
-
-		axios.post("https://chordeo-grapher.herokuapp.com/user/change-password",
+		
+		axios.patch("https://chordeo-grapher.herokuapp.com/user/change-password",
 		{
 			token: token,
 			password: password,
