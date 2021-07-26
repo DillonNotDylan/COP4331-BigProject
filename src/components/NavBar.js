@@ -16,8 +16,6 @@ import Login_SignUp from './Login_SignUp';
 import Cookie from "./Cookie"
 import ForgotPassword from './ForgotPassword'
 
-let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
-
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
