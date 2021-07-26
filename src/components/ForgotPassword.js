@@ -21,7 +21,7 @@ const ForgPass = (props) =>
 			res = await axios.post("https://chordeo-grapher.herokuapp.com/user/reset-password", { email })
 			
 			setSubmit(true);
-			setMsg(`Password reset link email sent to '${email}'`);
+			setMsg(`Password reset link sent to ${email}.`);
 		}
 		catch (err)
 		{
