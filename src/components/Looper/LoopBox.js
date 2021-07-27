@@ -188,7 +188,7 @@ const LoopBox = ({useMode, useKey}) => {
 			</Button>
 			{
 				(inf != null)?
-				<ProjSelector />
+				<ProjSelector setProj={setProj}/>
 				: null
 			}
 
@@ -222,7 +222,7 @@ const LoopBox = ({useMode, useKey}) => {
 						{
 							// Th
 							// 0 1 2 3 4 etc
-							currProj.map((loop, index) => {
+							pProject.loops.map((loop, index) => {
 								return (
 									<Grid item style={{justifyContent: 'center'}}>
 										<ProgLoop loopData={loop} id={index} deleteLoop={deleteLoop}/>

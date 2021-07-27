@@ -9,8 +9,8 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		width: '100%',
-		maxWidth: 360,
+		width: '50%',
+		maxWidth: 50,
 		backgroundColor: theme.palette.background.paper,
 	},
 }));

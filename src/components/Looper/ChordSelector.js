@@ -1,15 +1,18 @@
 import { 
 	Button,
 	Card,
+	CardActions,
 	CardContent,
 	Grid,
-	Paper
+	Paper,
+	Typography
 } from '@material-ui/core'
 import React, { useState, useEffect, useRef } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import AudioPlayer from './AudioPlayer';
 import ProgLoop from './ProgLoop'
 import Chordbox from './Chordbox';
+import SwapInfo from './SwapInfo'
 import getAllSuggestions from '../Script/Suggest'
 import getChordNotes from '../Script/ChordToNote';
 import { dillonNoteToSoundfont, dillonNoteToTone } from '../Script/Convert';
@@ -26,21 +29,6 @@ function getModalStyle() {
 	};
 }
 
-// const sampler = new Tone.Sampler(
-// 	{
-// 		urls: {
-// 			"A1": "A1.mp3",
-// 			"A2": "A2.mp3",
-// 			"C4": "C4.mp3",
-// 			"D#4": "Ds4.mp3",
-// 			"A4": "A4.mp3",
-
-// 		},
-// 		release: 1,
-// 		baseUrl: "https://tonejs.github.io/audio/salamander/",
-// 	}
-
-// ).toDestination();
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -80,6 +68,7 @@ const ChordSelector = ({loopData, setProj, key, mode}) => {
 
 		// Save the returned list of suggestions into state
 		setSuggest(res)
+		setSelected(0)
 		
 	}, [toEdit])
 
@@ -117,39 +106,49 @@ const ChordSelector = ({loopData, setProj, key, mode}) => {
 				<Button onClick={null}>
 					Testy
 				</Button>
-				<Grid container>
+				<Grid container direction="column">
 					<Grid item>
 						<AudioPlayer progression={loopData.progression}/>
 					</Grid>
 
-					<Grid container style={{ justifyContent: 'center' }}>
-						{
+					<Grid item>
+						<Grid container style={{ justifyContent: 'center' }}>
+							{
 
-							loopData && loopData.progression.map((singleChord, position) => {
-								return (
-									<Grid item style={{ width: 80 }}>
-										<Chordbox
-											chord={singleChord}
-											position={position}
-											loop={loopData}
-											setEdit={setEdit}
-										/>
-									</Grid>
-								)
+								loopData && loopData.progression.map((singleChord, position) => {
+									return (
+										<Grid item style={{ width: 80 }}>
+											<Chordbox
+												chord={singleChord}
+												position={position}
+												loop={loopData}
+												setEdit={setEdit}
+											/>
+										</Grid>
+									)
+								})
+								
 							}
-							)
-						}
 
+						</Grid>	
 					</Grid>
-
 
 					<Grid item>
-						<SuggestList 
-							suggestions={suggestions} 
-							selectedIndex={selectedIndex} 
-							handleListClick={handleListClick}
-						/>
+						<Grid container direction="row">
+							<Grid item>
+								<SuggestList 
+									suggestions={suggestions} 
+									selectedIndex={selectedIndex} 
+									handleListClick={handleListClick}
+								/>
+							</Grid>
+							<Grid item>
+								<SwapInfo beforeChord={loopData.progression[toEdit - 1]} afterChord={suggestions[selectedIndex]} />
+							</Grid>
+						</Grid>
+
 					</Grid>
+
 				</Grid>
 			</div>
 		</div>
