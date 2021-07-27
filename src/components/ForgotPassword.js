@@ -46,7 +46,10 @@ const ForgPass = (props) =>
 				{
 					!submitted?
 					<div style={style}>
-						<h1 style={{width:'40vw'}} >Enter Recovery Email</h1>
+						<Typography style={{width: '40vw'}} variant="h4">
+							Enter Recovery Email
+						</Typography>
+						{/* <h1 style={{width:'40vw'}} >Enter Recovery Email</h1> */}
 						<TextField placeholder="Email" onChange={formChange} />
 						<Button onClick={handleSubmit}>Try Reset</Button>
 					</div>

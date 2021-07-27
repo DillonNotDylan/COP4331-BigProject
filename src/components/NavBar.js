@@ -116,7 +116,7 @@ const NavBar = () => {
 						<Button color="inherit" variant="contained" onClick={submitLogin} style={{textAlign:'center', justifyContent: 'center', marginRight:'1vw' }}>Login</Button>
 						<Login_SignUp buttonText="Sign Up" style={{textAlign: 'center', justifyContent: 'center'}} />
 					</ButtonGroup>
-					<Button variant="contained" color="primary" onClick={toggleForgotPop}>
+					<Button variant="text" color="primary" onClick={toggleForgotPop}>
 						Forgot Password
 					</Button>
 				</ButtonGroup>
