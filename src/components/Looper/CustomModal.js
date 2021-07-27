@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function CustomModal(props) {
+export default function CustomModal({id, loopData, pProject, setcProject, updateLoop}) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 
@@ -44,7 +44,7 @@ export default function CustomModal(props) {
 					aria-labelledby="simple-modal-title"
 					aria-describedby="simple-modal-description"
 				>
-					<ChordSelector loopData={props.loopData}/>
+					<ChordSelector id={id} loopData={loopData} pProject={pProject} setcProject={setcProject} updateLoop={updateLoop}/>
 				</Modal>
 			</div>
 		</div>

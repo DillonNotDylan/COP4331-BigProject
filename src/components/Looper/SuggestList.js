@@ -9,8 +9,8 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		width: '50%',
-		maxWidth: 50,
+		float: 'left',
+		maxWidth: "50%",
 		backgroundColor: theme.palette.background.paper,
 	},
 }));
@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 const SuggestList = ({suggestions, selectedIndex, handleListClick}) => {
 	const classes = useStyles();
 	
+
 	return (
 		<div>
 			
@@ -27,6 +28,7 @@ const SuggestList = ({suggestions, selectedIndex, handleListClick}) => {
 						return (
 							<ListItem
 								button
+								style={{width: "fit-content"}}
 								value={chord}
 								selected={selectedIndex === index}
 								onClick={(event) => handleListClick(event, index)}

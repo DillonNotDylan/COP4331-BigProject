@@ -6,10 +6,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookie from '../Cookie'
 
-const ProjSelector = (props) => {
+const ProjSelector = ({loadProj}) => {
 
 	const [projects, setProjects] = useState([]);
-	const [project, setProject] = useState({});
 
 	//get User cookie info
 	const inf = Cookie.cToJson(Cookie.getCookie("userSession"));
@@ -63,7 +62,7 @@ const ProjSelector = (props) => {
 			console.log("api call to get a specific project in project selector");
 			console.log(response.data);
 
-			setProject(response.data);
+			loadProj()
 		})
 		.catch(function (error) {
 			console.log("error in api call in project selector to get a specific project");

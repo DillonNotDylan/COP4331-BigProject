@@ -27,14 +27,15 @@ import CustomModal from './CustomModal'
 // 	}
 // })
 
+// Position refers to this chord's place in the array, 0 indexed
 const Chordbox = ({chord, position, loop, setEdit}) => {
 	return (
 		<div>
 			<CardActionArea onClick={() => {
 				// console.log(chord + " " + position)
-				console.log("Position: " + (position+1))
+				console.log("Position: " + (position))
 
-				setEdit !== null && setEdit(position+1)
+				setEdit !== null && setEdit(position)
 				
 				// console.log("THIRD")
 				// getAllSuggestions("A_min", "C_maj", "B_maj", "F_maj", 3, "C", 1)

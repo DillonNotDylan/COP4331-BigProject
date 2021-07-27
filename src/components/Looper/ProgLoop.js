@@ -18,7 +18,7 @@ import CustomModal from './CustomModal';
 import Soundfont from 'soundfont-player';
 import AudioPlayer from './AudioPlayer';
 
-const ProgLoop = ({loopData, id, deleteLoop, previewFlag}) => {
+const ProgLoop = ({deleteLoop, id, loopData, pProject, previewFlag, setcProject, updateLoop}) => {
 	// const [title, setTitle] = useState("")
 
 	return (
@@ -28,10 +28,16 @@ const ProgLoop = ({loopData, id, deleteLoop, previewFlag}) => {
 					<CardHeader
 						action={
 							<ButtonGroup>
-								<AudioPlayer progression={loopData.progression}/>
+								{/* <AudioPlayer progression={loopData.progression}/> */}
 
 								{ !previewFlag && 
-								<CustomModal loopData={loopData}/>
+									<CustomModal 
+										id={id}
+										loopData={loopData} 
+										pProject={pProject}
+										setcProject={setcProject}
+										updateLoop={updateLoop}
+									/>
 								}
 								<IconButton
 									onClick={() => deleteLoop(id)}

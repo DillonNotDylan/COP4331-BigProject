@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 		position: 'absolute'
 	}
 });
-const SwapInfo = ({beforeChord, afterChord}) => {
+const SwapInfo = ({beforeChord, afterChord, swapChords}) => {
 	const classes = useStyles()
 
 	return (
@@ -36,7 +36,9 @@ const SwapInfo = ({beforeChord, afterChord}) => {
 				</CardContent>
 
 				<CardActions>
-					<Button>Swap!</Button>
+					<Button onClick={swapChords}>
+						Swap Chords!
+					</Button>
 				</CardActions>
 
 			</Card>

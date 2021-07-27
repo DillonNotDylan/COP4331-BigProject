@@ -41,36 +41,44 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const ChordSelector = ({loopData, setProj, key, mode}) => {
+const ChordSelector = ({id, loopData, pProject, setcProject, updateLoop}) => {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
-	const [customLoop, setCustom] = useState([])
-	const [suggestions, setSuggest] = useState([])
-	const [selectedIndex, setSelected] = useState(1)
-	// const samplerRef = useRef(sampler)
-	// Handles what position in the progression that we are working in
-	const [toEdit, setEdit] = useState(1)
 
-	const [isLoaded, setLoaded] = useState(false)
+	// A state that controls a temp version of the progression we are creating/editing
+	const [customLoop, setCustom] = useState(loopData.progression)
+
+	// Holds the current list of suggestions for the currently selected chord
+	const [suggestions, setSuggest] = useState([])
+
+	// The index of the chord we are currently choosing to index.
+	const [selectedIndex, setSelected] = useState(0)
+	
+	// Handles what position in the progression that we are working in
+	const [toEdit, setEdit] = useState(0)
+
+	const [title, setTitle] = useState(loopData.title || "")
+
+	const [bpm, setBPM] = useState(loopData.bpm || "")
+
 	const reset = loopData
 
 	// This will trigger the suggestion function for this particular chord progression
+	// If we swap out a chord, the present chord's current list of suggestions will be
+	// inaccurate; reload its suggestion
+
 	useEffect(() => {
 		
-		const {placement, iterations, progression, name} = loopData
-		console.log("In here")
-
-		// Set the progression that we can then customize
-		setCustom(progression)
-		// setSuggest(getAllSuggestions(...chords, toEdit, "C", 1))
-		const res = getAllSuggestions(...progression, toEdit, "C", 1)
+		// Dillon's functions use 1-indexing, so bump this number up by 1
+		console.log(toEdit+1)
+		const res = getAllSuggestions(...customLoop, toEdit + 1, "C", 1)
 		console.log(res)
 
 		// Save the returned list of suggestions into state
 		setSuggest(res)
 		setSelected(0)
 		
-	}, [toEdit])
+	}, [toEdit, customLoop])
 
 
 	const handleListClick = (event, index) => {
@@ -82,6 +90,15 @@ const ChordSelector = ({loopData, setProj, key, mode}) => {
 		console.log(index)
 		setSelected(index);
 	};
+
+	// Takes a chord in the progression, and swaps it out with a selected chord from the
+	// suggestions list
+	const swapChords = () => {
+		let temp = [...customLoop]
+		temp[toEdit] = suggestions[selectedIndex]
+		setCustom(temp)
+	}
+
 
 	// const playChord = (chord) => {
 		
@@ -115,19 +132,17 @@ const ChordSelector = ({loopData, setProj, key, mode}) => {
 						<Grid container style={{ justifyContent: 'center' }}>
 							{
 
-								loopData && loopData.progression.map((singleChord, position) => {
+								loopData && customLoop.map((singleChord, position) => {
 									return (
 										<Grid item style={{ width: 80 }}>
 											<Chordbox
 												chord={singleChord}
 												position={position}
-												loop={loopData}
 												setEdit={setEdit}
 											/>
 										</Grid>
 									)
 								})
-								
 							}
 
 						</Grid>	
@@ -143,10 +158,19 @@ const ChordSelector = ({loopData, setProj, key, mode}) => {
 								/>
 							</Grid>
 							<Grid item>
-								<SwapInfo beforeChord={loopData.progression[toEdit - 1]} afterChord={suggestions[selectedIndex]} />
+								
+								<SwapInfo beforeChord={customLoop[toEdit]} afterChord={suggestions[selectedIndex]} swapChords={swapChords}/>
 							</Grid>
 						</Grid>
 
+					</Grid>
+
+					<Grid item justify="flex-end">
+						<Button
+							onClick={() => updateLoop(id, customLoop, title)}
+						>
+							Submit
+						</Button>
 					</Grid>
 
 				</Grid>

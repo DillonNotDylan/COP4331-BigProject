@@ -22,33 +22,37 @@ import ChordSelector from './ChordSelector';
 
 
 const LoopBox = ({useMode, useKey}) => {
-	let loopTemp = [];
+
 	const inf = Cookie.cToJson(Cookie.getCookie("userSession"));
 	// contains user id as 'id', and nickname as 'nickname'
 
-	const [currProj, setProj] = useState([]);
-	const [pProject, setcProject] = useState({
+	// const [currProj, setProj] = useState([]);
+
+	// Actual project info
+	const [pProject, setcProject] = useState(JSON.parse(localStorage.getItem('curr')) || {
 		pid: 0,
 		title: "Unsaved Project",
 		loops: [],
 		dateMade: "July 1, 1990"
 	});
 
-	const [workspaces, setWorkspaces] = useState([]);
-	
-	useEffect(async () => {
-		// get previously used local data
-		const c = localStorage.getItem('curr');
-		console.log(c)
-		if (c == null)
-			return;
+	// useEffect(async () => {
+	// 	// get previously used local data
+	// 	const c = localStorage.getItem('curr');
+	// 	console.log(c)
+	// 	if (c == null)
+	// 		return;
 
-		// if valid, set previously used loops
-		setcProject(JSON.parse(c));
-		setProj(JSON.parse(c).loops);
-		return;
+	// 	// if valid, set previously used loops
+	// 	setcProject(JSON.parse(c));
+	// 	return;
 			
-	}, []);	
+	// }, []);	
+
+	useEffect(() => {
+		console.log(pProject)
+		localStorage.setItem('curr', JSON.stringify(pProject))
+	}, [pProject])
 
 	const initLoop = async (firstPID) =>
 	{
@@ -65,7 +69,6 @@ const LoopBox = ({useMode, useKey}) => {
 				};
 				
 				// update loops and current info
-				setProj(a.data.loops);
 				setcProject(t);
 			}
 		}
@@ -76,45 +79,46 @@ const LoopBox = ({useMode, useKey}) => {
 	};
 
 	const addNewLoop = () => {
-		let temp = [...currProj]
+		let temp = [...pProject.loops]
 		let len = temp.length
 		temp.push(
 			{
 				progression: ["A_maj", "C_maj", "A_sharp_maj", "F_minor"],
-				name: "Another Loop",
+				name: "1",
 				placement: len,
 			},
 			{
 				progression: ["A_min", "C_maj", "B_min", "F_major"],
-				name: "Another Loop",
+				name: "2",
 				placement: len,
 			},
 			{
 				progression: ["D_maj", "F_min", "G_maj", "A_maj"],
-				name: "Another Loop",
+				name: "3",
 				placement: len,
 			}
 		)
-		
-		let t = pProject;
+		let t = {...pProject};
 		t.loops = temp;
-		localStorage.setItem('curr', JSON.stringify(t));
-		setProj(temp)
+		console.log(t)
+		// localStorage.setItem('curr', JSON.stringify(t));
+		console.log(localStorage.getItem('curr'))
+		setcProject(t);
+		
 	}
 
 	const deleteLoop = (index) => {
-		let temp = [...currProj]
+		// let temp = [...pProject.loops]
+		let temp = {...pProject}
 
 		if (index === -1)
 			return
 			
-		temp.splice(index, 1)
+		temp.loops.splice(index, 1)
 
 		// save all data to localstorage
-		let t = pProject;
-		t.loops = temp;
-		localStorage.setItem('curr', JSON.stringify(t));
-		setProj(temp)
+
+		setcProject(temp)
 	}
 
 	const save = (e) =>
@@ -125,12 +129,22 @@ const LoopBox = ({useMode, useKey}) => {
 		let t = {
 			pid: pProject.pid,
 			title:pProject.title,
-			loops: currProj
+			loops: pProject.loops
 		}
 
 		// post change to server
 		axios.patch("https://chordeo-grapher.herokuapp.com/user/update-project", t)
 		.catch(function (err) {console.log(err)} )
+	}
+
+	const updateLoop = (indexToUpdate, updatedProg, title) => {
+		let temp = {...pProject}
+		console.log(temp.loops)
+		let temp1 = temp.loops[indexToUpdate].progression = updatedProg
+		let temp2 = temp.loops[indexToUpdate].title = title;
+		// console.log(temp1)
+		// console.l
+		setcProject(temp)
 	}
 
 	
@@ -158,33 +172,40 @@ const LoopBox = ({useMode, useKey}) => {
 	return (
 		<div>
 
-			{(inf != null)?
-				<Button onClick={loadProj}>
-				Get data
-				</Button> : null
-			}
+			<div>
 
-			{ (inf != null)?
-				<Button onClick={null}>
-				Get specific project
-				</Button> : null
-			}
-
-			<Button
-				onClick={() => 
-					{
-						console.log(useMode)
-						console.log(useKey)
-					}
+				{(inf != null)?
+					<Button onClick={loadProj}>
+					Get data
+					</Button> : null
 				}
-			>
-				Test Key and Mode
+
+				{ (inf != null)?
+					<Button onClick={null}>
+					Get specific project
+					</Button> : null
+				}
+
+				<Button
+					onClick={() => 
+						{
+							console.log(useMode)
+							console.log(useKey)
+						}
+					}
+				>
+					Test Key and Mode
+				</Button>
+				{
+					(inf != null)?
+						<ProjSelector loadProj={loadProj}/>
+					: null
+				}
+		</div>
+			
+			<Button onClick={() => console.log(pProject)}>
+				Testy
 			</Button>
-			{
-				(inf != null)?
-				<ProjSelector setProj={setProj}/>
-				: null
-			}
 
 			<Card >
 				<CardContent>
@@ -194,12 +215,8 @@ const LoopBox = ({useMode, useKey}) => {
 								A
 							</Avatar>
 						}
-						// action={
-						// 	<IconButton aria-label="settings">
-						// 		<MoreVertIcon />
-						// 	</IconButton>
-						// }
-						title={pProject.title}
+
+						title={pProject.title || "Title Here"}
 						subheader={"Created on " + pProject.dateMade}
 					/>
 
@@ -219,7 +236,14 @@ const LoopBox = ({useMode, useKey}) => {
 							pProject.loops.map((loop, index) => {
 								return (
 									<Grid item style={{justifyContent: 'center'}}>
-										<ProgLoop loopData={loop} id={index} deleteLoop={deleteLoop}/>
+										<ProgLoop 
+											deleteLoop={deleteLoop} 
+											id={index} 
+											loopData={loop} 
+											pProject={pProject}
+											setcProject={setcProject}
+											updateLoop={updateLoop}
+										/>
 									</Grid>
 								)
 							})
