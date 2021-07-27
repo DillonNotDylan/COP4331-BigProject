@@ -25,14 +25,15 @@ const cardStyles = makeStyles({
 		width: 50,
 		padding: '25px',
 		minWidth: '150px',
-  	},
+	},
 
 	quality: {
 		alignContent: 'flex',
 		padding: '25px',
-		marginLeft: 25,
+		marginLeft: 15,
 		display:"flex",
-		width: 160
+		width: 170,
+		minwidth: 160 
 	},
 
 	divBox: {
@@ -42,19 +43,21 @@ const cardStyles = makeStyles({
 
 });
 
-export default function KeyBox({currOption}) {
+export default function KeyBox({currOption, grabKey, grabMode, status, switchStatus}) {
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
-	const[currKey, setKey] = React.useState('');
-	const[currQuality, setQuality] = React.useState(false);
-    
+	const[currKey, setKey] = React.useState(1);
+
 	const handleChange = (event) => {
 		setKey(event.target.value);
+		grabKey(event.target.value);
 	};
 
-	const handleQuality = () =>{
-		setQuality(!currQuality);
+	const handleStatus = () =>{
+		switchStatus(!status);
+		(status) ? grabMode(5) : grabMode(2);
+		return status;
 	}
 
 	return(
@@ -81,11 +84,11 @@ export default function KeyBox({currOption}) {
 						<MenuItem value={12}>B</MenuItem>
 					</Select>
 				</FormControl>
-				
+
 			</Card>
 
 			<Card className={cardClasses.quality}>
-                <Grid
+				<Grid
 					component="label"
 					container
 					alignItems="center"
@@ -96,13 +99,13 @@ export default function KeyBox({currOption}) {
 							Major
 						</Typography>
 					</Grid>
-                    <Grid item>
+					<Grid item>
 						<Switch
-                            disabled={currOption}
-							onClick={handleQuality}
-                            color="default"
-                            inputProps={{ 'aria-label': 'checkbox with default color' }}
-                        />
+							disabled={currOption}
+							onClick={handleStatus}
+							color="default"
+							inputProps={{ 'aria-label': 'checkbox with default color' }}
+						/>
 					</Grid>
 					<Grid item>
 						<Typography variant="body1">
@@ -110,9 +113,7 @@ export default function KeyBox({currOption}) {
 						</Typography>
 					</Grid>
 				</Grid>
-
-                
-            </Card>
+			</Card>
 		</div>
 	)
 }

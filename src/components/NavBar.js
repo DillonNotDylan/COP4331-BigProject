@@ -6,9 +6,7 @@ import {
 	IconButton,
 	Typography,
 	TextField,
-	Grid,
-	Dialog,
-	Link
+	Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu';
@@ -22,8 +20,7 @@ let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: 'center',
-		borderRadius: 5,
-		height: 95
+		borderRadius: 5
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
@@ -35,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	notLogged: {
 		flexDirection:'row',
-		justifyContent:'flex-end',		
+		justifyContent:'flex-end',
+		
 		display: 'flex' 
 	},
 	logged: {
@@ -123,7 +121,7 @@ const NavBar = () => {
 						}
 					}
 				>
-					<Grid item style={{marginTop: 25, marginRight: 10}}>
+					<Grid item>
 						<TextField
 							variant="outlined"
 							size="small"
@@ -137,10 +135,6 @@ const NavBar = () => {
 							placeholder="Password"
 							onChange={formChange}
 						/>	
-						
-						<Grid item style={{marginLeft: 225, marginTop: 5}}>
-							<Link href="#" color="textSecondary">Forgot Password?</Link>
-						</Grid>
 					</Grid>
 
 					<Grid item>
@@ -155,8 +149,7 @@ const NavBar = () => {
 					<Grid item>
 						<Login_SignUp  buttonText="Sign Up"/>
 					</Grid>
-					
-
+				
 				</Grid>
 
 			</section>
