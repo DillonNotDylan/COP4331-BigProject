@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import {
 	AppBar,
 	Button,
+	ButtonGroup,
 	Toolbar,
 	IconButton,
-	Typography,
+	Typography, Box, 
 	TextField,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -13,8 +14,7 @@ import axios from 'axios';
 import { RestoreOutlined } from '@material-ui/icons';
 import Login_SignUp from './Login_SignUp';
 import Cookie from "./Cookie"
-
-let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
+import ForgotPassword from './ForgotPassword'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -34,9 +34,10 @@ const NavBar = () => {
 	const [user, setUser] = useState("");
 	const [pass, setPass] = useState("");
 	const [errMsg, setErr] = useState("");
+	const [forgPass, setForgPass] = useState(false);
 
 	const submitLogin = () => {
-		console.log("User: " + user + "pass:" + pass);
+		console.log("User: " + user + ", pass:" + pass);
 
 		const data =
 		{
@@ -59,7 +60,7 @@ const NavBar = () => {
 					Cookie.setJCookie("userSession", cInfo, 60);
 					setLin(true);
 					setErr("");
-
+					window.location = window.location;
 				}
 			})
 			.catch(function (error) {
@@ -71,12 +72,18 @@ const NavBar = () => {
 
 	const doLogOut = () => {
 		console.log("loggingout");
-		setUser("");
+		localStorage.clear();
 		setPass("");
 		Cookie.delCookie("userSession");
 		setLin(false);
+		// refresh window to reload components
+		window.location = window.location;
 	}
 
+	const toggleForgotPop = () =>
+	{
+		setForgPass(!forgPass);
+	}
 
 	const formChange = (e) => {
 		// keep track??
@@ -87,22 +94,32 @@ const NavBar = () => {
 			setUser(e.target.value);
 		else
 			setPass(e.target.value);
-
 	}
 
 
 	const notLoggedIn = () => {
 
-		const clickyStyle = { margin: '5px', textAlign: 'center', justifyContent: 'center' };
+		const clickyStyle = { margin: '4px', textAlign: 'center', justifyContent: 'center' };
 		return (
-			<div style={{ maxHeight: '5vh', maxWidth: '50vw', display: 'flex', flexDirection: 'row' }}>
-
+			<div style={{ maxHeight: '5vh', maxWidth: '50vw', display: 'flex', flexDirection: 'row' , padding:'5vh'}}>
+				{	// show forgot password dialog on click
+					forgPass?
+					<ForgotPassword toggle={toggleForgotPop}/>
+					: null
+				}
 				<Typography style={{ marginRight: '20px' }} >{errMsg}</Typography>
 				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} />
-				<TextField variant="outlined" size="small" placeholder="Password" onChange={formChange} style={clickyStyle} />
-				<Login_SignUp buttonText="Sign Up" style={clickyStyle} />
+				<TextField variant="outlined" size="small" placeholder="Password" type="password" onChange={formChange} style={clickyStyle} />
 
-				<Button color="inherit" variant="contained" onClick={submitLogin} style={clickyStyle, { paddingTop: '2%', paddingBottom: '2%' }}>Login</Button>
+				<ButtonGroup style={{display:'flex', flexDirection:'column', maxHeight:'100%', justifyContent:'center'}} >
+					<ButtonGroup style={{display:'flex', flexDirection:'row', paddingTop:'7%'}}>
+						<Button color="inherit" variant="contained" onClick={submitLogin} style={{textAlign:'center', justifyContent: 'center', marginRight:'1vw' }}>Login</Button>
+						<Login_SignUp buttonText="Sign Up" style={{textAlign: 'center', justifyContent: 'center'}} />
+					</ButtonGroup>
+					<Button variant="contained" color="primary" onClick={toggleForgotPop}>
+						Forgot Password
+					</Button>
+				</ButtonGroup>
 
 			</div>
 		);
@@ -116,7 +133,7 @@ const NavBar = () => {
 			nName = nName.nickname;
 		return (
 			<>
-				<Typography variant="h6" style={{ color: 'blue', marginRight: '10vw' }} >Welcome {nName}</Typography>
+				<Typography variant="h6" style={{ color: 'black', marginRight: '10vw' }} >Welcome {nName}</Typography>
 				<Button onClick={doLogOut} >Log Out</Button>
 			</>
 		);

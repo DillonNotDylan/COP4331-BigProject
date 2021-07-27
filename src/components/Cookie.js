@@ -27,6 +27,7 @@ export default class Cookie
 		{
 			var date = new Date();
 			date.setTime(date.getTime() + expireDateinMin *(60 * 60 * 1000));
+			console.log(date.toUTCString() );
 			expireTime = ";expire=" + date.toUTCString();
 		}
 			
