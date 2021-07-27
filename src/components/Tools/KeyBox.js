@@ -47,7 +47,7 @@ export default function KeyBox({currOption, grabKey, grabMode, status, switchSta
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
-	const[currKey, setKey] = React.useState(1);
+	const[currKey, setKey] = React.useState("A");
 
 	const handleChange = (event) => {
 		setKey(event.target.value);
@@ -70,18 +70,19 @@ export default function KeyBox({currOption, grabKey, grabMode, status, switchSta
 						onChange={handleChange}
 						label="Key"
 					>
-						<MenuItem value={1}>C</MenuItem>
-						<MenuItem value={2}>C#</MenuItem>
-						<MenuItem value={3}>D</MenuItem>
-						<MenuItem value={4}>D#</MenuItem>
-						<MenuItem value={5}>E</MenuItem>
-						<MenuItem value={6}>F</MenuItem>
-						<MenuItem value={7}>F#</MenuItem>
-						<MenuItem value={8}>G</MenuItem>
-						<MenuItem value={9}>G#</MenuItem>
-						<MenuItem value={10}>A</MenuItem>
-						<MenuItem value={11}>A#</MenuItem>
-						<MenuItem value={12}>B</MenuItem>
+						<MenuItem value={"A"}>A</MenuItem>
+						<MenuItem value={"A_sharp"}>A#</MenuItem>
+						<MenuItem value={"B"}>B</MenuItem>
+						<MenuItem value={"C"}>C</MenuItem>
+						<MenuItem value={"C_sharp"}>C#</MenuItem>
+						<MenuItem value={"D"}>D</MenuItem>
+						<MenuItem value={"D_sharp"}>D#</MenuItem>
+						<MenuItem value={"E"}>E</MenuItem>
+						<MenuItem value={"F"}>F</MenuItem>
+						<MenuItem value={"F_sharp"}>F#</MenuItem>
+						<MenuItem value={"G"}>G</MenuItem>
+						<MenuItem value={"G_sharp"}>G#</MenuItem>
+						
 					</Select>
 				</FormControl>
 
