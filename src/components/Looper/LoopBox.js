@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core'
 
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import { AddOutlined, ModeComment, Title } from '@material-ui/icons';
 import ProgLoop from './ProgLoop'
 import Cookie from '../Cookie'
 import Login_SignUp from '../Login_SignUp'
@@ -36,18 +37,11 @@ const LoopBox = ({useMode, useKey}) => {
 		dateMade: "July 1, 1990"
 	});
 
-	// useEffect(async () => {
-	// 	// get previously used local data
-	// 	const c = localStorage.getItem('curr');
-	// 	console.log(c)
-	// 	if (c == null)
-	// 		return;
-
-	// 	// if valid, set previously used loops
-	// 	setcProject(JSON.parse(c));
-	// 	return;
-			
-	// }, []);	
+	const test = {
+		title: "",
+		progression: ["C_maj", "C_maj", "C_maj", "C_maj"],
+		mode: "1"
+	}
 
 	useEffect(() => {
 		console.log(pProject)
@@ -140,10 +134,16 @@ const LoopBox = ({useMode, useKey}) => {
 	const updateLoop = (indexToUpdate, updatedProg, title) => {
 		let temp = {...pProject}
 		console.log(temp.loops)
-		let temp1 = temp.loops[indexToUpdate].progression = updatedProg
-		let temp2 = temp.loops[indexToUpdate].title = title;
+		temp.loops[indexToUpdate].progression = updatedProg
+		temp.loops[indexToUpdate].title = title;
 		// console.log(temp1)
 		// console.l
+		setcProject(temp)
+	}
+
+	const addLoop = (toAdd) => {
+		let temp = {...pProject}
+		temp.push(toAdd)
 		setcProject(temp)
 	}
 
@@ -163,7 +163,7 @@ const LoopBox = ({useMode, useKey}) => {
 	const loadProj = () =>
 	{
 		// get object from storage
-		let t = JSON.parse(localStorage.getItem('curr'));
+		// let t = JSON.parse(localStorage.getItem('curr'));
 		
 		console.log(localStorage.getItem('newPID'));
 		initLoop(localStorage.getItem('newPID'));
@@ -227,7 +227,28 @@ const LoopBox = ({useMode, useKey}) => {
 						: null
 					}
 					
-					<CustomModal body={<ChordSelector progression={null}/>} />
+
+					 {/* Use the modal that opens up the edit form, but we will
+					 pass it props that let it know we are making a new loop from
+					 scratch, rather than editing one. This will allow it to prepopulate with
+					 default data */}
+					<CustomModal
+						// This id in this instance doesn't do anything, I'm just giving it -1 to say we don't use it
+						// as a prop when we're simply adding a new loop 
+						id={-1}
+						loopData={{
+							title: "",
+							progression: ["C_maj", "C_maj", "C_maj", "C_maj"],
+							mode: "1"
+						}}
+						addLoop={addLoop}
+						addFlag={true}
+						icon={<AddOutlined />}
+					/>
+
+
+
+					{/* <CustomModal body={<ChordSelector progression={null}/>} /> */}
 				
 					<Grid container direction="column" style={{width: 500}}>
 						{
@@ -240,7 +261,7 @@ const LoopBox = ({useMode, useKey}) => {
 											deleteLoop={deleteLoop} 
 											id={index} 
 											loopData={loop} 
-											pProject={pProject}
+											loopTitle={loop.title}
 											setcProject={setcProject}
 											updateLoop={updateLoop}
 										/>

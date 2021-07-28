@@ -41,12 +41,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const ChordSelector = ({id, loopData, pProject, setcProject, updateLoop}) => {
+const ChordSelector = ({id, loopData, updateLoop}) => {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
 
 	// A state that controls a temp version of the progression we are creating/editing
-	const [customLoop, setCustom] = useState(loopData.progression)
+	const [customLoop, setCustom] = useState([...loopData.progression])
 
 	// Holds the current list of suggestions for the currently selected chord
 	const [suggestions, setSuggest] = useState([])
@@ -69,10 +69,12 @@ const ChordSelector = ({id, loopData, pProject, setcProject, updateLoop}) => {
 
 	useEffect(() => {
 		
+		console.log((loopData.progression))
+
 		// Dillon's functions use 1-indexing, so bump this number up by 1
 		console.log(toEdit+1)
 		const res = getAllSuggestions(...customLoop, toEdit + 1, "C", 1)
-		console.log(res)
+		// console.log(res)
 
 		// Save the returned list of suggestions into state
 		setSuggest(res)
@@ -124,9 +126,12 @@ const ChordSelector = ({id, loopData, pProject, setcProject, updateLoop}) => {
 					Testy
 				</Button>
 				<Grid container direction="column">
-					<Grid item>
-						<AudioPlayer progression={loopData.progression}/>
-					</Grid>
+					{
+						customLoop &&
+						<Grid item>
+							<AudioPlayer progression={customLoop}/>
+						</Grid>
+					}
 
 					<Grid item>
 						<Grid container style={{ justifyContent: 'center' }}>
