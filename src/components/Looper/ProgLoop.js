@@ -28,13 +28,14 @@ const ProgLoop = ({deleteLoop, id, loopData, previewFlag, updateLoop}) => {
 					<CardHeader
 						action={
 							<ButtonGroup>
-								{/* <AudioPlayer progression={loopData.progression}/> */}
+								<AudioPlayer progression={loopData.progression}/>
 
 								{ !previewFlag && 
 									<CustomModal 
 										id={id}
 										loopData={loopData} 
 										submitAction={updateLoop}
+										addFlag={false}
 									/>
 								}
 								<IconButton

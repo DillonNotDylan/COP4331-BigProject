@@ -131,19 +131,36 @@ const LoopBox = ({useMode, useKey}) => {
 		.catch(function (err) {console.log(err)} )
 	}
 
-	const updateLoop = (indexToUpdate, updatedProg, title) => {
+	// To update a loop, we need: its place in the overall project's loop array to replace the
+	// old version, 
+	// 
+	const updateLoop = (indexToUpdate, updatedProg, loopName, loopKey, loopMode) => {
 		let temp = {...pProject}
 		console.log(temp.loops)
-		temp.loops[indexToUpdate].progression = updatedProg
-		temp.loops[indexToUpdate].title = title;
+		let toInsert = {
+			key: loopKey,
+			mode: loopMode,
+			name: loopName,
+			progression: updatedProg,
+		}
+		// temp.loops[indexToUpdate].progression = updatedProg
+		// temp.loops[indexToUpdate].title = title;
+		temp.loops[indexToUpdate] = toInsert
 		// console.log(temp1)
 		// console.l
 		setcProject(temp)
 	}
 
-	const addLoop = (toAdd) => {
-		let temp = {...pProject}
-		temp.push(toAdd)
+	const addLoop = (updatedProg, loopName, loopKey, loopMode) => {
+		let temp = { ...pProject }
+		console.log(temp.loops)
+		let toInsert = {
+			key: loopKey,
+			mode: loopMode,
+			name: loopName,
+			progression: updatedProg,
+		}
+		temp.loops.push(toInsert)
 		setcProject(temp)
 	}
 
@@ -220,7 +237,7 @@ const LoopBox = ({useMode, useKey}) => {
 						subheader={"Created on " + pProject.dateMade}
 					/>
 
-					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
+					{/* <Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button> */}
 					{
 						inf != null?
 						<Button variant="contained" color="secondary" onClick={save} style={{float:'right'}}> Save Data</Button>
@@ -241,7 +258,7 @@ const LoopBox = ({useMode, useKey}) => {
 							progression: ["C_maj", "C_maj", "C_maj", "C_maj"],
 							mode: "1"
 						}}
-						addLoop={addLoop}
+						submitAction={addLoop}
 						addFlag={true}
 						icon={<AddOutlined />}
 					/>
@@ -261,9 +278,9 @@ const LoopBox = ({useMode, useKey}) => {
 											deleteLoop={deleteLoop} 
 											id={index} 
 											loopData={loop} 
-											loopTitle={loop.title}
-											setcProject={setcProject}
 											updateLoop={updateLoop}
+											useKey={useKey}
+											useMode={useMode}
 										/>
 									</Grid>
 								)

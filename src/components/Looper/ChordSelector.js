@@ -5,6 +5,7 @@ import {
 	CardContent,
 	Grid,
 	Paper,
+	TextField,
 	Typography
 } from '@material-ui/core'
 import React, { useState, useEffect, useRef } from 'react'
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const ChordSelector = ({id, loopData, updateLoop}) => {
+const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
 
@@ -57,11 +58,10 @@ const ChordSelector = ({id, loopData, updateLoop}) => {
 	// Handles what position in the progression that we are working in
 	const [toEdit, setEdit] = useState(0)
 
-	const [title, setTitle] = useState(loopData.title || "")
+	const [loopName, setLoopName] = useState(loopData.name || "")
 
 	const [bpm, setBPM] = useState(loopData.bpm || "")
 
-	const reset = loopData
 
 	// This will trigger the suggestion function for this particular chord progression
 	// If we swap out a chord, the present chord's current list of suggestions will be
@@ -126,6 +126,13 @@ const ChordSelector = ({id, loopData, updateLoop}) => {
 					Testy
 				</Button>
 				<Grid container direction="column">
+					<Grid item>
+						<TextField
+							value={loopName}
+							onChange={e => setLoopName(e.target.value)}
+						>
+						</TextField>
+					</Grid>
 					{
 						customLoop &&
 						<Grid item>
@@ -171,11 +178,20 @@ const ChordSelector = ({id, loopData, updateLoop}) => {
 					</Grid>
 
 					<Grid item justify="flex-end">
-						<Button
-							onClick={() => updateLoop(id, customLoop, title)}
-						>
-							Submit
-						</Button>
+						{addFlag ?
+							<Button
+								onClick={() => submitAction(customLoop, loopName)}
+							>
+								Submit
+							</Button>
+								:
+								<Button
+									// If we are updating, we need to know what index to replace
+									onClick={() => submitAction(id, customLoop, loopName)}
+								>
+									Update
+								</Button>
+						}
 					</Grid>
 
 				</Grid>
