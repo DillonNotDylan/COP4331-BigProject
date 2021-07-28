@@ -188,10 +188,12 @@ const LoopBox = ({useMode, useKey}) => {
 		initLoop(localStorage.getItem('newPID'));
 	}
 
-	const projectName = (e) => {
-		e.persist();
-		setName(e.target.value);
-		console.log(projName);
+	const handleProjName = (e) => {
+		// e.persist();
+		let temp = {...pProject}
+		temp.title = e.target.value
+		setcProject(temp)
+		// console.log(projName);
 	}
 
 	return (
@@ -241,7 +243,13 @@ const LoopBox = ({useMode, useKey}) => {
 							</Avatar>
 						}
 
-						title={pProject.title || "Title Here"}
+						title={
+							<TextField 
+								placeholder="Project Name"
+								value={pProject.title}
+								onChange={handleProjName}
+							/>
+						}
 						subheader={"Created on " + pProject.dateMade}
 					/>
 
