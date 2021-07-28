@@ -5,7 +5,12 @@ import {
 	CardContent,
 	IconButton,
 	Grid,
-	ButtonGroup
+	ButtonGroup,
+	Dialog,
+    DialogActions,
+    Button,
+    Typography
+
 } from '@material-ui/core'
 import DeleteOutlined from '@material-ui/icons/DeleteOutline'
 import AddIcon from '@material-ui/icons/Add';
@@ -13,6 +18,33 @@ import Chordbox from './Chordbox'
 
 const ProgLoop = ({loopData, id, deleteLoop}) => {
 	// const [title, setTitle] = useState("")
+    const [modalDisplayed, setDisplay] = React.useState(false);
+	const showModal = () => {
+        setDisplay(!modalDisplayed);
+    }
+
+    const closeModal = () => {
+        setDisplay(false);
+    }
+
+    const deleteClarify = (
+        <div style={{padding: 20, justifyContent: "center"}}>
+            <Typography variant="h6">
+                Are you sure you want to delete this loop?
+            </Typography>
+            <p>
+                <Button style={{marginLeft: 70, marginRight: 100}} variant="contained" onClick={() => deleteLoop(id)}>
+                    Yes
+                </Button>
+                <Button variant="contained" onClick={closeModal}>
+                    No
+                </Button>
+            </p>
+            
+
+        </div>
+    );
+
 	return (
 		<div>
 			<Card>
@@ -21,15 +53,20 @@ const ProgLoop = ({loopData, id, deleteLoop}) => {
 						action={
 							<ButtonGroup>
 								<IconButton
-									onClick={() => console.log("I've been clicked!")}
-								>
-									<AddIcon />
-								</IconButton>
-								<IconButton
-									onClick={() => deleteLoop(id)}
-								>
-									<DeleteOutlined />
-								</IconButton>
+                                    onClick={showModal}
+                                >
+                                    <DeleteOutlined/>
+
+                                    <Dialog
+                                        open={modalDisplayed}
+                                        onClose={closeModal}
+                                    >
+                                        <DialogActions>
+                                            {deleteClarify}
+                                        </DialogActions>
+                                    </Dialog>
+                                </IconButton>
+
 
 							</ButtonGroup>
 						}
