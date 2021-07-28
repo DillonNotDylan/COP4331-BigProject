@@ -5,6 +5,7 @@ import {
 	CardContent,
 	Grid,
 	Paper,
+	TextField,
 	Typography
 } from '@material-ui/core'
 import React, { useState, useEffect, useRef } from 'react'
@@ -41,12 +42,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const ChordSelector = ({id, loopData, pProject, setcProject, updateLoop}) => {
+const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
 
 	// A state that controls a temp version of the progression we are creating/editing
-	const [customLoop, setCustom] = useState(loopData.progression)
+	const [customLoop, setCustom] = useState([...loopData.progression])
 
 	// Holds the current list of suggestions for the currently selected chord
 	const [suggestions, setSuggest] = useState([])
@@ -57,11 +58,10 @@ const ChordSelector = ({id, loopData, pProject, setcProject, updateLoop}) => {
 	// Handles what position in the progression that we are working in
 	const [toEdit, setEdit] = useState(0)
 
-	const [title, setTitle] = useState(loopData.title || "")
+	const [loopName, setLoopName] = useState(loopData.name || "")
 
 	const [bpm, setBPM] = useState(loopData.bpm || "")
 
-	const reset = loopData
 
 	// This will trigger the suggestion function for this particular chord progression
 	// If we swap out a chord, the present chord's current list of suggestions will be
@@ -69,10 +69,12 @@ const ChordSelector = ({id, loopData, pProject, setcProject, updateLoop}) => {
 
 	useEffect(() => {
 		
+		console.log((loopData.progression))
+
 		// Dillon's functions use 1-indexing, so bump this number up by 1
 		console.log(toEdit+1)
 		const res = getAllSuggestions(...customLoop, toEdit + 1, "C", 1)
-		console.log(res)
+		// console.log(res)
 
 		// Save the returned list of suggestions into state
 		setSuggest(res)
@@ -125,8 +127,18 @@ const ChordSelector = ({id, loopData, pProject, setcProject, updateLoop}) => {
 				</Button>
 				<Grid container direction="column">
 					<Grid item>
-						<AudioPlayer progression={loopData.progression}/>
+						<TextField
+							value={loopName}
+							onChange={e => setLoopName(e.target.value)}
+						>
+						</TextField>
 					</Grid>
+					{
+						customLoop &&
+						<Grid item>
+							<AudioPlayer progression={customLoop}/>
+						</Grid>
+					}
 
 					<Grid item>
 						<Grid container style={{ justifyContent: 'center' }}>
@@ -166,11 +178,20 @@ const ChordSelector = ({id, loopData, pProject, setcProject, updateLoop}) => {
 					</Grid>
 
 					<Grid item justify="flex-end">
-						<Button
-							onClick={() => updateLoop(id, customLoop, title)}
-						>
-							Submit
-						</Button>
+						{addFlag ?
+							<Button
+								onClick={() => submitAction(customLoop, loopName)}
+							>
+								Submit
+							</Button>
+								:
+								<Button
+									// If we are updating, we need to know what index to replace
+									onClick={() => submitAction(id, customLoop, loopName)}
+								>
+									Update
+								</Button>
+						}
 					</Grid>
 
 				</Grid>

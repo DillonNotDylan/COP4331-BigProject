@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core'
 
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import { AddOutlined, ModeComment, Title } from '@material-ui/icons';
 import ProgLoop from './ProgLoop'
 import Cookie from '../Cookie'
 import Login_SignUp from '../Login_SignUp'
@@ -36,18 +37,11 @@ const LoopBox = ({useMode, useKey}) => {
 		dateMade: "July 1, 1990"
 	});
 
-	// useEffect(async () => {
-	// 	// get previously used local data
-	// 	const c = localStorage.getItem('curr');
-	// 	console.log(c)
-	// 	if (c == null)
-	// 		return;
-
-	// 	// if valid, set previously used loops
-	// 	setcProject(JSON.parse(c));
-	// 	return;
-			
-	// }, []);	
+	const test = {
+		title: "",
+		progression: ["C_maj", "C_maj", "C_maj", "C_maj"],
+		mode: "1"
+	}
 
 	useEffect(() => {
 		console.log(pProject)
@@ -159,17 +153,40 @@ const LoopBox = ({useMode, useKey}) => {
 		.catch(function (err) {console.log(err)} )
 	}
 
-	const updateLoop = (indexToUpdate, updatedProg, title) => {
+	// To update a loop, we need: its place in the overall project's loop array to replace the
+	// old version, 
+	// 
+	const updateLoop = (indexToUpdate, updatedProg, loopName, loopKey, loopMode) => {
 		let temp = {...pProject}
 		console.log(temp.loops)
-		let temp1 = temp.loops[indexToUpdate].progression = updatedProg
-		let temp2 = temp.loops[indexToUpdate].title = title;
+		let toInsert = {
+			key: loopKey,
+			mode: loopMode,
+			name: loopName,
+			progression: updatedProg,
+		}
+		// temp.loops[indexToUpdate].progression = updatedProg
+		// temp.loops[indexToUpdate].title = title;
+		temp.loops[indexToUpdate] = toInsert
 		// console.log(temp1)
 		
 		setcProject(temp)
 	}
 
-	/*
+	const addLoop = (updatedProg, loopName, loopKey, loopMode) => {
+		let temp = { ...pProject }
+		console.log(temp.loops)
+		let toInsert = {
+			key: loopKey,
+			mode: loopMode,
+			name: loopName,
+			progression: updatedProg,
+		}
+		temp.loops.push(toInsert)
+		setcProject(temp)
+	}
+
+	
 	const getProjectById = () => {
 		let userID = "60ebdf0a171f280086b81f57"
 
@@ -178,14 +195,14 @@ const LoopBox = ({useMode, useKey}) => {
 				pid: "60ebdfaa171f280086b81f5f"				
 			}
 		)
-	}*/
+	}
 	
 	const loadProj = () =>
 	{
 		// get object from storage
-		let t = JSON.parse(localStorage.getItem('curr'));
-
-		//console.log(localStorage.getItem('newPID'));
+		// let t = JSON.parse(localStorage.getItem('curr'));
+		
+		console.log(localStorage.getItem('newPID'));
 		initLoop(localStorage.getItem('newPID'));
 	}
 
@@ -241,14 +258,35 @@ const LoopBox = ({useMode, useKey}) => {
 						subheader={"Created on " + pProject.dateMade}
 					/>
 
-					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
+					{/* <Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button> */}
 					{
 						inf != null?
 						<Button variant="contained" color="secondary" onClick={save} style={{float:'right'}}> Save Data</Button>
 						: null
 					}
 					
-					<CustomModal body={<ChordSelector progression={null}/>} />
+
+					 {/* Use the modal that opens up the edit form, but we will
+					 pass it props that let it know we are making a new loop from
+					 scratch, rather than editing one. This will allow it to prepopulate with
+					 default data */}
+					<CustomModal
+						// This id in this instance doesn't do anything, I'm just giving it -1 to say we don't use it
+						// as a prop when we're simply adding a new loop 
+						id={-1}
+						loopData={{
+							title: "",
+							progression: ["C_maj", "C_maj", "C_maj", "C_maj"],
+							mode: "1"
+						}}
+						submitAction={addLoop}
+						addFlag={true}
+						icon={<AddOutlined />}
+					/>
+
+
+
+					{/* <CustomModal body={<ChordSelector progression={null}/>} /> */}
 				
 					<Grid container direction="column" style={{width: 500}}>
 						{
@@ -261,9 +299,9 @@ const LoopBox = ({useMode, useKey}) => {
 											deleteLoop={deleteLoop} 
 											id={index} 
 											loopData={loop} 
-											pProject={pProject}
-											setcProject={setcProject}
 											updateLoop={updateLoop}
+											useKey={useKey}
+											useMode={useMode}
 										/>
 									</Grid>
 								)

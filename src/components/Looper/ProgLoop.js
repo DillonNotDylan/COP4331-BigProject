@@ -18,7 +18,7 @@ import CustomModal from './CustomModal';
 import Soundfont from 'soundfont-player';
 import AudioPlayer from './AudioPlayer';
 
-const ProgLoop = ({deleteLoop, id, loopData, pProject, previewFlag, setcProject, updateLoop}) => {
+const ProgLoop = ({deleteLoop, id, loopData, previewFlag, updateLoop}) => {
 	// const [title, setTitle] = useState("")
 
 	return (
@@ -28,15 +28,14 @@ const ProgLoop = ({deleteLoop, id, loopData, pProject, previewFlag, setcProject,
 					<CardHeader
 						action={
 							<ButtonGroup>
-								{/* <AudioPlayer progression={loopData.progression}/> */}
+								<AudioPlayer progression={loopData.progression}/>
 
 								{ !previewFlag && 
 									<CustomModal 
 										id={id}
 										loopData={loopData} 
-										pProject={pProject}
-										setcProject={setcProject}
-										updateLoop={updateLoop}
+										submitAction={updateLoop}
+										addFlag={false}
 									/>
 								}
 								<IconButton
@@ -44,8 +43,6 @@ const ProgLoop = ({deleteLoop, id, loopData, pProject, previewFlag, setcProject,
 								>
 									<DeleteOutlined />
 								</IconButton>
-
-								
 
 							</ButtonGroup>
 						}
@@ -66,6 +63,9 @@ const ProgLoop = ({deleteLoop, id, loopData, pProject, previewFlag, setcProject,
 													chord={singleChord}
 													position={position}
 													loop={loopData}
+
+													// Don't call edit related functions if all we're doing is click on a chord on the menu
+													// Editing should be restricted to when they explicitly click on the pencil edit icon
 													setEdit={null}
 												/>
 											</Grid>
