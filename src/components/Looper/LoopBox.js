@@ -58,7 +58,21 @@ const LoopBox = ({useMode, useKey}) => {
 	{
 		try
 		{
-			if (inf != null)
+			// 0 indicates new project, init to empty with todays date
+			if (firstPID === "0")
+			{	// since ID is a string, we use this format
+				let t = {
+					pid: 0,
+					title: "Unsaved Project",
+					loops: [],
+					dateMade: new Date()
+				};
+
+				setcProject(t);
+				return;
+			}
+			
+			if (inf != null && firstPID != 0)
 			{	// save data in a. wait for response to continue
 				const a = await axios.post("https://chordeo-grapher.herokuapp.com/user/get-project", {pid: firstPID})
 				let t = {
@@ -132,6 +146,14 @@ const LoopBox = ({useMode, useKey}) => {
 			loops: pProject.loops
 		}
 
+		// check if current project exists
+		if (t.pid == 0)
+		{	// instead 
+			console.log("different");
+			return;
+		}
+
+
 		// post change to server
 		axios.patch("https://chordeo-grapher.herokuapp.com/user/update-project", t)
 		.catch(function (err) {console.log(err)} )
@@ -143,31 +165,30 @@ const LoopBox = ({useMode, useKey}) => {
 		let temp1 = temp.loops[indexToUpdate].progression = updatedProg
 		let temp2 = temp.loops[indexToUpdate].title = title;
 		// console.log(temp1)
-		// console.l
+		
 		setcProject(temp)
 	}
 
-	
+	/*
 	const getProjectById = () => {
 		let userID = "60ebdf0a171f280086b81f57"
 
 		const res = axios.post("https://chordeo-grapher.herokuapp.com/get-project",
 			{
-				pid: "60ebdfaa171f280086b81f5f"
-
-				
+				pid: "60ebdfaa171f280086b81f5f"				
 			}
 		)
-	}
+	}*/
 	
 	const loadProj = () =>
 	{
 		// get object from storage
 		let t = JSON.parse(localStorage.getItem('curr'));
-		
-		console.log(localStorage.getItem('newPID'));
+
+		//console.log(localStorage.getItem('newPID'));
 		initLoop(localStorage.getItem('newPID'));
 	}
+
 
 	return (
 		<div>

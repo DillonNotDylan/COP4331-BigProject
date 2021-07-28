@@ -37,8 +37,10 @@ const ProjSelector = ({loadProj}) => {
 			
 				return 0;
 			});
-
-			setProjects(response.data.projects);
+			
+			let t = [...response.data.projects];
+			t.push( {pid: 0, title: "Create New Project"} );
+			setProjects(t);
 		})
 		.catch(function (error) {
 			console.log("Error in api call in project selector.");
@@ -52,7 +54,16 @@ const ProjSelector = ({loadProj}) => {
 		console.log("handle change in project selector");
 		console.log(newValue);
 		localStorage.setItem('newPID', newValue.pid);
+		if (newValue.pid == 0)
+		{
+			loadProj();
+			console.log("loading template")
+			return;
+		}
 		
+		// load pid into storage and update via loadProj()
+		if (newValue.pid != 0)
+		{
 		axios.post("https://chordeo-grapher.herokuapp.com/user/get-project",
 			{
 				pid: newValue.pid,
@@ -67,7 +78,7 @@ const ProjSelector = ({loadProj}) => {
 		.catch(function (error) {
 			console.log("error in api call in project selector to get a specific project");
 			console.log(error);
-		})
+		})}
 	};
 
 	return (
