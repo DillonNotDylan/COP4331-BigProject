@@ -19,13 +19,10 @@ import EditOutlined from '@material-ui/icons/EditOutlined';
 import DeleteOutlined from '@material-ui/icons/DeleteOutline'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CustomModal from './CustomModal'
+import { dillonToDisplay } from '../Script/Convert';
 
-// const useStyles = makeStyles({
-// 	root: {
-// 		background: 'linear-gradient()',
-		
-// 	}
-// })
+// Convert the formatted chord from Dillon's function into a more user friendly appearance
+// A_sharp_min_7 ==> A#min7
 
 // Position refers to this chord's place in the array, 0 indexed
 const Chordbox = ({chord, position, loop, setEdit}) => {
@@ -36,19 +33,12 @@ const Chordbox = ({chord, position, loop, setEdit}) => {
 				console.log("Position: " + (position))
 
 				setEdit !== null && setEdit(position)
-				
-				// console.log("THIRD")
-				// getAllSuggestions("A_min", "C_maj", "B_maj", "F_maj", 3, "C", 1)
-				// console.log("SECOND")
-				// getAllSuggestions("A_min", "C_maj", "B_maj", "F_maj", 2, "C", 1)
-				// console.log("FIRST");
-				// getAllSuggestions("A_min", "C_maj", "B_maj", "F_maj", 1, "C", 1)
 			}}>
 			{/* <CustomModal /> */}
 			
 			
 				<Card>
-					<CardHeader title={chord} />	
+					<CardHeader title={dillonToDisplay(chord)} />	
 
 				</Card>
 				
