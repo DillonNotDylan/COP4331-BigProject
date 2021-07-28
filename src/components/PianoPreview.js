@@ -11,7 +11,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano'
 import 'react-piano/dist/styles.css';
 import '../css/pianoOverride.css'
-import SoundfontProvider from './SoundfontProvider';
 import Soundfont from 'soundfont-player';
 
 import { Typography } from '@material-ui/core';
@@ -36,9 +35,28 @@ const test = () => {
 	;
 }
 
+var Soundfont = require('soundfont-player')
+
 const PianoPreview = () => {
 
-	const doThing = (tempFunction)=>
+	const player = () => {
+		const ac = new AudioContext()
+		Soundfont.instrument(ac, 'acoustic_grand_piano', { loop: false, adsr: [0, 0, 1, 0] },).then(function (instrument) {
+			instrument.schedule(ac.currentTime,
+				[{ time: 0, note: "C4" }, { time: 0, note: "E4" }, { time: 0, note: "G4" },
+				{ time: .5, note: "A4" }, { time: .5, note: "E4" }, { time: .5, note: "C4" },
+				{ time: 1, note: "A4" }, { time: 1, note: "F4" }, { time: 1, note: "C4" }]
+			)
+
+			// plyr=instrument;
+		}
+		).catch(function (err) {
+			console.log('err', err);
+		});
+	} 
+		
+
+	const doThing = (tempFunction) =>
 	{
 		const ac = new AudioContext();
 		let plyr = null;
@@ -52,6 +70,7 @@ const PianoPreview = () => {
 			
 			// plyr=instrument;
 		}
+		
 		
 		).catch(function (err) {
 			console.log('err', err);

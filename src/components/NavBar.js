@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import {
 	AppBar,
 	Button,
+	ButtonGroup,
 	Toolbar,
 	IconButton,
-	Typography,
+	Typography, Box, 
 	TextField,
-	Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu';
@@ -14,31 +14,18 @@ import axios from 'axios';
 import { RestoreOutlined } from '@material-ui/icons';
 import Login_SignUp from './Login_SignUp';
 import Cookie from "./Cookie"
-
-let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
+import ForgotPassword from './ForgotPassword'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		display: 'center',
-		borderRadius: 5
+		flexGrow: 1,
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
 	},
 	title: {
 		flexGrow: 1,
-		// marginRight: 100,
-		// display: 'flex'
 	},
-	notLogged: {
-		flexDirection:'row',
-		justifyContent:'flex-end',
-		
-		display: 'flex' 
-	},
-	logged: {
-		marginLeft: '75%'
-	}
 }));
 
 const NavBar = () => {
@@ -47,9 +34,10 @@ const NavBar = () => {
 	const [user, setUser] = useState("");
 	const [pass, setPass] = useState("");
 	const [errMsg, setErr] = useState("");
+	const [forgPass, setForgPass] = useState(false);
 
 	const submitLogin = () => {
-		console.log("User: " + user + "pass:" + pass);
+		console.log("User: " + user + ", pass:" + pass);
 
 		const data =
 		{
@@ -57,41 +45,45 @@ const NavBar = () => {
 			password: pass,
 		};
 
-		var b =axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
-        .then(function (response) {
-            // if it has response message
-				if (response.data.hasOwnProperty('message'))
-				{
+		var b = axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
+			.then(function (response) {
+				// if it has response message
+				if (response.data.hasOwnProperty('message')) {
 					setErr(response.data.message);
 				}
-				else
-				{
+				else {
 					// make logged in, and use returned nickname to display
 					var cInfo = {
 						nickname: response.data.nickname,
 						id: response.data.id,
 					}
-					Cookie.setJCookie("userSession",cInfo, 60);
+					Cookie.setJCookie("userSession", cInfo, 60);
 					setLin(true);
 					setErr("");
-					
+					window.location = window.location;
 				}
-        })
-        .catch(function (error) {
-            console.log(error);
-        })
-		
+			})
+			.catch(function (error) {
+				console.log(error);
+			})
+
 		//create cookie
 	}
 
 	const doLogOut = () => {
 		console.log("loggingout");
-		setUser("");
+		localStorage.clear();
 		setPass("");
 		Cookie.delCookie("userSession");
 		setLin(false);
+		// refresh window to reload components
+		window.location = window.location;
 	}
 
+	const toggleForgotPop = () =>
+	{
+		setForgPass(!forgPass);
+	}
 
 	const formChange = (e) => {
 		// keep track??
@@ -102,57 +94,34 @@ const NavBar = () => {
 			setUser(e.target.value);
 		else
 			setPass(e.target.value);
-
 	}
 
 
 	const notLoggedIn = () => {
+
+		const clickyStyle = { margin: '4px', textAlign: 'center', justifyContent: 'center' };
 		return (
-			<section className={classes.notLogged}>
-				<Grid
-					container
-					direction="row"
-					alignItems="center"
-					spacing={1}
-					style={
-						{display: "flex",
-						 flexWrap: "noWrap",
-						 minWidth: 150
-						}
-					}
-				>
-					<Grid item>
-						<TextField
-							variant="outlined"
-							size="small"
-							placeholder="Username"
-							onChange={formChange} 
-						/>
+			<div style={{ maxHeight: '5vh', maxWidth: '50vw', display: 'flex', flexDirection: 'row' , padding:'5vh'}}>
+				{	// show forgot password dialog on click
+					forgPass?
+					<ForgotPassword toggle={toggleForgotPop}/>
+					: null
+				}
+				<Typography style={{ marginRight: '20px' }} >{errMsg}</Typography>
+				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} />
+				<TextField variant="outlined" size="small" placeholder="Password" type="password" onChange={formChange} style={clickyStyle} />
 
-						<TextField
-							variant="outlined"
-							size="small"
-							placeholder="Password"
-							onChange={formChange}
-						/>	
-					</Grid>
+				<ButtonGroup style={{display:'flex', flexDirection:'column', maxHeight:'100%', justifyContent:'center'}} >
+					<ButtonGroup style={{display:'flex', flexDirection:'row', paddingTop:'7%'}}>
+						<Button color="inherit" variant="contained" onClick={submitLogin} style={{textAlign:'center', justifyContent: 'center', marginRight:'1vw' }}>Login</Button>
+						<Login_SignUp buttonText="Sign Up" style={{textAlign: 'center', justifyContent: 'center'}} />
+					</ButtonGroup>
+					<Button variant="text" color="primary" onClick={toggleForgotPop}>
+						Forgot Password
+					</Button>
+				</ButtonGroup>
 
-					<Grid item>
-						<Button 
-							color="default" 
-							variant="contained" 
-							onClick={submitLogin} 
-						>Login</Button>
-
-					</Grid>
-
-					<Grid item>
-						<Login_SignUp  buttonText="Sign Up"/>
-					</Grid>
-				
-				</Grid>
-
-			</section>
+			</div>
 		);
 	}
 
@@ -163,23 +132,15 @@ const NavBar = () => {
 		else
 			nName = nName.nickname;
 		return (
-			<section className={classes.logged}>
-				<Grid container spacing={10}>
-					<Grid item xs={6}>
-						<Typography variant="h6" style={{ color: 'yellow' }} >Welcome {user}</Typography>
-					</Grid>
-
-					<Grid item xs={6}>
-						<Button onClick={doLogOut} >Log Out</Button>
-					</Grid>
-				</Grid>
-			</ section>
+			<>
+				<Typography variant="h6" style={{ color: 'black', marginRight: '10vw' }} >Welcome {nName}</Typography>
+				<Button onClick={doLogOut} >Log Out</Button>
+			</>
 		);
 	}
 
 	return (
-
-		<AppBar color="secondary" position="static" className={classes.root}>
+		<AppBar color="inherit" position="static">
 			<Toolbar>
 				<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
 					<MenuIcon />
@@ -187,7 +148,7 @@ const NavBar = () => {
 				<Typography variant="h6" className={classes.title}>
 					Chordeography
 				</Typography>
-				{lin? isLoggedIn() : notLoggedIn()}
+				{lin ? isLoggedIn() : notLoggedIn()}
 
 			</Toolbar>
 		</AppBar>

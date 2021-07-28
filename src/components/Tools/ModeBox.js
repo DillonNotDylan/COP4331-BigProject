@@ -124,6 +124,8 @@ export default function ModeBox ({setOption, grabMode, status, switchStatus}){
 	};
 
 	const handleCheck = () => {
+		setToSwitchVal();
+
 		modeSwitch(!modeState);
 		setOption(modeState);
 		setToSwitchVal();
