@@ -320,7 +320,7 @@ const LoopBox = () => {
 
 					{/* <CustomModal body={<ChordSelector progression={null}/>} /> */}
 				
-					<Grid container direction="column" style={{ width: 500, justifyContent: "center"}}>
+					<Grid container direction="column" style={{ width: "60%", justifyContent: "center", marginLeft:"20%"}}>
 						<Card>
 
 						
