@@ -7,7 +7,7 @@ import {
 	CardContent,
 	Typography
 } from '@material-ui/core'
-import { dillonNoteToSoundfont, dillonNoteToTone } from '../Script/Convert';
+import SwapOutlined from '@material-ui/icons/SwapHorizOutlined';
 
 const useStyles = makeStyles({
 	root: {
@@ -27,7 +27,7 @@ const SwapInfo = ({beforeChord, afterChord, swapChords}) => {
 					</Typography>
 
 					<Typography variant="h6">
-						{beforeChord}{"  =>  "}{afterChord}
+						{beforeChord} <SwapOutlined /> {afterChord}
 					</Typography>
 
 					<Typography variant="body2" component="p">

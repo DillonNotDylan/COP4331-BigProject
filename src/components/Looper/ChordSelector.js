@@ -60,7 +60,9 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 
 	const [loopName, setLoopName] = useState(loopData.name || "")
 
-	const [bpm, setBPM] = useState(loopData.bpm || "")
+	const [tempKey, setTempKey] = useState()
+
+	const [tempMode, setTempMode] = useState()
 
 
 	// This will trigger the suggestion function for this particular chord progression
@@ -74,7 +76,8 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 		// Dillon's functions use 1-indexing, so bump this number up by 1
 		console.log(toEdit+1)
 		const res = getAllSuggestions(...customLoop, toEdit + 1, "C", 1)
-		// console.log(res)
+		setTempKey(loopData.key)
+		setTempMode(loopData.mode)
 
 		// Save the returned list of suggestions into state
 		setSuggest(res)

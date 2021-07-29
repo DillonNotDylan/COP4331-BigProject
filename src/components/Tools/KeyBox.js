@@ -47,7 +47,7 @@ export default function KeyBox({currOption, grabKey, grabMode, status, switchSta
 
 	const boxClasses = boxStyles();
 	const cardClasses = cardStyles();
-	const[currKey, setKey] = React.useState("A");
+	const[currKey, setKey] = React.useState("C");
 
 	const handleChange = (event) => {
 		setKey(event.target.value);
@@ -56,7 +56,7 @@ export default function KeyBox({currOption, grabKey, grabMode, status, switchSta
 
 	const handleStatus = () =>{
 		switchStatus(!status);
-		(status) ? grabMode(5) : grabMode(2);
+		(status) ? grabMode(2) : grabMode(5);
 		return status;
 	}
 

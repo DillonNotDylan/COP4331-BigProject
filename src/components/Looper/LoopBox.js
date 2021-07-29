@@ -22,9 +22,10 @@ import ProjSelector from './ProjSelector';
 import axios from 'axios'
 import CustomModal from './CustomModal';
 import ChordSelector from './ChordSelector';
+import ToolPage from '../Tools/ToolPage';
 
 
-const LoopBox = ({useMode, useKey}) => {
+const LoopBox = () => {
 
 	const inf = Cookie.cToJson(Cookie.getCookie("userSession"));
 	// contains user id as 'id', and nickname as 'nickname'
@@ -36,6 +37,8 @@ const LoopBox = ({useMode, useKey}) => {
 		pid: 0,
 		title: "Unsaved Project",
 		loops: [],
+		key: "C",
+		mode: 2,
 		dateMade: "July 1, 1990"
 	});
 
@@ -44,6 +47,10 @@ const LoopBox = ({useMode, useKey}) => {
 		progression: ["C_maj", "C_maj", "C_maj", "C_maj"],
 		mode: "1"
 	}
+
+	const [useKey, grabKey] = React.useState("C");
+	// const [useQuality, grabQuality] = React.useState();
+	const [useMode, grabMode] = React.useState(2);
 
 	useEffect(() => {
 		console.log(pProject)
@@ -74,34 +81,34 @@ const LoopBox = ({useMode, useKey}) => {
 		}
 	};
 
-	const addNewLoop = () => {
-		let temp = [...pProject.loops]
-		let len = temp.length
-		temp.push(
-			{
-				progression: ["A_maj", "C_maj", "A_sharp_maj", "F_minor"],
-				name: "1",
-				placement: len,
-			},
-			{
-				progression: ["A_min", "C_maj", "B_min", "F_major"],
-				name: "2",
-				placement: len,
-			},
-			{
-				progression: ["D_maj", "F_min", "G_maj", "A_maj"],
-				name: "3",
-				placement: len,
-			}
-		)
-		let t = {...pProject};
-		t.loops = temp;
-		console.log(t)
-		// localStorage.setItem('curr', JSON.stringify(t));
-		console.log(localStorage.getItem('curr'))
-		setcProject(t);
+	// const addNewLoop = () => {
+	// 	let temp = [...pProject.loops]
+	// 	let len = temp.length
+	// 	temp.push(
+	// 		{
+	// 			progression: ["A_maj", "C_maj", "A_sharp_maj", "F_minor"],
+	// 			name: "1",
+	// 			placement: len,
+	// 		},
+	// 		{
+	// 			progression: ["A_min", "C_maj", "B_min", "F_major"],
+	// 			name: "2",
+	// 			placement: len,
+	// 		},
+	// 		{
+	// 			progression: ["D_maj", "F_min", "G_maj", "A_maj"],
+	// 			name: "3",
+	// 			placement: len,
+	// 		}
+	// 	)
+	// 	let t = {...pProject};
+	// 	t.loops = temp;
+	// 	console.log(t)
+	// 	// localStorage.setItem('curr', JSON.stringify(t));
+	// 	console.log(localStorage.getItem('curr'))
+	// 	setcProject(t);
 		
-	}
+	// }
 
 	const deleteLoop = (index) => {
 		// let temp = [...pProject.loops]
@@ -125,12 +132,29 @@ const LoopBox = ({useMode, useKey}) => {
 		let t = {
 			pid: pProject.pid,
 			title:pProject.title,
-			loops: pProject.loops
+			loops: pProject.loops,
+			key: pProject.key,
+			mode: pProject.mode
 		}
 
 		// post change to server
 		axios.patch("https://chordeo-grapher.herokuapp.com/user/update-project", t)
 		.catch(function (err) {console.log(err)} )
+	}
+
+	const submitProject = () => {
+		let t = {
+			id: inf.id,
+			pid: pProject.pid,
+			title: pProject.title,
+			loops: pProject.loops,
+			key: pProject.key,
+			mode: pProject.mode
+		}
+
+		// post change to server
+		axios.post("https://chordeo-grapher.herokuapp.com/user/new-project", t)
+			.catch(function (err) { console.log(err) })
 	}
 
 	// To update a loop, we need: its place in the overall project's loop array to replace the
@@ -148,8 +172,6 @@ const LoopBox = ({useMode, useKey}) => {
 		// temp.loops[indexToUpdate].progression = updatedProg
 		// temp.loops[indexToUpdate].title = title;
 		temp.loops[indexToUpdate] = toInsert
-		// console.log(temp1)
-		// console.l
 		setcProject(temp)
 	}
 
@@ -167,17 +189,17 @@ const LoopBox = ({useMode, useKey}) => {
 	}
 
 	
-	const getProjectById = () => {
-		let userID = "60ebdf0a171f280086b81f57"
+	// const getProjectById = () => {
+	// 	let userID = "60ebdf0a171f280086b81f57"
 
-		const res = axios.post("https://chordeo-grapher.herokuapp.com/get-project",
-			{
-				pid: "60ebdfaa171f280086b81f5f"
+	// 	const res = axios.post("https://chordeo-grapher.herokuapp.com/get-project",
+	// 		{
+	// 			pid: "60ebdfaa171f280086b81f5f"
 
 				
-			}
-		)
-	}
+	// 		}
+	// 	)
+	// }
 	
 	const loadProj = () =>
 	{
@@ -225,16 +247,15 @@ const LoopBox = ({useMode, useKey}) => {
 				</Button>
 				{
 					(inf != null)?
-						<ProjSelector loadProj={loadProj}/>
+						<div>
+							<ProjSelector loadProj={loadProj}/>
+						</div>
+
 					: null
 				}
 		</div>
 			
-			<Button onClick={() => console.log(pProject)}>
-				Testy
-			</Button>
-
-			<Card >
+			<Card>
 				<CardContent>
 					<CardHeader
 						avatar={
@@ -255,10 +276,24 @@ const LoopBox = ({useMode, useKey}) => {
 
 					{/* <Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button> */}
 					{
-						inf != null?
-						<Button variant="contained" color="secondary" onClick={save} style={{float:'right'}}> Save Data</Button>
+						inf != null
+						?
+							<div>
+								<ButtonGroup>
+									<Button 
+										variant="contained" 
+										color="secondary" onClick={save} 
+										style={{float:'right'}}
+									> 
+										Save Data
+									</Button>
+									<Button onClick={submitProject}>Submit Project</Button>
+								</ButtonGroup>
+							</div>
+
 						: null
 					}
+					<ToolPage grabKey={grabKey} grabMode={grabMode} />
 					
 
 					 {/* Use the modal that opens up the edit form, but we will
@@ -271,8 +306,9 @@ const LoopBox = ({useMode, useKey}) => {
 						id={-1}
 						loopData={{
 							title: "",
-							progression: ["C_maj", "C_maj", "C_maj", "C_maj"],
-							mode: "1"
+							progression: (useMode === 5 ? [useKey + "_min", useKey + "_min", useKey + "_min", useKey + "_min"] : [useKey + "_maj", useKey + "_maj", useKey + "_maj", useKey + "_maj"]),
+							key: useKey,
+							mode: useMode
 						}}
 						submitAction={addLoop}
 						addFlag={true}
@@ -306,8 +342,12 @@ const LoopBox = ({useMode, useKey}) => {
 					
 					{/* <ProgLoop /> */}
 					{	// show sign up button if cookie deems not logged in
-						inf == null?
-						<Login_SignUp style={{paddingTop:'25px', textAlign: 'center'}} buttonText="Save Progression and Sign Up"/>
+						inf == null
+						?
+							<div>
+								<Login_SignUp style={{paddingTop:'25px', textAlign: 'center'}} buttonText="Save Progression and Sign Up"/>
+							</div>
+
 						:null
 					}
 					
