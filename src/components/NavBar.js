@@ -146,7 +146,7 @@ const NavBar = () => {
 					<MenuIcon />
 				</IconButton>
 				<Typography variant="h6" className={classes.title}>
-					Chordeography
+					Chordeographer
 				</Typography>
 				{lin ? isLoggedIn() : notLoggedIn()}
 
