@@ -167,7 +167,7 @@ const LoopBox = () => {
 	const submitProject = () => {
 		let t = {
 			id: inf.id,
-			pid: pProject.pid,
+			// pid: pProject.pid,
 			title: pProject.title,
 			loops: pProject.loops,
 			key: pProject.key,
@@ -176,8 +176,21 @@ const LoopBox = () => {
 
 		// post change to server
 		axios.post("https://chordeo-grapher.herokuapp.com/user/new-project", t)
+			.then(response => window.location=window.location)
 			.catch(function (err) { console.log(err) })
 	}
+
+	const makeBlank = () => {
+		let t = {
+			id: inf.id,
+			pid: pProject.pid,
+			title: pProject.title,
+			loops: pProject.loops,
+			key: pProject.key,
+			mode: pProject.mode
+		}
+	}
+
 
 	// To update a loop, we need: its place in the overall project's loop array to replace the
 	// old version, 
@@ -210,18 +223,19 @@ const LoopBox = () => {
 		setcProject(temp)
 	}
 
-	
-	// const getProjectById = () => {
-	// 	let userID = "60ebdf0a171f280086b81f57"
+	const deleteProject = () => {
+		let t = {
+			id: inf.id,
+			pid: pProject.pid,
+		}
 
-	// 	const res = axios.post("https://chordeo-grapher.herokuapp.com/get-project",
-	// 		{
-	// 			pid: "60ebdfaa171f280086b81f5f"
-
-				
-	// 		}
-	// 	)
-	// }
+		if (t.id == 0)
+			return;
+		// post change to server
+		axios.post("https://chordeo-grapher.herokuapp.com/user/delete-project", t)
+			.then(response => window.location = window.location)
+			.catch(function (err) { console.log(err) })
+	}
 	
 	const loadProj = () =>
 	{
@@ -245,30 +259,8 @@ const LoopBox = () => {
 
 			<div>
 
-				{(inf != null)?
-					<Button onClick={loadProj}>
-					Get data
-					</Button> : null
-				}
-
-				{ (inf != null)?
-					<Button onClick={null}>
-					Get specific project
-					</Button> : null
-				}
-
-				<Button
-					onClick={() => 
-						{
-							console.log(useMode)
-							console.log(useKey)
-						}
-					}
-				>
-					Test Key and Mode
-				</Button>
 				{
-					(inf != null)?
+					(inf != null) ?
 						<div>
 							<ProjSelector loadProj={loadProj}/>
 						</div>
@@ -310,6 +302,7 @@ const LoopBox = () => {
 										Save Data
 									</Button>
 									<Button onClick={submitProject}>Submit Project</Button>
+									<Button onClick={deleteProject}>Delete Project</Button>
 								</ButtonGroup>
 							</div>
 
