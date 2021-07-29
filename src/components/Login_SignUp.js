@@ -18,7 +18,13 @@ const Login_SignUp = (props) => {
 
 	return (
 		<div className="Login-SignUp" style={{ textAlign: 'center' }, props.style}>
-			<Button variant="contained" color="secondary" onClick={handleOpen}>{props.buttonText}</Button>
+			<Button
+				style={{ height: 50, padding: 25 }}
+				variant="contained"
+				color="default"
+				onClick={handleOpen}>
+				{props.buttonText}
+			</Button>
 			<ModalDialog open={open} handleClose={handleClose} />
 		</div>
 	);

@@ -11,13 +11,13 @@ const KeySelect = (props) => {
 				label="Key"
 				defaultValue={props.useMode}
 			>
-				<MenuItem value={0}>Locrian</MenuItem>
-				<MenuItem value={1}>Phrygian</MenuItem>
-				<MenuItem value={2}>Aeolian</MenuItem>
-				<MenuItem value={3}>Dorian</MenuItem>
+				<MenuItem value={0}>Ionian</MenuItem>
+				<MenuItem value={1}>Dorian</MenuItem>
+				<MenuItem value={2}>Phrygian</MenuItem>
+				<MenuItem value={3}>Lydian</MenuItem>
 				<MenuItem value={4}>Myxolydian</MenuItem>
-				<MenuItem value={5}>Ionian</MenuItem>
-				<MenuItem value={6}>Lydian</MenuItem>
+				<MenuItem value={5}>Aeolian</MenuItem>
+				<MenuItem value={6}>Locrian</MenuItem>
 
 			</Select>
 		</div>

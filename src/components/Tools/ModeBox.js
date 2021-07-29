@@ -79,20 +79,20 @@ const boxStyles = makeStyles({
 const marks = [
 	{
 		value: 0,
-		label: 'Sad',
-		mode: 'Locrian'
+		label: 'Happy',
+		mode: 'Ionian'
 	},
 	{
 		value: 1,
-		mode: 'Phrygian'
+		mode: "Dorian"
 	},
 	{
 		value: 2,
-		mode: 'Aeolian'
+		mode: "Phrygian"
 	},
 	{
 		value: 3,
-		mode: 'Dorian'
+		mode: "Lydian"
 	},
 	{
 		value: 4,
@@ -100,12 +100,12 @@ const marks = [
 	},
 	{
 		value: 5,
-		mode: 'Ionian'
+		mode: "Aeolian"
 	},
 	{
 		value: 6,
-		label: 'Happy',
-		mode: 'Lydian'
+		label: "Sad",
+		mode: "Locrian"
 	}
 ]
 

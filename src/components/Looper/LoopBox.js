@@ -106,9 +106,8 @@ const LoopBox = () => {
 		setcProject(temp)
 	}
 
-	const save = (e) =>
+	const save = () =>
 	{
-		e.preventDefault();
 
 		// copy over references of loops
 		let t = {
