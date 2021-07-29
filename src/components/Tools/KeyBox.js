@@ -10,6 +10,7 @@ import {
 	makeStyles,
 	Grid
 } from '@material-ui/core'
+import KeySelect from './KeySelect'
 
 const boxStyles = makeStyles({
 	formControl: {
@@ -65,7 +66,7 @@ export default function KeyBox({currOption, grabKey, grabMode, status, switchSta
 			<Card className={cardClasses.root}>
 				<FormControl variant="outlined" className={boxClasses.formControl}>
 					<InputLabel className={boxClasses.formControl} id="key-label">Key</InputLabel>
-					<Select className={boxClasses.formControl}
+					{/* <Select className={boxClasses.formControl}
 						value={currKey}
 						onChange={handleChange}
 						label="Key"
@@ -83,7 +84,8 @@ export default function KeyBox({currOption, grabKey, grabMode, status, switchSta
 						<MenuItem value={"G"}>G</MenuItem>
 						<MenuItem value={"G_sharp"}>G#</MenuItem>
 						
-					</Select>
+					</Select> */}
+						<KeySelect styling={boxClasses.formControl} currKey={currKey} handleChange={handleChange} />
 				</FormControl>
 
 			</Card>

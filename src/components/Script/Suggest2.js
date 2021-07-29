@@ -531,30 +531,37 @@ const circleOfFifths = (chord) => {
 			if (i == 0) {
 				if (!suggestions.includes(outter_circle[i + 1])) {
 					suggestions.push(outter_circle[i + 1])
+					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
 				}
 				if (!suggestions.includes(inner_circle[i])) {
 					suggestions.push(inner_circle[i])
+					descriptions.push('This chord is a circle of 5ths inner ring neighbor of the parent chord')
 				}
 			}
 
 			else if (i == 11) {
 				if (!suggestions.includes(outter_circle[i - 1])) {
 					suggestions.push(outter_circle[i - 1])
+					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
 				}
 				if (!suggestions.includes(inner_circle[i])) {
 					suggestions.push(inner_circle[i])
+					descriptions.push('This chord is a circle of 5ths inner ring neighbor of the parent chord')
 				}
 			}
-
+			
 			else {
 				if (!suggestions.includes(outter_circle[i - 1])) {
 					suggestions.push(outter_circle[i - 1])
+					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
 				}
 				if (!suggestions.includes(outter_circle[i + 1])) {
 					suggestions.push(outter_circle[i + 1])
+					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
 				}
 				if (!suggestions.includes(inner_circle[i])) {
 					suggestions.push(inner_circle[i])
+					descriptions.push('This chord is a circle of 5ths inner ring neighbor of the parent chord')
 				}
 			}
 		}
@@ -563,30 +570,37 @@ const circleOfFifths = (chord) => {
 			if (i == 0) {
 				if (!suggestions.includes(inner_circle[i + 1])) {
 					suggestions.push(inner_circle[i + 1])
+					descriptions.push('This chord is a circle of 5ths inner ring neighbor of the parent chord')
 				}
 				if (!suggestions.includes(outter_circle[i])) {
 					suggestions.push(outter_circle[i])
+					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
 				}
 			}
-
+			
 			else if (i == 11) {
 				if (!suggestions.includes(inner_circle[i - 1])) {
 					suggestions.push(inner_circle[i - 1])
+					descriptions.push('This chord is a circle of 5ths inner ring neighbor of the parent chord')
 				}
 				if (!suggestions.includes(outter_circle[i])) {
 					suggestions.push(outter_circle[i])
+					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
 				}
 			}
-
+			
 			else {
 				if (!suggestions.includes(inner_circle[i + 1])) {
 					suggestions.push(inner_circle[i + 1])
+					descriptions.push('This chord is a circle of 5ths inner ring neighbor of the parent chord')
 				}
 				if (!suggestions.includes(inner_circle[i - 1])) {
 					suggestions.push(inner_circle[i - 1])
+					descriptions.push('This chord is a circle of 5ths inner ring neighbor of the parent chord')
 				}
 				if (!suggestions.includes(outter_circle[i])) {
 					suggestions.push(outter_circle[i])
+					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
 				}
 			}
 		}
@@ -602,7 +616,7 @@ const functionalHarmony = (key, chord_position, mode) => {
 	let degree5 = get_chord(5, key, mode)
 	let degree6 = get_chord(6, key, mode)
 	let degree7 = get_chord(7, key, mode)
-
+	
 	// print('1 is: ', degree1)
 	// print('2 is: ', degree2)
 	// print('3 is: ', degree3)
@@ -610,61 +624,76 @@ const functionalHarmony = (key, chord_position, mode) => {
 	// print('5 is: ', degree5)
 	// print('6 is: ', degree6)
 	// print('7 is: ', degree7)
-
+	
 	if (chord_position == 1) {
 		if (!suggestions.includes(degree1)) {
 			suggestions.push(degree1)
+			descriptions.push('The root chord (The Tonic) of a Key is always a good option to start with')
 		}
 		if (!suggestions.includes(degree5)) {
 			suggestions.push(degree5)
+			descriptions.push('The 5th chord (The Dominant) of a Key is a good option to start with because of its strong pull towards the Tonic')
 		}
 	}
-
+	
 	if (chord_position == 2) {
 		if (!suggestions.includes(degree2)) {
 			suggestions.push(degree2)
+			descriptions.push('The 2nd chord (The SuperTonic) of a Key is good second chord because it follows the rules of functional harmony')
 		}
 		if (!suggestions.includes(degree3)) {
 			suggestions.push(degree3)
+			descriptions.push('The 3rd chord (The Mediant) of a Key is good second chord because it follows the rules of functional harmony')
 		}
 		if (!suggestions.includes(degree4)) {
 			suggestions.push(degree4)
+			descriptions.push('The 4th chord (The SubDominant) of a Key is good second chord because it follows the rules of functional harmony')
 		}
 		if (!suggestions.includes(degree5)) {
 			suggestions.push(degree5)
+			descriptions.push('The 5th chord (The Dominant) of a Key is almost always compatible with any chord progressions that stay within a certain Key')
 		}
 		if (!suggestions.includes(degree6)) {
 			suggestions.push(degree6)
+			descriptions.push('The 6th chord (The SubMediant) of a Key is good second chord because it follows the rules of functional harmony')
 		}
 		if (!suggestions.includes(degree7)) {
 			suggestions.push(degree7)
+			descriptions.push('The 7th chord (The SubTonic) of a Key is good second chord because it follows the rules of functional harmony')
 		}
 	}
-
+	
 	if (chord_position == 3) {
 		if (!suggestions.includes(degree2)) {
 			suggestions.push(degree2)
+			descriptions.push('The 2nd chord (The SuperTonic) of a Key is good third chord because it follows the rules of functional harmony')
 		}
 		if (!suggestions.includes(degree4)) {
 			suggestions.push(degree4)
+			descriptions.push('The 4th chord (The SubDominant) of a Key is good third chord because it follows the rules of functional harmony')
 		}
 		if (!suggestions.includes(degree6)) {
 			suggestions.push(degree6)
+			descriptions.push('The 6th chord (The SubDominant) of a Key is good third chord because it follows the rules of functional harmony')
 		}
 	}
-
+	
 	if (chord_position == 4) {
 		if (!suggestions.includes(degree2)) {
 			suggestions.push(degree2)
+			descriptions.push('The 2nd chord (The SuperTonic) of a Key is good final chord because it pulls strongly to the tonic chord, which will help imply the Key')
 		}
 		if (!suggestions.includes(degree5)) {
 			suggestions.push(degree5)
+			descriptions.push('The 5th chord (The Dominant) of a Key is good final chord because a Dominant to Tonic resolution is a classic functional harmony rule')
 		}
 		if (!suggestions.includes(degree7)) {
 			suggestions.push(degree7)
+			descriptions.push('The 7th chord (The SubTonic) of a Key is good final chord because it can function as a Dominant to Tonic resolution is a classic functional harmony rule')
 		}
 	}
 }
+
 
 // Using popular chord progressions for suggestions
 const commonProgressions = (key, chord, chord_position) => {
@@ -692,7 +721,8 @@ const getAllSuggestions = (chord1, chord2, chord3, chord4, chord_position, key, 
 
 	let chord = "H";
 	suggestions = []
-	
+	descriptions = []
+
 	if (chord_position == 1)
 		chord = chord1
 	else if (chord_position == 2)
@@ -707,7 +737,7 @@ const getAllSuggestions = (chord1, chord2, chord3, chord4, chord_position, key, 
 	commonProgressions(key, chord, chord_position);
 	sortSuggestions(key, chord, chord_position);
 	displaySugestions();
-	return suggestions
+	return descriptions
 }
 
 // const test = () => console.log("Testy testy")

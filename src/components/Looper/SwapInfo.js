@@ -8,6 +8,7 @@ import {
 	Typography
 } from '@material-ui/core'
 import SwapOutlined from '@material-ui/icons/SwapHorizOutlined';
+import { dillonToDisplay } from '../Script/Convert';
 
 const useStyles = makeStyles({
 	root: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles({
 		position: 'absolute'
 	}
 });
-const SwapInfo = ({beforeChord, afterChord, swapChords}) => {
+const SwapInfo = ({beforeChord, afterChord, description, swapChords}) => {
 	const classes = useStyles()
 
 	return (
@@ -27,11 +28,11 @@ const SwapInfo = ({beforeChord, afterChord, swapChords}) => {
 					</Typography>
 
 					<Typography variant="h6">
-						{beforeChord} <SwapOutlined /> {afterChord}
+						{dillonToDisplay(beforeChord)} <SwapOutlined /> {dillonToDisplay(afterChord)}
 					</Typography>
 
 					<Typography variant="body2" component="p">
-						Put in a description by Dillon here in this paragraph. Write about why a certain chord was suggested
+						{description}
 					</Typography>
 				</CardContent>
 

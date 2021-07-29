@@ -21,7 +21,6 @@ import Login_SignUp from '../Login_SignUp'
 import ProjSelector from './ProjSelector';
 import axios from 'axios'
 import CustomModal from './CustomModal';
-import ChordSelector from './ChordSelector';
 import ToolPage from '../Tools/ToolPage';
 
 
@@ -42,14 +41,7 @@ const LoopBox = () => {
 		dateMade: "July 1, 1990"
 	});
 
-	const test = {
-		title: "",
-		progression: ["C_maj", "C_maj", "C_maj", "C_maj"],
-		mode: "1"
-	}
-
 	const [useKey, grabKey] = React.useState("C");
-	// const [useQuality, grabQuality] = React.useState();
 	const [useMode, grabMode] = React.useState(2);
 
 	useEffect(() => {
@@ -95,34 +87,6 @@ const LoopBox = () => {
 		}
 	};
 
-	// const addNewLoop = () => {
-	// 	let temp = [...pProject.loops]
-	// 	let len = temp.length
-	// 	temp.push(
-	// 		{
-	// 			progression: ["A_maj", "C_maj", "A_sharp_maj", "F_minor"],
-	// 			name: "1",
-	// 			placement: len,
-	// 		},
-	// 		{
-	// 			progression: ["A_min", "C_maj", "B_min", "F_major"],
-	// 			name: "2",
-	// 			placement: len,
-	// 		},
-	// 		{
-	// 			progression: ["D_maj", "F_min", "G_maj", "A_maj"],
-	// 			name: "3",
-	// 			placement: len,
-	// 		}
-	// 	)
-	// 	let t = {...pProject};
-	// 	t.loops = temp;
-	// 	console.log(t)
-	// 	// localStorage.setItem('curr', JSON.stringify(t));
-	// 	console.log(localStorage.getItem('curr'))
-	// 	setcProject(t);
-		
-	// }
 
 	const deleteLoop = (index) => {
 		// let temp = [...pProject.loops]
@@ -240,8 +204,6 @@ const LoopBox = () => {
 	const loadProj = () =>
 	{
 		// get object from storage
-		// let t = JSON.parse(localStorage.getItem('curr'));
-		
 		console.log(localStorage.getItem('newPID'));
 		initLoop(localStorage.getItem('newPID'));
 	}
@@ -255,8 +217,12 @@ const LoopBox = () => {
 	}
 
 	return (
+
 		<div>
 
+			<div>
+				{/* <ReactPiano /> */}
+			</div>
 			<div>
 
 				{
@@ -267,7 +233,7 @@ const LoopBox = () => {
 
 					: null
 				}
-		</div>
+			</div>
 			
 			<Card>
 				<CardContent>

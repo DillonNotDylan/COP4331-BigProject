@@ -15,12 +15,16 @@ import ProgLoop from './ProgLoop'
 import Chordbox from './Chordbox';
 import SwapInfo from './SwapInfo'
 import getAllSuggestions from '../Script/Suggest'
+import getAllDescriptions from '../Script/Suggest2'
 import getChordNotes from '../Script/ChordToNote';
-import { dillonNoteToSoundfont, dillonNoteToTone } from '../Script/Convert';
+import { dillonToDisplay } from '../Script/Convert';
 import SuggestList from './SuggestList';
+import KeySelect from '../Tools/KeySelect';
+import {Note} from '@tonaljs/tonal'
+
 
 function getModalStyle() {
-	const top = 50;
+	const top = 40;
 	const left = 50;
 
 	return {
@@ -34,7 +38,7 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		position: 'absolute',
-		width: 500,
+		width: 600,
 		height: 500,
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
@@ -46,11 +50,14 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
 
+
 	// A state that controls a temp version of the progression we are creating/editing
 	const [customLoop, setCustom] = useState([...loopData.progression])
 
 	// Holds the current list of suggestions for the currently selected chord
 	const [suggestions, setSuggest] = useState([])
+
+	const [descriptions, setDescriptions] = useState([])
 
 	// The index of the chord we are currently choosing to index.
 	const [selectedIndex, setSelected] = useState(0)
@@ -60,9 +67,9 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 
 	const [loopName, setLoopName] = useState(loopData.name || "")
 
-	const [tempKey, setTempKey] = useState()
 
-	const [tempMode, setTempMode] = useState()
+	const [useKey, grabKey] = React.useState("C");
+	const [useMode, grabMode] = React.useState(2);
 
 
 	// This will trigger the suggestion function for this particular chord progression
@@ -76,23 +83,21 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 		// Dillon's functions use 1-indexing, so bump this number up by 1
 		console.log(toEdit+1)
 		const res = getAllSuggestions(...customLoop, toEdit + 1, "C", 1)
-		setTempKey(loopData.key)
-		setTempMode(loopData.mode)
+		const res2 = getAllDescriptions(...customLoop, toEdit + 1, "C", 1)
+		
+		console.log(loopData.key)
+		grabKey(loopData.key)
+		grabMode(loopData.mode)
 
 		// Save the returned list of suggestions into state
 		setSuggest(res)
+		setDescriptions(res2)
 		setSelected(0)
 		
 	}, [toEdit, customLoop])
 
 
 	const handleListClick = (event, index) => {
-	
-		console.log("In handleListClick")
-		// console.log(event.target.value)
-		// playChord(suggestions[index])
-		// logNotes(suggestions[index])
-		console.log(index)
 		setSelected(index);
 	};
 
@@ -105,36 +110,24 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 	}
 
 
-	// const playChord = (chord) => {
-		
-	// 	let rawNotes = getChordNotes(chord)
-	// 	let convertNotes = rawNotes.map(note => dillonNoteToTone(note)+"4")
-	// 	// let convertNotes = rawNotes.map(note => rawNotes+"4")
-	// 	playChordHelper(convertNotes)
-		 
-
-
 	return (
 		<div>
-			{/* We need to display all 4 chords */}
 
-			{/* Make them selectable */}
-
-			{/* Highlight the ones adjacent to it */}
-
-			{/* Render out Dillon's function return */}
-			
 			<div style={modalStyle} className={classes.paper}>
-				<Button onClick={null}>
-					Testy
-				</Button>
-				<Grid container direction="column">
+
+				<Grid container direction="column" spacing={2}>
+
 					<Grid item>
 						<TextField
+							label="Loop Title"
 							value={loopName}
 							onChange={e => setLoopName(e.target.value)}
 						>
 						</TextField>
+					</Grid>
+
+					<Grid item>
+						<KeySelect styling={""} currKey={useKey} handleChange={e => grabKey(e.target.value)}/>
 					</Grid>
 					{
 						customLoop &&
@@ -164,7 +157,7 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 					</Grid>
 
 					<Grid item>
-						<Grid container direction="row">
+						<Grid container direction="row" spacing={2}>
 							<Grid item>
 								<SuggestList 
 									suggestions={suggestions} 
@@ -174,13 +167,13 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 							</Grid>
 							<Grid item>
 								
-								<SwapInfo beforeChord={customLoop[toEdit]} afterChord={suggestions[selectedIndex]} swapChords={swapChords}/>
+								<SwapInfo beforeChord={customLoop[toEdit]} afterChord={suggestions[selectedIndex]} description={descriptions[selectedIndex]} swapChords={swapChords}/>
 							</Grid>
 						</Grid>
 
 					</Grid>
 
-					<Grid item justify="flex-end">
+					<Grid item>
 						{addFlag ?
 							<Button
 								onClick={() => submitAction(customLoop, loopName)}

@@ -10,7 +10,9 @@ const sharpToFlat = ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 
 // A_maj_7 -> Amaj7
 // Takes a chord returned by Dillon's code, and turns it into something more presentable
 export const dillonToDisplay = (chord) => {
-
+	if (!chord)
+		return
+	console.log(chord)
 	console.log("In dillonToDisplay")
 	let res = chord;
 
