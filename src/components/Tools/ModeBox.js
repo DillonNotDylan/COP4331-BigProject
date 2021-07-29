@@ -32,9 +32,9 @@ const cardStyles = makeStyles({
 	check: {
 		alignItems: 'center',
 		padding: '25px',
-		minWidth: '150px',
+		minWidth: '120px',
 		display: 'flex',
-		width: 150,
+		width: 120,
 		height: '56',
 		marginLeft: 18
 	}	

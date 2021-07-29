@@ -9,6 +9,7 @@ import {
 	Grid,
 	IconButton,
 	AppBar,
+	Paper,
 	Toolbar,
 	TextField
 } from '@material-ui/core'
@@ -321,9 +322,9 @@ const LoopBox = () => {
 					{/* <CustomModal body={<ChordSelector progression={null}/>} /> */}
 				
 					<Grid container direction="column" style={{ width: "60%", justifyContent: "center", marginLeft:"20%"}}>
-						<Card>
+						<Paper style={{ maxHeight: 350, overflow: 'auto' }}>
 
-						
+
 						{
 							// Th
 							// 0 1 2 3 4 etc
@@ -342,7 +343,10 @@ const LoopBox = () => {
 								)
 							})
 						}
-						</Card>
+						</Paper>
+
+						
+						
 					</Grid>
 					
 					{/* <ProgLoop /> */}

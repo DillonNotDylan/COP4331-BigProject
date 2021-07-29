@@ -183,7 +183,7 @@ const NavBar = () => {
 
 	return (
 		<ThemeProvider theme={barTheme}>
-			<AppBar color="primary" position="static" className={classes.root}>
+			<AppBar color="primary" position="static" className={classes.root} style={{marginBottom: "2%"}}>
 				<Toolbar>
 					<ThemeProvider theme={barTheme}>
 						<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" color="secondary" >
