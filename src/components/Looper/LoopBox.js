@@ -61,7 +61,21 @@ const LoopBox = () => {
 	{
 		try
 		{
-			if (inf != null)
+			// 0 indicates new project, init to empty with todays date
+			if (firstPID === "0")
+			{	// since ID is a string, we use this format
+				let t = {
+					pid: 0,
+					title: "Unsaved Project",
+					loops: [],
+					dateMade: new Date()
+				};
+
+				setcProject(t);
+				return;
+			}
+			
+			if (inf != null && firstPID != 0)
 			{	// save data in a. wait for response to continue
 				const a = await axios.post("https://chordeo-grapher.herokuapp.com/user/get-project", {pid: firstPID})
 				let t = {
@@ -136,6 +150,14 @@ const LoopBox = () => {
 			key: pProject.key,
 			mode: pProject.mode
 		}
+
+		// check if current project exists
+		if (t.pid == 0)
+		{	// instead 
+			console.log("different");
+			return;
+		}
+
 
 		// post change to server
 		axios.patch("https://chordeo-grapher.herokuapp.com/user/update-project", t)
