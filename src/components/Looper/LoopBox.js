@@ -22,6 +22,7 @@ import ProjSelector from './ProjSelector';
 import axios from 'axios'
 import CustomModal from './CustomModal';
 import ToolPage from '../Tools/ToolPage';
+import Confirm from '../Tools/Confirm';
 
 
 const LoopBox = () => {
@@ -38,14 +39,17 @@ const LoopBox = () => {
 		loops: [],
 		key: "C",
 		mode: 2,
-		dateMade: "July 1, 1990"
+		dateMade: new Date().toString()
 	});
 
 	const [useKey, grabKey] = React.useState("C");
 	const [useMode, grabMode] = React.useState(2);
 
+	// const [pendingChange, setPending] = useState(false)
+
 	useEffect(() => {
 		console.log(pProject)
+		// setPending(true)
 		localStorage.setItem('curr', JSON.stringify(pProject))
 	}, [pProject])
 
@@ -159,7 +163,7 @@ const LoopBox = () => {
 	// To update a loop, we need: its place in the overall project's loop array to replace the
 	// old version, 
 	// 
-	const updateLoop = (indexToUpdate, updatedProg, loopName, loopKey, loopMode) => {
+	const updateLoop = (indexToUpdate, updatedProg, loopName, loopMode, loopKey) => {
 		let temp = {...pProject}
 		console.log(temp.loops)
 		let toInsert = {
@@ -174,7 +178,7 @@ const LoopBox = () => {
 		setcProject(temp)
 	}
 
-	const addLoop = (updatedProg, loopName, loopKey, loopMode) => {
+	const addLoop = (updatedProg, loopName, loopMode, loopKey) => {
 		let temp = { ...pProject }
 		console.log(temp.loops)
 		let toInsert = {
@@ -195,6 +199,17 @@ const LoopBox = () => {
 
 		if (t.id == 0)
 			return;
+
+		let clear = {
+			pid: 0,
+			title: "Unsaved Project",
+			loops: [],
+			key: "C",
+			mode: 2,
+			dateMade: "July 29, 2021"
+		}
+
+		setcProject(clear)
 		// post change to server
 		axios.post("https://chordeo-grapher.herokuapp.com/user/delete-project", t)
 			.then(response => window.location = window.location)
@@ -218,25 +233,26 @@ const LoopBox = () => {
 
 	return (
 
-		<div>
+		<div style={{ position: "relative", width: "80%", left: "9.5vw" }}>
 
 			<div>
 				{/* <ReactPiano /> */}
 			</div>
-			<div>
-
-				{
-					(inf != null) ?
-						<div>
-							<ProjSelector loadProj={loadProj}/>
-						</div>
-
-					: null
-				}
-			</div>
+			
 			
 			<Card>
 				<CardContent>
+					<div>
+
+						{
+							(inf != null) ?
+								<div>
+									<ProjSelector loadProj={loadProj} />
+								</div>
+
+								: null
+						}
+					</div >
 					<CardHeader
 						avatar={
 							<Avatar aria-label="recipe">
@@ -252,7 +268,9 @@ const LoopBox = () => {
 							/>
 						}
 						subheader={"Created on " + pProject.dateMade}
+						
 					/>
+					{/* {pendingChange && "You have pending changes not saved. Navigating to another project will delete these changes"} */}
 
 					{/* <Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button> */}
 					{
@@ -260,15 +278,18 @@ const LoopBox = () => {
 						?
 							<div>
 								<ButtonGroup>
-									<Button 
+									{/* <Button 
 										variant="contained" 
-										color="secondary" onClick={save} 
+										color="primary" onClick={save} 
 										style={{float:'right'}}
 									> 
 										Save Data
-									</Button>
-									<Button onClick={submitProject}>Submit Project</Button>
-									<Button onClick={deleteProject}>Delete Project</Button>
+									</Button> */}
+									<Confirm title={"Save Data"} diagText={"Update this project?"} thenFunc={save}/>
+									{/* <Button onClick={submitProject}>Submit Project</Button> */}
+									<Confirm title={"Submit Project"} diagText={"Are you sure you wish to add this as a separate project?"} thenFunc={submitProject}/>
+									<Confirm title={"Delete Project"} diagText={"Are you sure you wish to delete?"} thenFunc={deleteProject}/>
+									{/* <Button onClick={deleteProject}>Delete Project</Button> */}
 								</ButtonGroup>
 							</div>
 
@@ -300,13 +321,16 @@ const LoopBox = () => {
 
 					{/* <CustomModal body={<ChordSelector progression={null}/>} /> */}
 				
-					<Grid container direction="column" style={{width: 500}}>
+					<Grid container direction="column" style={{ width: 500, justifyContent: "center"}}>
+						<Card>
+
+						
 						{
 							// Th
 							// 0 1 2 3 4 etc
 							pProject.loops.map((loop, index) => {
 								return (
-									<Grid item style={{justifyContent: 'center'}}>
+									<Grid item>
 										<ProgLoop 
 											deleteLoop={deleteLoop} 
 											id={index} 
@@ -319,6 +343,7 @@ const LoopBox = () => {
 								)
 							})
 						}
+						</Card>
 					</Grid>
 					
 					{/* <ProgLoop /> */}

@@ -32,7 +32,7 @@ const ToolPage = ({grabKey, grabMode}) => {
             <br />
             <Card className={classes.root}>
                 <CardContent>
-                    <Grid container>
+                    <Grid container direction="row">
                         <Grid item xs>
                             <KeyBox currOption={!currOption} grabKey={grabKey} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
                         </Grid> 

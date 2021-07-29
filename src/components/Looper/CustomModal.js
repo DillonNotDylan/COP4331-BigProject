@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
 	paper: {
 		position: 'absolute',
 		width: 600,
+		height: 600,
 		backgroundColor: theme.palette.background.paper,
 		border: '2px solid #000',
 		boxShadow: theme.shadows[5],
@@ -56,8 +57,9 @@ export default function CustomModal({id, loopData, submitAction, addFlag, icon})
 			}
 			
 
-			<div>
+			<div >
 				<Modal
+					className
 					open={open}
 					onClose={handleClose}
 					aria-labelledby="simple-modal-title"
@@ -69,6 +71,7 @@ export default function CustomModal({id, loopData, submitAction, addFlag, icon})
 						loopData={loopData} 
 						submitAction= {submitAction}
 						addFlag={addFlag}
+						parentHandleClose={handleClose}
 					/>
 							
 				</Modal>

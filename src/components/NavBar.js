@@ -108,12 +108,16 @@ const NavBar = () => {
 					: null
 				}
 				<Typography style={{ marginRight: '20px' }} >{errMsg}</Typography>
-				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} />
-				<TextField variant="outlined" size="small" placeholder="Password" type="password" onChange={formChange} style={clickyStyle} />
+				<div>
+					<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} />
+					<TextField variant="outlined" size="small" placeholder="Password" type="password" onChange={formChange} style={clickyStyle} />
+
+
+				</div>
 
 				<ButtonGroup style={{display:'flex', flexDirection:'column', maxHeight:'100%', justifyContent:'center'}} >
-					<ButtonGroup style={{display:'flex', flexDirection:'row', paddingTop:'7%'}}>
-						<Button color="inherit" variant="contained" onClick={submitLogin} style={{textAlign:'center', justifyContent: 'center', marginRight:'1vw' }}>Login</Button>
+					<ButtonGroup style={{display:'flex', flexDirection:'row', paddingTop:'17%'}}>
+						<Button color="inherit" variant="contained" onClick={submitLogin} style={{textAlign:'center', justifyContent: 'center', marginLeft: '1vw', marginRight:'1vw' }}>Login</Button>
 						<Login_SignUp buttonText="Sign Up" style={{textAlign: 'center', justifyContent: 'center'}} />
 					</ButtonGroup>
 					<Button variant="text" color="primary" onClick={toggleForgotPop}>
@@ -133,14 +137,14 @@ const NavBar = () => {
 			nName = nName.nickname;
 		return (
 			<>
-				<Typography variant="h6" style={{ color: 'black', marginRight: '10vw' }} >Welcome {nName}</Typography>
+				<Typography variant="h6" style={{ color: 'black', marginRight: '5vw' }} >Welcome, {nName}</Typography>
 				<Button onClick={doLogOut} >Log Out</Button>
 			</>
 		);
 	}
 
 	return (
-		<AppBar color="inherit" position="static">
+		<AppBar color="primary" position="static">
 			<Toolbar>
 				<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
 					<MenuIcon />

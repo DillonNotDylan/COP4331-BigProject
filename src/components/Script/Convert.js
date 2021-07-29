@@ -12,8 +12,8 @@ const sharpToFlat = ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 
 export const dillonToDisplay = (chord) => {
 	if (!chord)
 		return
-	console.log(chord)
-	console.log("In dillonToDisplay")
+	// console.log(chord)
+	// console.log("In dillonToDisplay")
 	let res = chord;
 
 	if (res.includes("_sharp"))
@@ -34,7 +34,7 @@ export const dillonToDisplay = (chord) => {
 	if (res.includes("_7"))
 		res = res.replace("_7", "7")
 
-	console.log(res)
+	// console.log(res)
 	return res	
 }
 

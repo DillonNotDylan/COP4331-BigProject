@@ -21,6 +21,8 @@ import { dillonToDisplay } from '../Script/Convert';
 import SuggestList from './SuggestList';
 import KeySelect from '../Tools/KeySelect';
 import {Note} from '@tonaljs/tonal'
+import Confirm from '../Tools/Confirm';
+import ModeSelect from '../Tools/ModeSelect'
 
 
 function getModalStyle() {
@@ -39,14 +41,14 @@ const useStyles = makeStyles((theme) => ({
 	paper: {
 		position: 'absolute',
 		width: 600,
-		height: 500,
+		height: 600,
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
 	},
 }));
 
-const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
+const ChordSelector = ({id, loopData, submitAction, addFlag, parentHandleClose}) => {
 	const classes = useStyles();
 	const [modalStyle] = React.useState(getModalStyle);
 
@@ -68,8 +70,8 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 	const [loopName, setLoopName] = useState(loopData.name || "")
 
 
-	const [useKey, grabKey] = React.useState("C");
-	const [useMode, grabMode] = React.useState(2);
+	const [useKey, grabKey] = React.useState(loopData.key);
+	const [useMode, grabMode] = React.useState(loopData.mode);
 
 
 	// This will trigger the suggestion function for this particular chord progression
@@ -82,19 +84,29 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 
 		// Dillon's functions use 1-indexing, so bump this number up by 1
 		console.log(toEdit+1)
-		const res = getAllSuggestions(...customLoop, toEdit + 1, "C", 1)
-		const res2 = getAllDescriptions(...customLoop, toEdit + 1, "C", 1)
+		console.log(useKey)
+		console.log(useMode)
+		const res = getAllSuggestions(...customLoop, toEdit + 1, useKey, useMode)
+		const res2 = getAllDescriptions(...customLoop, toEdit + 1, useKey, useMode)
 		
-		console.log(loopData.key)
-		grabKey(loopData.key)
-		grabMode(loopData.mode)
+		console.log(loopData)
+		// grabKey(loopData.key)
+		// grabMode(loopData.mode)
 
 		// Save the returned list of suggestions into state
 		setSuggest(res)
 		setDescriptions(res2)
 		setSelected(0)
 		
-	}, [toEdit, customLoop])
+	}, [toEdit, customLoop, useKey, useMode])
+
+	const refreshSugg = () => {
+		const res = getAllSuggestions(...customLoop, toEdit + 1, useKey, useMode)
+		const res2 = getAllDescriptions(...customLoop, toEdit + 1, useKey, useMode)
+		setSuggest(res)
+		setDescriptions(res2)
+
+	}
 
 
 	const handleListClick = (event, index) => {
@@ -129,6 +141,9 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 					<Grid item>
 						<KeySelect styling={""} currKey={useKey} handleChange={e => grabKey(e.target.value)}/>
 					</Grid>
+					<Grid item>
+						<ModeSelect useMode={useMode} handleChange={e => grabMode(e.target.value)} />
+					</Grid>
 					{
 						customLoop &&
 						<Grid item>
@@ -156,6 +171,11 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 						</Grid>	
 					</Grid>
 
+							<Grid item>
+								<Button onClick={refreshSugg}>
+									Refresh Suggestions
+								</Button>
+							</Grid>
 					<Grid item>
 						<Grid container direction="row" spacing={2}>
 							<Grid item>
@@ -175,19 +195,22 @@ const ChordSelector = ({id, loopData, submitAction, addFlag}) => {
 
 					<Grid item>
 						{addFlag ?
-							<Button
-								onClick={() => submitAction(customLoop, loopName)}
-							>
-								Submit
-							</Button>
+							// <Button
+							// 	onClick={() => submitAction(customLoop, loopName)}
+							// >
+							// 	Submit
+							// </Button>
+							<Confirm title={"Submit New Loop"} diagText={"Are you sure you wish to add this as a new loop?"} thenFunc={() => {submitAction(customLoop, loopName, useMode, useKey); parentHandleClose()}} />
 								:
-								<Button
-									// If we are updating, we need to know what index to replace
-									onClick={() => submitAction(id, customLoop, loopName)}
-								>
-									Update
-								</Button>
+								// <Button
+								// 	// If we are updating, we need to know what index to replace
+								// 	onClick={() => submitAction(id, customLoop, loopName)}
+								// >
+								// 	Update
+								// </Button>
+							<Confirm title={"Update Loop"} diagText={"Are you sure you wish to update this loop?"} thenFunc={() => { submitAction(id, customLoop, loopName, useMode, useKey); parentHandleClose()}} />
 						}
+
 					</Grid>
 
 				</Grid>

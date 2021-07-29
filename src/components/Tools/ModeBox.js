@@ -152,7 +152,7 @@ export default function ModeBox ({setOption, grabMode, status, switchStatus}){
 		<div className={boxClasses.divBox}>
 			<Grow in={modeState} timeout={500}>
 				<Card className={cardClasses.root}>
-					<section className={boxClasses.sectionBox}>
+					<div className={boxClasses.sectionBox}>
 						<Card className={cardClasses.child}>
 							<FormControlLabel
 								value="Mode"
@@ -182,7 +182,7 @@ export default function ModeBox ({setOption, grabMode, status, switchStatus}){
 							key={5}
 							onChange={handleOption}
 						/>
-					</ section>
+					</ div>
 				</Card>
 			</Grow>
 

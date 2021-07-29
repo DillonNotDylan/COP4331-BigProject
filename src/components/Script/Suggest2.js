@@ -1,4 +1,4 @@
-const outter_circle = ['C_maj', 'G_maj', 'D_maj', 'A_maj', 'E_maj', 'B_maj', 'F_sharp_maj', 'C_sharp_maj', 'G_sharp_maj', 'D_sharp_maj', 'A_sharp_maj', 'F_maj']
+const outer_circle = ['C_maj', 'G_maj', 'D_maj', 'A_maj', 'E_maj', 'B_maj', 'F_sharp_maj', 'C_sharp_maj', 'G_sharp_maj', 'D_sharp_maj', 'A_sharp_maj', 'F_maj']
 const inner_circle = ['A_min', 'E_min', 'B_min', 'F_sharp_min', 'C_sharp_min', 'G_sharp_min', 'E_flat_min', 'B_flat_min', 'F_min', 'C_min', 'G_min', 'D_min']
 
 const key_to_number = ['A', 'A_sharp', 'B', 'C', 'C_sharp', 'D', 'D_sharp', 'E', 'F', 'F_sharp', 'G', 'G_sharp']
@@ -527,11 +527,11 @@ const get_chord = (chord_degree, key, mode) => {
 // Using circle of 5ths neighbors for suggestions
 const circleOfFifths = (chord) => {
 	for (let i = 0; i < 12; i++) {
-		if (outter_circle[i] == chord) {
+		if (outer_circle[i] == chord) {
 			if (i == 0) {
-				if (!suggestions.includes(outter_circle[i + 1])) {
-					suggestions.push(outter_circle[i + 1])
-					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
+				if (!suggestions.includes(outer_circle[i + 1])) {
+					suggestions.push(outer_circle[i + 1])
+					descriptions.push('This chord is a circle of 5ths outer ring neighbor of the parent chord')
 				}
 				if (!suggestions.includes(inner_circle[i])) {
 					suggestions.push(inner_circle[i])
@@ -540,9 +540,9 @@ const circleOfFifths = (chord) => {
 			}
 
 			else if (i == 11) {
-				if (!suggestions.includes(outter_circle[i - 1])) {
-					suggestions.push(outter_circle[i - 1])
-					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
+				if (!suggestions.includes(outer_circle[i - 1])) {
+					suggestions.push(outer_circle[i - 1])
+					descriptions.push('This chord is a circle of 5ths outer ring neighbor of the parent chord')
 				}
 				if (!suggestions.includes(inner_circle[i])) {
 					suggestions.push(inner_circle[i])
@@ -551,13 +551,13 @@ const circleOfFifths = (chord) => {
 			}
 			
 			else {
-				if (!suggestions.includes(outter_circle[i - 1])) {
-					suggestions.push(outter_circle[i - 1])
-					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
+				if (!suggestions.includes(outer_circle[i - 1])) {
+					suggestions.push(outer_circle[i - 1])
+					descriptions.push('This chord is a circle of 5ths outer ring neighbor of the parent chord')
 				}
-				if (!suggestions.includes(outter_circle[i + 1])) {
-					suggestions.push(outter_circle[i + 1])
-					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
+				if (!suggestions.includes(outer_circle[i + 1])) {
+					suggestions.push(outer_circle[i + 1])
+					descriptions.push('This chord is a circle of 5ths outer ring neighbor of the parent chord')
 				}
 				if (!suggestions.includes(inner_circle[i])) {
 					suggestions.push(inner_circle[i])
@@ -572,9 +572,9 @@ const circleOfFifths = (chord) => {
 					suggestions.push(inner_circle[i + 1])
 					descriptions.push('This chord is a circle of 5ths inner ring neighbor of the parent chord')
 				}
-				if (!suggestions.includes(outter_circle[i])) {
-					suggestions.push(outter_circle[i])
-					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
+				if (!suggestions.includes(outer_circle[i])) {
+					suggestions.push(outer_circle[i])
+					descriptions.push('This chord is a circle of 5ths outer ring neighbor of the parent chord')
 				}
 			}
 			
@@ -583,9 +583,9 @@ const circleOfFifths = (chord) => {
 					suggestions.push(inner_circle[i - 1])
 					descriptions.push('This chord is a circle of 5ths inner ring neighbor of the parent chord')
 				}
-				if (!suggestions.includes(outter_circle[i])) {
-					suggestions.push(outter_circle[i])
-					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
+				if (!suggestions.includes(outer_circle[i])) {
+					suggestions.push(outer_circle[i])
+					descriptions.push('This chord is a circle of 5ths outer ring neighbor of the parent chord')
 				}
 			}
 			
@@ -598,9 +598,9 @@ const circleOfFifths = (chord) => {
 					suggestions.push(inner_circle[i - 1])
 					descriptions.push('This chord is a circle of 5ths inner ring neighbor of the parent chord')
 				}
-				if (!suggestions.includes(outter_circle[i])) {
-					suggestions.push(outter_circle[i])
-					descriptions.push('This chord is a circle of 5ths outter ring neighbor of the parent chord')
+				if (!suggestions.includes(outer_circle[i])) {
+					suggestions.push(outer_circle[i])
+					descriptions.push('This chord is a circle of 5ths outer ring neighbor of the parent chord')
 				}
 			}
 		}
@@ -736,7 +736,7 @@ const getAllSuggestions = (chord1, chord2, chord3, chord4, chord_position, key, 
 	functionalHarmony(key, chord_position, mode);
 	commonProgressions(key, chord, chord_position);
 	sortSuggestions(key, chord, chord_position);
-	displaySugestions();
+	// displaySugestions();
 	return descriptions
 }
 

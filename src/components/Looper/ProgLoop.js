@@ -17,6 +17,7 @@ import Chordbox from './Chordbox'
 import CustomModal from './CustomModal';
 import Soundfont from 'soundfont-player';
 import AudioPlayer from './AudioPlayer';
+import IconConfirm from '../Tools/IconConfirm';
 
 const ProgLoop = ({deleteLoop, id, loopData, previewFlag, updateLoop}) => {
 	// const [title, setTitle] = useState("")
@@ -24,7 +25,7 @@ const ProgLoop = ({deleteLoop, id, loopData, previewFlag, updateLoop}) => {
 	return (
 		<div>
 			<Card>
-				<Card>
+				<Card style={{justifyContent: "center"}}>
 					<CardHeader
 						action={
 							<ButtonGroup>
@@ -38,11 +39,12 @@ const ProgLoop = ({deleteLoop, id, loopData, previewFlag, updateLoop}) => {
 										addFlag={false}
 									/>
 								}
-								<IconButton
+								{/* <IconButton
 									onClick={() => deleteLoop(id)}
 								>
 									<DeleteOutlined />
-								</IconButton>
+								</IconButton> */}
+								<IconConfirm title={"Delete Loop"} diagText={"Delete this loop?"} thenFunc={() => deleteLoop(id)} />
 
 							</ButtonGroup>
 						}
