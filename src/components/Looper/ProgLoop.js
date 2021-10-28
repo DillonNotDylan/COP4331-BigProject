@@ -1,27 +1,52 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {
-	CardHeader,
 	Card,
+	CardActions,
+	CardHeader,
 	CardContent,
 	IconButton,
-	Grid
+	Grid,
+	ButtonGroup,
+	Accordion,
+	AccordionSummary,
+	AccordionDetails
 } from '@material-ui/core'
-import { DeleteOutlined } from '@material-ui/icons'
-import { Chordbox } from './Chordbox'
+import DeleteOutlined from '@material-ui/icons/DeleteOutline'
+import PlayOutlined from '@material-ui/icons/PlayCircleFilledWhiteOutlined';
+import Chordbox from './Chordbox'
+import CustomModal from './CustomModal';
+import Soundfont from 'soundfont-player';
+import AudioPlayer from './AudioPlayer';
+import IconConfirm from '../Tools/IconConfirm';
 
-const ProgLoop = ({loopData, id, deleteLoop}) => {
+const ProgLoop = ({deleteLoop, id, loopData, previewFlag, updateLoop}) => {
 	// const [title, setTitle] = useState("")
+
 	return (
 		<div>
 			<Card>
-				<Card>
+				<Card style={{justifyContent: "center"}}>
 					<CardHeader
 						action={
-							<IconButton
-								onClick={() => deleteLoop(id)}
-							>
-								<DeleteOutlined />
-							</IconButton>
+							<ButtonGroup>
+								<AudioPlayer progression={loopData.progression}/>
+
+								{ !previewFlag && 
+									<CustomModal 
+										id={id}
+										loopData={loopData} 
+										submitAction={updateLoop}
+										addFlag={false}
+									/>
+								}
+								{/* <IconButton
+									onClick={() => deleteLoop(id)}
+								>
+									<DeleteOutlined />
+								</IconButton> */}
+								<IconConfirm title={"Delete Loop"} diagText={"Delete this loop?"} thenFunc={() => deleteLoop(id)} />
+
+							</ButtonGroup>
 						}
 						
 						subheader={loopData.name}
@@ -31,11 +56,20 @@ const ProgLoop = ({loopData, id, deleteLoop}) => {
 					<CardContent>
 						<Grid container style={{justifyContent: 'center'}}>
 							{
-								loopData.chords.map(singleChord =>
+								
+								loopData && loopData.progression.map((singleChord, position) =>
 									{
 										return (
-											<Grid item style={{width: 100}}>
-												<Chordbox chord={singleChord}/>
+											<Grid item style={{width: 80}}>
+												<Chordbox 
+													chord={singleChord}
+													position={position}
+													loop={loopData}
+
+													// Don't call edit related functions if all we're doing is click on a chord on the menu
+													// Editing should be restricted to when they explicitly click on the pencil edit icon
+													setEdit={null}
+												/>
 											</Grid>
 										)
 									}
@@ -43,6 +77,8 @@ const ProgLoop = ({loopData, id, deleteLoop}) => {
 							}
 						</Grid>
 					</CardContent>
+
+					
 				</Card>
 
 			</Card>

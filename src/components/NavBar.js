@@ -2,31 +2,66 @@ import React, { useState } from 'react'
 import {
 	AppBar,
 	Button,
+	ButtonGroup,
 	Toolbar,
 	IconButton,
-	Typography,
+	Typography, Box,
 	TextField,
+	ThemeProvider,
+	createMuiTheme
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu';
+import LibraryMusicIcon from '@material-ui/icons/LibraryMusic';
 import axios from 'axios';
 import { RestoreOutlined } from '@material-ui/icons';
 import Login_SignUp from './Login_SignUp';
 import Cookie from "./Cookie"
-
-let signInLoginRoute = "https://chordeo-grapher.herokuapp.com/user/signin";
+import ForgotPassword from './ForgotPassword'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
+		borderRadius: 5,
+		padding: 10
+		// height: 100
 	},
 	menuButton: {
-		marginRight: theme.spacing(2),
+		marginRight: theme.spacing(1),
 	},
 	title: {
 		flexGrow: 1,
 	},
+
+	text: {
+		color: 'white'
+	}
 }));
+
+const barTheme = createMuiTheme({
+	palette: {
+		primary: {
+			main: '#26abff'
+		},
+
+		secondary: {
+			main: '#673ab7',
+			contrastText: '#000'
+
+		}
+
+	}
+
+});
+
+const typeTheme = createMuiTheme({
+	palette: {
+		primary: {
+			main: '#fafafa'
+		}
+	}
+})
+
 
 const NavBar = () => {
 	const classes = useStyles();
@@ -34,9 +69,10 @@ const NavBar = () => {
 	const [user, setUser] = useState("");
 	const [pass, setPass] = useState("");
 	const [errMsg, setErr] = useState("");
+	const [forgPass, setForgPass] = useState(false);
 
 	const submitLogin = () => {
-		console.log("User: " + user + "pass:" + pass);
+		console.log("User: " + user + ", pass:" + pass);
 
 		const data =
 		{
@@ -44,41 +80,44 @@ const NavBar = () => {
 			password: pass,
 		};
 
-		var b =axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
-        .then(function (response) {
-            // if it has response message
-				if (response.data.hasOwnProperty('message'))
-				{
+		var b = axios.post("https://chordeo-grapher.herokuapp.com/user/signin", data)
+			.then(function (response) {
+				// if it has response message
+				if (response.data.hasOwnProperty('message')) {
 					setErr(response.data.message);
 				}
-				else
-				{
+				else {
 					// make logged in, and use returned nickname to display
 					var cInfo = {
 						nickname: response.data.nickname,
 						id: response.data.id,
 					}
-					Cookie.setJCookie("userSession",cInfo, 60);
+					Cookie.setJCookie("userSession", cInfo, 60);
 					setLin(true);
 					setErr("");
-					
+					window.location = window.location;
 				}
-        })
-        .catch(function (error) {
-            console.log(error);
-        })
-		
+			})
+			.catch(function (error) {
+				console.log(error);
+			})
+
 		//create cookie
 	}
 
 	const doLogOut = () => {
 		console.log("loggingout");
-		setUser("");
+		localStorage.clear();
 		setPass("");
 		Cookie.delCookie("userSession");
 		setLin(false);
+		// refresh window to reload components
+		window.location = window.location;
 	}
 
+	const toggleForgotPop = () => {
+		setForgPass(!forgPass);
+	}
 
 	const formChange = (e) => {
 		// keep track??
@@ -89,22 +128,40 @@ const NavBar = () => {
 			setUser(e.target.value);
 		else
 			setPass(e.target.value);
-
 	}
 
 
 	const notLoggedIn = () => {
 
-		const clickyStyle = { margin:'5px', textAlign:'center', justifyContent:'center' };
+		const clickyStyle = { textAlign: 'center', justifyContent: 'center', margin: 10, height: 45 };
 		return (
-			<div style={{ maxHeight: '5vh', maxWidth: '50vw', display: 'flex', flexDirection: 'row'}}>
-				
-				<Typography style={{marginRight:'20px'}} >{errMsg}</Typography>
-				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} />
-				<TextField variant="outlined" size="small" placeholder="Password" onChange={formChange} style={clickyStyle} />
-				<Login_SignUp buttonText="Sign Up" style={clickyStyle} />
+			<div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center', alignItems: 'flex-end' }}>
+				{	// show forgot password dialog on click
+					forgPass ?
+						<ForgotPassword toggle={toggleForgotPop} />
+						: null
+				}
+				<Typography style={{ marginRight: 125, height: 35 }} >{errMsg}</Typography>
 
-				<Button color="inherit" variant="contained" onClick={submitLogin} style={clickyStyle, {paddingTop:'2%', paddingBottom:'2%'}}>Login</Button>
+				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} InputProps={{ className: classes.text }} />
+
+
+				<ButtonGroup orientation="vertical" style={{}}>
+					<TextField variant="outlined" size="small" placeholder="Password" type="password" onChange={formChange} style={clickyStyle} InputProps={{ className: classes.text }} />
+				</ButtonGroup>
+
+				<ButtonGroup style={{ textAlign: 'center', justifyContent: 'center', margin: 10, marginRight: 10 }}>
+					<Button color="default" variant="contained" onClick={submitLogin} style={{ height: 50, marginRight: 10, borderRadius: 5 }}>
+						Login
+					</Button>
+					<Login_SignUp buttonText="Sign Up" />
+					<ThemeProvider theme={typeTheme}>
+						<Button variant="text" onClick={toggleForgotPop} style={{ marginLeft: 15, padding: 1 }} color='primary'>
+							Forgot Password?
+						</Button>
+					</ThemeProvider>
+				</ButtonGroup>
+
 
 			</div>
 		);
@@ -118,25 +175,33 @@ const NavBar = () => {
 			nName = nName.nickname;
 		return (
 			<>
-				<Typography variant="h6" style={{ color: 'blue', marginRight:'10vw' }} >Welcome {nName}</Typography>
-				<Button onClick={doLogOut} >Log Out</Button>
+				<Typography variant="h6" style={{ color: 'white', marginRight: '10vw' }} >Welcome {nName}</Typography>
+				<Button onClick={doLogOut} variant="contained">Log Out</Button>
 			</>
 		);
 	}
 
 	return (
-		<AppBar color="inherit" position="static">
-			<Toolbar>
-				<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-					<MenuIcon />
-				</IconButton>
-				<Typography variant="h6" className={classes.title}>
-					Chordeography
-				</Typography>
-				{lin? isLoggedIn() : notLoggedIn()}
+		<ThemeProvider theme={barTheme}>
+			<AppBar color="primary" position="static" className={classes.root} style={{marginBottom: "2%"}}>
+				<Toolbar>
+					<ThemeProvider theme={barTheme}>
+						<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" color="secondary" >
+							<LibraryMusicIcon fontSize="large" />
+						</IconButton>
+					</ThemeProvider>
+					<ThemeProvider theme={typeTheme}>
+						<Typography variant="h6" className={classes.title} color="primary">
+							Chordeographer
+						</Typography>
+					</ThemeProvider>
 
-			</Toolbar>
-		</AppBar>
+					{lin ? isLoggedIn() : notLoggedIn()}
+
+				</Toolbar>
+			</AppBar>
+		</ThemeProvider>
+
 	)
 }
 

@@ -1,7 +1,6 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import {
 	Card,
-	CardHeader,
 	CardContent,
     makeStyles,
     Grid
@@ -13,30 +12,32 @@ import ModeBox from './ModeBox'
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'center',
-        flexWrap: 'wrap',
+        flexWrap: 'nowrap',
         '& >': {
             margin: theme.spacing(1),
-            width: theme.spacing(250),
+            width: theme.spacing(100),
         },
 
     },
 }));
 
 
-const ToolPage = () => {
+const ToolPage = ({grabKey, grabMode}) => {
     const classes = useStyles();
-   
+    const [currOption, setOption] = useState(true);
+    const[status, switchStatus] = React.useState(false);
+
     return(
         <div>  
             <br />
             <Card className={classes.root}>
                 <CardContent>
-                    <Grid container>
-                        <Grid item xs sm={3}>
-                            <KeyBox />
-                        </Grid> 
+                    <Grid container direction="row">
                         <Grid item xs>
-                            <ModeBox />
+                            <KeyBox currOption={!currOption} grabKey={grabKey} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
+                        </Grid> 
+                        <Grid item xs sm>
+                            <ModeBox setOption={setOption} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
                         </Grid>
                     </Grid>
                 </CardContent>

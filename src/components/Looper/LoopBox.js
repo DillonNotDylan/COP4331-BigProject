@@ -8,162 +8,358 @@ import {
 	CardHeader,
 	Grid,
 	IconButton,
-
+	AppBar,
+	Paper,
+	Toolbar,
+	TextField
 } from '@material-ui/core'
-// import MoreVertIcon from '@material-ui/icons'
+
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
-import AddIcon from '@material-ui/icons/Add';
-
+import { AddOutlined, ModeComment, Title } from '@material-ui/icons';
 import ProgLoop from './ProgLoop'
-
+import Cookie from '../Cookie'
 import Login_SignUp from '../Login_SignUp'
-
+import ProjSelector from './ProjSelector';
 import axios from 'axios'
-
-const loopTemp = [
-	{
-		placement: 0,
-		name: "Verse",
-		chords: ["Am", "C", "B", "F"]
-	},
-	{
-		placement: 1,
-		name: "Chorus",
-		chords: ["Gm", "C7", "Bm", "F#m"]
-	},
-	{
-		placement: 2,
-		name: "Bridge",
-		chords: ["Am", "C", "Bb", "Fm"]
-	}
-]
+import CustomModal from './CustomModal';
+import ToolPage from '../Tools/ToolPage';
+import Confirm from '../Tools/Confirm';
 
 
 const LoopBox = () => {
-	const [currProj, setProj] = useState(loopTemp)
-	
-	// At the moment, this useEffect will undisirably reset changes to the website,
-	// In the future, we'll need this to set the stage for changes
-	// useEffect(() => {
-	// 	// In the final result, this data will come from an API call
-	// 	setProj(loopTemp)
-	// })
 
-	const addNewLoop = () => {
-		console.log("in here")
-		let temp = [...currProj]
-		// let temp = currProj
-		let len = temp.length
-		temp.push(
-			{
-				placement: len,
-				name: "Another Loop",
-				chords: ["Am", "C", "Bb", "Fm"]
+	const inf = Cookie.cToJson(Cookie.getCookie("userSession"));
+	// contains user id as 'id', and nickname as 'nickname'
+
+	// const [currProj, setProj] = useState([]);
+
+	// Actual project info
+	const [pProject, setcProject] = useState(JSON.parse(localStorage.getItem('curr')) || {
+		pid: 0,
+		title: "Unsaved Project",
+		loops: [],
+		key: "C",
+		mode: 2,
+		dateMade: new Date().toString()
+	});
+
+	const [useKey, grabKey] = React.useState("C");
+	const [useMode, grabMode] = React.useState(2);
+
+	// const [pendingChange, setPending] = useState(false)
+
+	useEffect(() => {
+		console.log(pProject)
+		// setPending(true)
+		localStorage.setItem('curr', JSON.stringify(pProject))
+	}, [pProject])
+
+	const initLoop = async (firstPID) =>
+	{
+		try
+		{
+			// 0 indicates new project, init to empty with todays date
+			if (firstPID === "0")
+			{	// since ID is a string, we use this format
+				let t = {
+					pid: 0,
+					title: "Unsaved Project",
+					loops: [],
+					dateMade: new Date()
+				};
+
+				setcProject(t);
+				return;
 			}
-		)
+			
+			if (inf != null && firstPID != 0)
+			{	// save data in a. wait for response to continue
+				const a = await axios.post("https://chordeo-grapher.herokuapp.com/user/get-project", {pid: firstPID})
+				let t = {
+					pid: firstPID,
+					title: a.data.title,
+					loops: a.data.loops,
+					dateMade: a.data.dateCreated
+				};
+				
+				// update loops and current info
+				setcProject(t);
+			}
+		}
+		catch (err)
+		{
+			console.log("warning, error" + err);
+		}
+	};
 
-		console.log(temp)
-		setProj(temp)
-	}
 
 	const deleteLoop = (index) => {
-		console.log("In delete loop")
-		let temp = [...currProj]
+		// let temp = [...pProject.loops]
+		let temp = {...pProject}
 
 		if (index === -1)
 			return
 			
-		temp.splice(index, 1)
-		setProj(temp)
+		temp.loops.splice(index, 1)
+
+		// save all data to localstorage
+
+		setcProject(temp)
 	}
 
-	// 'user/${userID}/get-projects'
-	// 60e3a8a3b2bfc802215b2535
-	const getData = () => {
-		let userID = "60ebdf0a171f280086b81f57"
-		const res = axios.get(`https://chordeographer.herokuapp.com/${userID}/get-projects`)
-		.then(function (response) {
-			console.log(response.data);
-		})
-		.catch(function (error) {
-			console.log(error);
-		})  
+	const save = () =>
+	{
+
+		// copy over references of loops
+		let t = {
+			pid: pProject.pid,
+			title:pProject.title,
+			loops: pProject.loops,
+			key: pProject.key,
+			mode: pProject.mode
+		}
+
+		// check if current project exists
+		if (t.pid == 0)
+		{	// instead 
+			console.log("different");
+			return;
+		}
+
+
+		// post change to server
+		axios.patch("https://chordeo-grapher.herokuapp.com/user/update-project", t)
+		.catch(function (err) {console.log(err)} )
 	}
 
+	const submitProject = () => {
+		let t = {
+			id: inf.id,
+			// pid: pProject.pid,
+			title: pProject.title,
+			loops: pProject.loops,
+			key: pProject.key,
+			mode: pProject.mode
+		}
+
+		// post change to server
+		axios.post("https://chordeo-grapher.herokuapp.com/user/new-project", t)
+			.then(response => window.location=window.location)
+			.catch(function (err) { console.log(err) })
+	}
+
+	const makeBlank = () => {
+		let t = {
+			id: inf.id,
+			pid: pProject.pid,
+			title: pProject.title,
+			loops: pProject.loops,
+			key: pProject.key,
+			mode: pProject.mode
+		}
+	}
+
+
+	// To update a loop, we need: its place in the overall project's loop array to replace the
+	// old version, 
+	// 
+	const updateLoop = (indexToUpdate, updatedProg, loopName, loopMode, loopKey) => {
+		let temp = {...pProject}
+		console.log(temp.loops)
+		let toInsert = {
+			key: loopKey,
+			mode: loopMode,
+			name: loopName,
+			progression: updatedProg,
+		}
+		// temp.loops[indexToUpdate].progression = updatedProg
+		// temp.loops[indexToUpdate].title = title;
+		temp.loops[indexToUpdate] = toInsert
+		setcProject(temp)
+	}
+
+	const addLoop = (updatedProg, loopName, loopMode, loopKey) => {
+		let temp = { ...pProject }
+		console.log(temp.loops)
+		let toInsert = {
+			key: loopKey,
+			mode: loopMode,
+			name: loopName,
+			progression: updatedProg,
+		}
+		temp.loops.push(toInsert)
+		setcProject(temp)
+	}
+
+	const deleteProject = () => {
+		let t = {
+			id: inf.id,
+			pid: pProject.pid,
+		}
+
+		if (t.id == 0)
+			return;
+
+		let clear = {
+			pid: 0,
+			title: "Unsaved Project",
+			loops: [],
+			key: "C",
+			mode: 2,
+			dateMade: "July 29, 2021"
+		}
+
+		setcProject(clear)
+		// post change to server
+		axios.post("https://chordeo-grapher.herokuapp.com/user/delete-project", t)
+			.then(response => window.location = window.location)
+			.catch(function (err) { console.log(err) })
+	}
 	
-	const getProjectById = async () => {
-		let userID = "60ebdf0a171f280086b81f57"
+	const loadProj = () =>
+	{
+		// get object from storage
+		console.log(localStorage.getItem('newPID'));
+		initLoop(localStorage.getItem('newPID'));
+	}
 
-		const res = await axios.post("https://chordeographer.herokuapp.com/get-project",
-			{
-				pid: "60ebdfaa171f280086b81f5f"
-
-				
-			}
-		)
-		
-		// console.log(res)
-		.then(function (response) {
-			console.log(response.data);
-		})
-		.catch(function (error) {
-			console.log(error);
-		})
+	const handleProjName = (e) => {
+		// e.persist();
+		let temp = {...pProject}
+		temp.title = e.target.value
+		setcProject(temp)
+		// console.log(projName);
 	}
 
 	return (
-		<div>
 
-			<Button
-				onClick={getData}
-			>
-				Get data
-			</Button>
+		<div style={{ position: "relative", width: "80%", left: "9.5vw" }}>
 
-			<Button
-				onClick={getProjectById}
-			>
-				Get specific project
-			</Button>
-
-			<Card style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+			<div>
+				{/* <ReactPiano /> */}
+			</div>
+			
+			
+			<Card>
 				<CardContent>
+					<div>
+
+						{
+							(inf != null) ?
+								<div>
+									<ProjSelector loadProj={loadProj} />
+								</div>
+
+								: null
+						}
+					</div >
 					<CardHeader
 						avatar={
 							<Avatar aria-label="recipe">
 								A
 							</Avatar>
 						}
-						// action={
-						// 	<IconButton aria-label="settings">
-						// 		<MoreVertIcon />
-						// 	</IconButton>
-						// }
-						title="Project Name"
-						subheader="Created on March 5, 2000"
+
+						title={
+							<TextField 
+								placeholder="Project Name"
+								value={pProject.title}
+								onChange={handleProjName}
+							/>
+						}
+						subheader={"Created on " + pProject.dateMade}
+						
+					/>
+					{/* {pendingChange && "You have pending changes not saved. Navigating to another project will delete these changes"} */}
+
+					{/* <Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button> */}
+					{
+						inf != null
+						?
+							<div>
+								<ButtonGroup>
+									{/* <Button 
+										variant="contained" 
+										color="primary" onClick={save} 
+										style={{float:'right'}}
+									> 
+										Save Data
+									</Button> */}
+									<Confirm title={"Save Data"} diagText={"Update this project?"} thenFunc={save}/>
+									{/* <Button onClick={submitProject}>Submit Project</Button> */}
+									<Confirm title={"Submit Project"} diagText={"Are you sure you wish to add this as a separate project?"} thenFunc={submitProject}/>
+									<Confirm title={"Delete Project"} diagText={"Are you sure you wish to delete?"} thenFunc={deleteProject}/>
+									{/* <Button onClick={deleteProject}>Delete Project</Button> */}
+								</ButtonGroup>
+							</div>
+
+						: null
+					}
+					<ToolPage grabKey={grabKey} grabMode={grabMode} />
+					
+
+					 {/* Use the modal that opens up the edit form, but we will
+					 pass it props that let it know we are making a new loop from
+					 scratch, rather than editing one. This will allow it to prepopulate with
+					 default data */}
+					<CustomModal
+						// This id in this instance doesn't do anything, I'm just giving it -1 to say we don't use it
+						// as a prop when we're simply adding a new loop 
+						id={-1}
+						loopData={{
+							title: "",
+							progression: (useMode === 5 ? [useKey + "_min", useKey + "_min", useKey + "_min", useKey + "_min"] : [useKey + "_maj", useKey + "_maj", useKey + "_maj", useKey + "_maj"]),
+							key: useKey,
+							mode: useMode
+						}}
+						submitAction={addLoop}
+						addFlag={true}
+						icon={<AddOutlined />}
 					/>
 
-					<Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button>
-					{/* <Button variant="contained" color="secondary" onClick={() => console.log(currProj)}><MusicNoteIcon /> Test</Button> */}
-					
+
+
+					{/* <CustomModal body={<ChordSelector progression={null}/>} /> */}
 				
-					<Grid container direction="column" style={{width: 500}}>
+					<Grid container direction="column" style={{ width: "60%", justifyContent: "center", marginLeft:"20%"}}>
+						<Paper style={{ maxHeight: 350, overflow: 'auto' }}>
+
+
 						{
 							// Th
 							// 0 1 2 3 4 etc
-							currProj.map((loop, index) => {
+							pProject.loops.map((loop, index) => {
 								return (
-									<Grid item style={{justifyContent: 'center'}}>
-										<ProgLoop loopData={loop} id={index} deleteLoop={deleteLoop}/>
+									<Grid item>
+										<ProgLoop 
+											deleteLoop={deleteLoop} 
+											id={index} 
+											loopData={loop} 
+											updateLoop={updateLoop}
+											useKey={useKey}
+											useMode={useMode}
+										/>
 									</Grid>
 								)
 							})
 						}
+						</Paper>
+
+						
+						
 					</Grid>
 					
 					{/* <ProgLoop /> */}
+					{	// show sign up button if cookie deems not logged in
+						inf == null
+						?
+							<div>
+								<Login_SignUp style={{paddingTop:'25px', textAlign: 'center'}} buttonText="Save Progression and Sign Up"/>
+							</div>
+
+						:null
+					}
 					
-					<Login_SignUp style={{paddingTop:'25px', textAlign: 'center'}} buttonText="Save Progression and Sign Up"/>
 				</CardContent>
 			</Card>
 
