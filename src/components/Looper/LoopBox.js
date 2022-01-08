@@ -29,9 +29,6 @@ import Confirm from '../Tools/Confirm';
 const LoopBox = () => {
 
 	const inf = Cookie.cToJson(Cookie.getCookie("userSession"));
-	// contains user id as 'id', and nickname as 'nickname'
-
-	// const [currProj, setProj] = useState([]);
 
 	// Actual project info
 	const [pProject, setcProject] = useState(JSON.parse(localStorage.getItem('curr')) || {
@@ -46,11 +43,8 @@ const LoopBox = () => {
 	const [useKey, grabKey] = React.useState("C");
 	const [useMode, grabMode] = React.useState(2);
 
-	// const [pendingChange, setPending] = useState(false)
-
 	useEffect(() => {
 		console.log(pProject)
-		// setPending(true)
 		localStorage.setItem('curr', JSON.stringify(pProject))
 	}, [pProject])
 
@@ -92,9 +86,7 @@ const LoopBox = () => {
 		}
 	};
 
-
 	const deleteLoop = (index) => {
-		// let temp = [...pProject.loops]
 		let temp = {...pProject}
 
 		if (index === -1)
@@ -103,13 +95,11 @@ const LoopBox = () => {
 		temp.loops.splice(index, 1)
 
 		// save all data to localstorage
-
 		setcProject(temp)
 	}
 
 	const save = () =>
 	{
-
 		// copy over references of loops
 		let t = {
 			pid: pProject.pid,
@@ -126,7 +116,6 @@ const LoopBox = () => {
 			return;
 		}
 
-
 		// post change to server
 		axios.patch("https://chordeo-grapher.herokuapp.com/user/update-project", t)
 		.catch(function (err) {console.log(err)} )
@@ -135,7 +124,6 @@ const LoopBox = () => {
 	const submitProject = () => {
 		let t = {
 			id: inf.id,
-			// pid: pProject.pid,
 			title: pProject.title,
 			loops: pProject.loops,
 			key: pProject.key,
@@ -159,10 +147,6 @@ const LoopBox = () => {
 		}
 	}
 
-
-	// To update a loop, we need: its place in the overall project's loop array to replace the
-	// old version, 
-	// 
 	const updateLoop = (indexToUpdate, updatedProg, loopName, loopMode, loopKey) => {
 		let temp = {...pProject}
 		console.log(temp.loops)
@@ -172,8 +156,6 @@ const LoopBox = () => {
 			name: loopName,
 			progression: updatedProg,
 		}
-		// temp.loops[indexToUpdate].progression = updatedProg
-		// temp.loops[indexToUpdate].title = title;
 		temp.loops[indexToUpdate] = toInsert
 		setcProject(temp)
 	}
@@ -233,132 +215,104 @@ const LoopBox = () => {
 
 	return (
 
-		<div style={{ position: "relative", width: "80%", left: "9.5vw" }}>
-
+		<div style={{ position: "relative", width: "100%"}}>
 			<div>
 				{/* <ReactPiano /> */}
 			</div>
 			
-			
-			<Card>
-				<CardContent>
-					<div>
-
-						{
-							(inf != null) ?
-								<div>
-									<ProjSelector loadProj={loadProj} />
-								</div>
-
+			<Card style={{ borderRadius: '20px', backgroundColor: '#ebddd1', boxShadow: '10px 10px 20px #c8bcb2, -15px -15px 60px #fffef0'}}>
+				<CardContent style={{display: 'flex'}}>
+					<div style={{margin: '3%', width: '25%'}}>
+						<div>
+							{
+								(inf != null) ?
+									<div>
+										<ProjSelector loadProj={loadProj} />
+									</div>
 								: null
-						}
-					</div >
-					<CardHeader
-						avatar={
-							<Avatar aria-label="recipe">
-								A
-							</Avatar>
-						}
+							}
+						</div >
 
-						title={
-							<TextField 
-								placeholder="Project Name"
-								value={pProject.title}
-								onChange={handleProjName}
-							/>
-						}
-						subheader={"Created on " + pProject.dateMade}
-						
-					/>
-					{/* {pendingChange && "You have pending changes not saved. Navigating to another project will delete these changes"} */}
-
-					{/* <Button variant="contained" color="secondary" onClick={addNewLoop}><MusicNoteIcon /> New Loop</Button> */}
-					{
-						inf != null
-						?
-							<div>
-								<ButtonGroup>
-									{/* <Button 
-										variant="contained" 
-										color="primary" onClick={save} 
-										style={{float:'right'}}
-									> 
-										Save Data
-									</Button> */}
-									<Confirm title={"Save Data"} diagText={"Update this project?"} thenFunc={save}/>
-									{/* <Button onClick={submitProject}>Submit Project</Button> */}
-									<Confirm title={"Submit Project"} diagText={"Are you sure you wish to add this as a separate project?"} thenFunc={submitProject}/>
-									<Confirm title={"Delete Project"} diagText={"Are you sure you wish to delete?"} thenFunc={deleteProject}/>
-									{/* <Button onClick={deleteProject}>Delete Project</Button> */}
-								</ButtonGroup>
-							</div>
-
-						: null
-					}
-					<ToolPage grabKey={grabKey} grabMode={grabMode} />
-					
-
-					 {/* Use the modal that opens up the edit form, but we will
-					 pass it props that let it know we are making a new loop from
-					 scratch, rather than editing one. This will allow it to prepopulate with
-					 default data */}
-					<CustomModal
-						// This id in this instance doesn't do anything, I'm just giving it -1 to say we don't use it
-						// as a prop when we're simply adding a new loop 
-						id={-1}
-						loopData={{
-							title: "",
-							progression: (useMode === 5 ? [useKey + "_min", useKey + "_min", useKey + "_min", useKey + "_min"] : [useKey + "_maj", useKey + "_maj", useKey + "_maj", useKey + "_maj"]),
-							key: useKey,
-							mode: useMode
-						}}
-						submitAction={addLoop}
-						addFlag={true}
-						icon={<AddOutlined />}
-					/>
-
-
-
-					{/* <CustomModal body={<ChordSelector progression={null}/>} /> */}
-				
-					<Grid container direction="column" style={{ width: "60%", justifyContent: "center", marginLeft:"20%"}}>
-						<Paper style={{ maxHeight: 350, overflow: 'auto' }}>
-
+						<CardHeader style={{ borderRadius: '20px', backgroundColor: '#fefefe', boxShadow: '5px 5px 60px #c8bcb2, -5px -5px 20px #fffef0'}}
+							avatar={
+								<Avatar aria-label="recipe">
+									A
+								</Avatar>
+							}
+							title={
+								<TextField 
+									placeholder="Project Name"
+									value={pProject.title}
+									onChange={handleProjName}
+								/>
+							}
+							subheader={"Created on " + pProject.dateMade}
+						/>
 
 						{
-							// Th
-							// 0 1 2 3 4 etc
-							pProject.loops.map((loop, index) => {
-								return (
-									<Grid item>
-										<ProgLoop 
-											deleteLoop={deleteLoop} 
-											id={index} 
-											loopData={loop} 
-											updateLoop={updateLoop}
-											useKey={useKey}
-											useMode={useMode}
-										/>
-									</Grid>
-								)
-							})
+							inf != null ?
+								<div>
+									<ButtonGroup>
+										<Confirm title={"Save Data"} diagText={"Update this project?"} thenFunc={save}/>
+										<Confirm title={"Submit Project"} diagText={"Are you sure you wish to add this as a separate project?"} thenFunc={submitProject}/>
+										<Confirm title={"Delete Project"} diagText={"Are you sure you wish to delete?"} thenFunc={deleteProject}/>
+									</ButtonGroup>
+								</div>
+							: null
 						}
-						</Paper>
 
-						
-						
-					</Grid>
-					
-					{/* <ProgLoop /> */}
-					{	// show sign up button if cookie deems not logged in
-						inf == null
-						?
-							<div>
-								<Login_SignUp style={{paddingTop:'25px', textAlign: 'center'}} buttonText="Save Progression and Sign Up"/>
-							</div>
+						<ToolPage grabKey={grabKey} grabMode={grabMode} />
+					</div>
 
-						:null
-					}
+					<div style={{margin: '3%', width: '65%', borderRadius: '20px', backgroundColor: '#f3ebe5', boxShadow: 'inset 10px 10px 10px #c8bcb2, inset 0px 0px 10px #fffef0', paddingBottom: '1rem', height: '65vh'}}>
+						<Grid container direction="column" style={{ width: "90%", marginLeft:"5%", marginTop: '5%'}}>
+							<Paper style={{ maxHeight: 350, overflow: 'auto' }}>
+							{
+								pProject.loops.map((loop, index) => {
+									return (
+										<div>
+											<Grid ite>
+												<ProgLoop 
+													deleteLoop={deleteLoop} 
+													id={index} 
+													loopData={loop} 
+													updateLoop={updateLoop}
+													useKey={useKey}
+													useMode={useMode}
+												/>
+											</Grid>
+										</div>
+									)
+								})
+							}
+							</Paper>
+						</Grid>
+
+						<div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1.5rem'}}>
+							<CustomModal
+								id={-1}
+								loopData={{
+									title: "",
+									progression: (useMode === 5 ? [useKey + "_min", useKey + "_min", useKey + "_min", useKey + "_min"] : [useKey + "_maj", useKey + "_maj", useKey + "_maj", useKey + "_maj"]),
+									key: useKey,
+									mode: useMode
+								}}
+								submitAction={addLoop}
+								addFlag={true}
+								icon={<AddOutlined />}
+							/>
+						</div>
+						
+						{/* <ProgLoop /> */}
+						{	
+							// show sign up button if cookie deems not logged in
+							inf == null ?
+								<div>
+									<Login_SignUp style={{paddingTop:'25px', textAlign: 'center'}} buttonText="Save Progression and Sign Up"/>
+								</div>
+							: null
+						}
+					</div>
 					
 				</CardContent>
 			</Card>

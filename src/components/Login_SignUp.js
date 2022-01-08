@@ -19,7 +19,7 @@ const Login_SignUp = (props) => {
 	return (
 		<div className="Login-SignUp" style={{ textAlign: 'center' }, props.style}>
 			<Button
-				style={{ height: 50, padding: 25 }}
+				style={{ height: 50, padding: 25, backgroundColor:'#EBAF82' }}
 				variant="contained"
 				color="default"
 				onClick={handleOpen}>

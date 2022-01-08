@@ -149,7 +149,7 @@ export default function ModeBox ({setOption, grabMode, status, switchStatus}){
 	  }
 
 	return(
-		<div className={boxClasses.divBox}>
+		<div className={boxClasses.divBox} style={{width: '95.75%'}}>
 			<Grow in={modeState} timeout={500}>
 				<Card className={cardClasses.root}>
 					<div className={boxClasses.sectionBox}>

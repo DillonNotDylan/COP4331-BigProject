@@ -13,7 +13,9 @@ const Home = () => {
 	
 			<NavBar />
 			{/* <PianoPreview /> */}
-			<ControlPanel />
+			<div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+				<ControlPanel />
+			</div>
 		
 		</div>
 	)

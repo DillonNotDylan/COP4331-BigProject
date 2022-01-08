@@ -25,12 +25,11 @@ const ProgLoop = ({deleteLoop, id, loopData, previewFlag, updateLoop}) => {
 	return (
 		<div>
 			<Card>
-				<Card style={{justifyContent: "center"}}>
+				<Card style={{justifyContent: "center", backgroundColor: '#ffe3cf', borderRadius: '0px', marginBottom: '0.5rem'}}>
 					<CardHeader
 						action={
 							<ButtonGroup>
 								<AudioPlayer progression={loopData.progression}/>
-
 								{ !previewFlag && 
 									<CustomModal 
 										id={id}
@@ -39,13 +38,7 @@ const ProgLoop = ({deleteLoop, id, loopData, previewFlag, updateLoop}) => {
 										addFlag={false}
 									/>
 								}
-								{/* <IconButton
-									onClick={() => deleteLoop(id)}
-								>
-									<DeleteOutlined />
-								</IconButton> */}
 								<IconConfirm title={"Delete Loop"} diagText={"Delete this loop?"} thenFunc={() => deleteLoop(id)} />
-
 							</ButtonGroup>
 						}
 						
@@ -60,7 +53,7 @@ const ProgLoop = ({deleteLoop, id, loopData, previewFlag, updateLoop}) => {
 								loopData && loopData.progression.map((singleChord, position) =>
 									{
 										return (
-											<Grid item style={{width: 80}}>
+											<Grid item style={{width: 100, margin: '0.5rem'}}>
 												<Chordbox 
 													chord={singleChord}
 													position={position}

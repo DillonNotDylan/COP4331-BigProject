@@ -31,7 +31,7 @@ const cardStyles = makeStyles({
 	quality: {
 		alignContent: 'flex',
 		padding: '25px',
-		marginLeft: 15,
+		// marginLeft: 15,
 		display:"flex",
 		width: 170,
 		minwidth: 160 
@@ -62,35 +62,15 @@ export default function KeyBox({currOption, grabKey, grabMode, status, switchSta
 	}
 
 	return(
-		<div className={cardClasses.divBox}>
-			<Card className={cardClasses.root}>
-				<FormControl variant="outlined" className={boxClasses.formControl}>
+		<div className={cardClasses.divBox} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+			<Card className={cardClasses.root} style={{margin: '5%', width: '80%', borderRadius: '10px'}}>
+				<FormControl variant="outlined" className={boxClasses.formControl} style={{width: '100%'}}>
 					<InputLabel className={boxClasses.formControl} id="key-label">Key</InputLabel>
-					{/* <Select className={boxClasses.formControl}
-						value={currKey}
-						onChange={handleChange}
-						label="Key"
-					>
-						<MenuItem value={"A"}>A</MenuItem>
-						<MenuItem value={"A_sharp"}>A#</MenuItem>
-						<MenuItem value={"B"}>B</MenuItem>
-						<MenuItem value={"C"}>C</MenuItem>
-						<MenuItem value={"C_sharp"}>C#</MenuItem>
-						<MenuItem value={"D"}>D</MenuItem>
-						<MenuItem value={"D_sharp"}>D#</MenuItem>
-						<MenuItem value={"E"}>E</MenuItem>
-						<MenuItem value={"F"}>F</MenuItem>
-						<MenuItem value={"F_sharp"}>F#</MenuItem>
-						<MenuItem value={"G"}>G</MenuItem>
-						<MenuItem value={"G_sharp"}>G#</MenuItem>
-						
-					</Select> */}
-						<KeySelect styling={boxClasses.formControl} currKey={currKey} handleChange={handleChange} />
+					<KeySelect styling={boxClasses.formControl} currKey={currKey} handleChange={handleChange} />
 				</FormControl>
-
 			</Card>
 
-			<Card className={cardClasses.quality}>
+			<Card className={cardClasses.quality} style={{marginBottom: '1.25rem', width: '80%', borderRadius: '10px'}}>
 				<Grid
 					component="label"
 					container

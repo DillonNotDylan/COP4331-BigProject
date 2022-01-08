@@ -38,25 +38,22 @@ export default function CustomModal({id, loopData, submitAction, addFlag, icon})
 
 	return (
 		<div>
-			
 			{
-				addFlag 
-					? 
-						<Button
-							variant="outlined"
-							onClick={handleOpen}
-							startIcon={<AddOutlined />}
-						>
-							Add Loop
-
-						</Button>
-					:
-						<IconButton onClick={handleOpen}>
-							<EditOutlined />
-						</IconButton>
+				addFlag ? 
+					<Button
+						variant="outlined"
+						onClick={handleOpen}
+						startIcon={<AddOutlined />}
+						style={{ border: 'none', borderRadius: '10px', backgroundColor: '#cdab8f', boxShadow: '5px 5px 10px #d1d0cf, -5px -5px 10px #ffffff'}}
+					>
+						Add Loop
+					</Button>
+				:
+					<IconButton onClick={handleOpen}>
+						<EditOutlined />
+					</IconButton>
 			}
 			
-
 			<div >
 				<Modal
 					className

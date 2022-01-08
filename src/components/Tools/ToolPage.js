@@ -30,13 +30,13 @@ const ToolPage = ({grabKey, grabMode}) => {
     return(
         <div>  
             <br />
-            <Card className={classes.root}>
-                <CardContent>
+            <Card className={classes.root} style={{ borderRadius: '20px', backgroundColor: '#fefefe', boxShadow: '5px 5px 60px #c8bcb2, -5px -5px 20px #fffef0'}}>
+                <CardContent style={{height: '49.8vh', background: '#f3ebe5', boxShadow: 'inset 10px 10px 10px #c8bcb2, inset 0px 0px 10px #fffef0'}}>
                     <Grid container direction="row">
-                        <Grid item xs>
+                        <Grid item xs style={{width: '100%'}}>
                             <KeyBox currOption={!currOption} grabKey={grabKey} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
                         </Grid> 
-                        <Grid item xs sm>
+                        <Grid item xs sm item xs style={{width: '100%'}}>
                             <ModeBox setOption={setOption} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
                         </Grid>
                     </Grid>

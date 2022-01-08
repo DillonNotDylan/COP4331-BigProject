@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 const barTheme = createMuiTheme({
 	palette: {
 		primary: {
-			main: '#26abff'
+			main: '#dddddd'
 		},
 
 		secondary: {
@@ -133,12 +133,12 @@ const NavBar = () => {
 
 	const notLoggedIn = () => {
 
-		const clickyStyle = { textAlign: 'center', justifyContent: 'center', margin: 10, height: 45 };
+		const clickyStyle = { textAlign: 'center', justifyContent: 'center', margin: '10', height: '45', color: 'black'};
 		return (
-			<div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center', alignItems: 'flex-end' }}>
+			<div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center', alignItems: 'center', marginTop: '-1.25rem' }}>
 				{	// show forgot password dialog on click
 					forgPass ?
-						<ForgotPassword toggle={toggleForgotPop} />
+						<ForgotPassword toggle={toggleForgotPop}/>
 						: null
 				}
 				<Typography style={{ marginRight: 125, height: 35 }} >{errMsg}</Typography>
@@ -146,17 +146,17 @@ const NavBar = () => {
 				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} InputProps={{ className: classes.text }} />
 
 
-				<ButtonGroup orientation="vertical" style={{}}>
+				<ButtonGroup orientation="vertical">
 					<TextField variant="outlined" size="small" placeholder="Password" type="password" onChange={formChange} style={clickyStyle} InputProps={{ className: classes.text }} />
 				</ButtonGroup>
 
 				<ButtonGroup style={{ textAlign: 'center', justifyContent: 'center', margin: 10, marginRight: 10 }}>
-					<Button color="default" variant="contained" onClick={submitLogin} style={{ height: 50, marginRight: 10, borderRadius: 5 }}>
+					<Button variant="contained" onClick={submitLogin} style={{ height: 50, marginRight: 10, borderRadius: 5, backgroundColor: '#f3ebe5' }}>
 						Login
 					</Button>
 					<Login_SignUp buttonText="Sign Up" />
 					<ThemeProvider theme={typeTheme}>
-						<Button variant="text" onClick={toggleForgotPop} style={{ marginLeft: 15, padding: 1 }} color='primary'>
+						<Button variant="text" onClick={toggleForgotPop} style={{ marginLeft: 15, padding: 1, color: 'black', marginTop: '0.25rem' }} color='primary'>
 							Forgot Password?
 						</Button>
 					</ThemeProvider>
@@ -183,15 +183,15 @@ const NavBar = () => {
 
 	return (
 		<ThemeProvider theme={barTheme}>
-			<AppBar color="primary" position="static" className={classes.root} style={{marginBottom: "2%"}}>
+			<AppBar position="static" className={classes.root} style={{marginBottom: "1%", backgroundColor: '#cdab8f', height: '4rem'}}>
 				<Toolbar>
 					<ThemeProvider theme={barTheme}>
-						<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" color="secondary" >
+						<IconButton edge="start" className={classes.menuButton} aria-label="menu" color="black" style={{marginTop: '-1rem'}} >
 							<LibraryMusicIcon fontSize="large" />
 						</IconButton>
 					</ThemeProvider>
 					<ThemeProvider theme={typeTheme}>
-						<Typography variant="h6" className={classes.title} color="primary">
+						<Typography variant="h6" className={classes.title} color="primary" style={{color: 'black', marginTop: '-1rem'}}>
 							Chordeographer
 						</Typography>
 					</ThemeProvider>
