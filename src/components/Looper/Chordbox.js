@@ -13,7 +13,6 @@ import {
 	CardActionArea,	
 } from '@material-ui/core'
 import getAllSuggestions from '../Script/Suggest'
-// import test from '../Script/Suggest'
 import { makeStyles } from '@material-ui/core/styles'
 import EditOutlined from '@material-ui/icons/EditOutlined';
 import DeleteOutlined from '@material-ui/icons/DeleteOutline'

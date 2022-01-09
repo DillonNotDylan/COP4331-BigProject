@@ -20,12 +20,11 @@ import AudioPlayer from './AudioPlayer';
 import IconConfirm from '../Tools/IconConfirm';
 
 const ProgLoop = ({deleteLoop, id, loopData, previewFlag, updateLoop}) => {
-	// const [title, setTitle] = useState("")
+	const [title, setTitle] = useState("")
 
 	return (
 		<div>
-			<Card>
-				<Card style={{justifyContent: "center", backgroundColor: '#ffe3cf', borderRadius: '0px', marginBottom: '0.5rem'}}>
+				<Card style={{justifyContent: "center", backgroundColor: '#ffe3cf', boxShadow: '8px 8px 15px #c8bcb2, -10px -10px 30px #fffef0', borderRadius: '20px', margin: '3rem'}}>
 					<CardHeader
 						action={
 							<ButtonGroup>
@@ -73,8 +72,6 @@ const ProgLoop = ({deleteLoop, id, loopData, previewFlag, updateLoop}) => {
 
 					
 				</Card>
-
-			</Card>
 		</div>
 	)
 }

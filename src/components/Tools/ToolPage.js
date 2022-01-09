@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import {
-	Card,
-	CardContent,
-    makeStyles,
-    Grid
+    makeStyles
 } from '@material-ui/core'
 
 import KeyBox from './KeyBox'
@@ -25,23 +22,13 @@ const useStyles = makeStyles((theme) => ({
 const ToolPage = ({grabKey, grabMode}) => {
     const classes = useStyles();
     const [currOption, setOption] = useState(true);
-    const[status, switchStatus] = React.useState(false);
+    const [status, switchStatus] = React.useState(false);
 
     return(
-        <div>  
+        <div style={{width: '100%'}}>  
             <br />
-            <Card className={classes.root} style={{ borderRadius: '20px', backgroundColor: '#fefefe', boxShadow: '5px 5px 60px #c8bcb2, -5px -5px 20px #fffef0'}}>
-                <CardContent style={{height: '49.8vh', background: '#f3ebe5', boxShadow: 'inset 10px 10px 10px #c8bcb2, inset 0px 0px 10px #fffef0'}}>
-                    <Grid container direction="row">
-                        <Grid item xs style={{width: '100%'}}>
-                            <KeyBox currOption={!currOption} grabKey={grabKey} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
-                        </Grid> 
-                        <Grid item xs sm item xs style={{width: '100%'}}>
-                            <ModeBox setOption={setOption} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
-                        </Grid>
-                    </Grid>
-                </CardContent>
-            </Card>
+            <KeyBox currOption={!currOption} grabKey={grabKey} grabMode={grabMode} status={status} switchStatus={switchStatus}/>
+            {/* <ModeBox setOption={setOption} grabMode={grabMode} status={status} switchStatus={switchStatus}/> */}
             <br />
         </div>
     )

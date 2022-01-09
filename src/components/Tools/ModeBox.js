@@ -49,8 +49,6 @@ const boxStyles = makeStyles({
 	divBox: {
 		display: "flex",
 		justifyContent: 'flex-end',
-		// height: '106px',
-		// alignContent: "auto",
 	},
 
 	advanced: {
@@ -58,7 +56,6 @@ const boxStyles = makeStyles({
 		width: 50,
 		height: 40,
 		marginLeft: 20,
-		// marginRight: 50
 	},
 
 	modeLabel: {
@@ -71,8 +68,6 @@ const boxStyles = makeStyles({
 		marginLeft: 10,
 		marginTop: 15,
 		width: 400,
-		// height: 1
-
 	}
 });
 
@@ -149,7 +144,7 @@ export default function ModeBox ({setOption, grabMode, status, switchStatus}){
 	  }
 
 	return(
-		<div className={boxClasses.divBox} style={{width: '95.75%'}}>
+		<div className={boxClasses.divBox}>
 			<Grow in={modeState} timeout={500}>
 				<Card className={cardClasses.root}>
 					<div className={boxClasses.sectionBox}>

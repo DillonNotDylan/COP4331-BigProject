@@ -4,7 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import Cookie from '../Cookie'
+import Cookie from '../Login/Cookie'
 
 const ProjSelector = ({loadProj}) => {
 

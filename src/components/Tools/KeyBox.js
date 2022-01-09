@@ -3,9 +3,7 @@ import {
 	Card,
 	FormControl,
 	Typography,
-	MenuItem,
 	InputLabel,
-	Select,
 	Switch,
 	makeStyles,
 	Grid
@@ -31,7 +29,6 @@ const cardStyles = makeStyles({
 	quality: {
 		alignContent: 'flex',
 		padding: '25px',
-		// marginLeft: 15,
 		display:"flex",
 		width: 170,
 		minwidth: 160 
@@ -76,6 +73,7 @@ export default function KeyBox({currOption, grabKey, grabMode, status, switchSta
 					container
 					alignItems="center"
 					spacing={1}
+					style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}
 				>
 					<Grid item>
 						<Typography variant="body1">

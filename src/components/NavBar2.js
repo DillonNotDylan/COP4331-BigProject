@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		borderRadius: 5,
 		padding: 10
-		// height: 100
 	},
 	menuButton: {
 		marginRight: theme.spacing(1),
@@ -63,7 +62,7 @@ const typeTheme = createMuiTheme({
 })
 
 
-const NavBar = () => {
+const NavBar2 = () => {
 	const classes = useStyles();
 	const [lin, setLin] = useState(Cookie.getCookie("userSession") != null);
 	const [user, setUser] = useState("");
@@ -130,25 +129,20 @@ const NavBar = () => {
 			setPass(e.target.value);
 	}
 
-
 	const notLoggedIn = () => {
 
-		const clickyStyle = { textAlign: 'center', justifyContent: 'center', margin: '10', height: '45', color: 'black'};
+		const clickyStyle = { textAlign: 'left', justifyContent: 'center', margin: '10', height: '45', color: 'black', marginRight: '1rem', padding: '0.5rem', paddingLeft: '1.25rem', marginTop: '0.2rem', width: '15rem', border: 'none', borderRadius: '10px', background: '#ebd8c7', boxShadow: 'inset 5px 5px 10px #c8b8a9, inset 0px 0px 0px #fff8e5', fontSize: '1.25rem', fontWeight: '300'};
 		return (
-			<div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center', alignItems: 'center', marginTop: '-1.25rem' }}>
+			<div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center', alignItems: 'center', marginTop: '-1.25rem', marginRight: '3.5rem' }}>
 				{	// show forgot password dialog on click
 					forgPass ?
 						<ForgotPassword toggle={toggleForgotPop}/>
-						: null
+                    : null
 				}
 				<Typography style={{ marginRight: 125, height: 35 }} >{errMsg}</Typography>
 
-				<TextField variant="outlined" size="small" placeholder="Username" onChange={formChange} style={clickyStyle} InputProps={{ className: classes.text }} />
-
-
-				<ButtonGroup orientation="vertical">
-					<TextField variant="outlined" size="small" placeholder="Password" type="password" onChange={formChange} style={clickyStyle} InputProps={{ className: classes.text }} />
-				</ButtonGroup>
+                <input placeholder="Username" style={clickyStyle}/>
+                <input placeholder="Password" style={clickyStyle}/>
 
 				<ButtonGroup style={{ textAlign: 'center', justifyContent: 'center', margin: 10, marginRight: 10 }}>
 					<Button variant="contained" onClick={submitLogin} style={{ height: 50, marginRight: 10, borderRadius: 5, backgroundColor: '#f3ebe5' }}>
@@ -182,27 +176,18 @@ const NavBar = () => {
 	}
 
 	return (
-		<ThemeProvider theme={barTheme}>
-			<AppBar position="static" className={classes.root} style={{marginBottom: "1%", backgroundColor: '#cdab8f', height: '4rem'}}>
-				<Toolbar>
-					<ThemeProvider theme={barTheme}>
-						<IconButton edge="start" className={classes.menuButton} aria-label="menu" color="black" style={{marginTop: '-1rem'}} >
-							<LibraryMusicIcon fontSize="large" />
-						</IconButton>
-					</ThemeProvider>
-					<ThemeProvider theme={typeTheme}>
-						<Typography variant="h6" className={classes.title} color="primary" style={{color: 'black', marginTop: '-1rem'}}>
-							Chordeographer
-						</Typography>
-					</ThemeProvider>
+		<div theme={barTheme} style={{display: 'flex', marginTop: '2rem', marginBottom: '-1rem'}}>
+            <IconButton edge="start" className={classes.menuButton} aria-label="menu" color="black" style={{marginTop: '-1rem', marginLeft: '3.25rem'}} >
+                <LibraryMusicIcon fontSize="large" />
+            </IconButton>
+            <Typography variant="h6" className={classes.title} color="primary" style={{color: 'black', marginTop: '0rem'}}>
+                Chordeographer
+            </Typography>
 
-					{lin ? isLoggedIn() : notLoggedIn()}
-
-				</Toolbar>
-			</AppBar>
-		</ThemeProvider>
+            {lin ? isLoggedIn() : notLoggedIn()}
+		</div>
 
 	)
 }
 
-export default NavBar
+export default NavBar2

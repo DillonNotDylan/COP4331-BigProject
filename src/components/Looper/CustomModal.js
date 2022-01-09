@@ -4,7 +4,7 @@ import {Button, IconButton, Modal} from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import EditOutlined from '@material-ui/icons/EditOutlined';
-import ChordSelector from './ChordSelector';
+import ChordSelector from '../Swap/ChordSelector';
 import { AddOutlined, ModeComment, Title } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
